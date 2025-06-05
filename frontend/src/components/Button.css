@@ -1,0 +1,78 @@
+.btn-base {
+  display: flex;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 700;
+  transition: background-color 0.2s ease;
+  gap: 8px;
+}
+
+/* 확인했어요*/
+.btn-primary {
+  @extend .btn-base;
+  padding: 12px 20px;
+  height: 52px;
+  width: 207px;
+  border-radius: 10px;
+  background-color: #42413f;
+  color: white;
+  margin-top: 31px;
+  border: none;
+}
+
+/* input 버튼: secondary */
+.btn-secondary {
+  @extend .btn-base;
+  width: 116px;
+  height: 47px;
+  border: 3px solid #42413f;
+  border-radius: 8px;
+  appearance: none;
+  background-color: #fff;
+  text-align: center;
+  color: black;
+}
+
+.btn-next {
+  @extend .btn-base;
+  width: 96px;
+  height: 52px;
+  border-radius: 8px;
+  background-color: #42413f;
+  color: white;
+  font-weight: 700;
+  border: none;
+}
+
+.btn-nextblue {
+  bottom: 24px;
+  right: 24px;
+  width: 100%;
+  max-width: 100px;
+  font-size: 16px;
+  height: 52px;
+  border-radius: 10px;
+  border: none;
+  position: absolute;
+
+  background: #3e70c7;
+  color: white;
+}
+
+.btn-toolbar {
+  display: flex;
+  flex-direction: column; /* ← 세로로 쌓기 */
+
+  align-items: center;
+  gap: 6px; /* 아이콘과 텍스트 사이 여백 */
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 700;
+
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}

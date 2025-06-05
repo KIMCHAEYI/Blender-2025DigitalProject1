@@ -1,0 +1,88 @@
+# Query: function
+# ContextLines: 1
+
+19개 결과 - 14 파일
+
+backend/package-lock.json:
+  104          "es-errors": "^1.3.0",
+  105:         "function-bind": "^1.1.2"
+  106        },
+
+  369      },
+  370:     "node_modules/function-bind": {
+  371        "version": "1.1.2",
+  372:       "resolved": "https://registry.npmjs.org/function-bind/-/function-bind-1.1.2.tgz",
+  373        "integrity": "sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==",
+
+  388          "es-object-atoms": "^1.1.1",
+  389:         "function-bind": "^1.1.2",
+  390          "get-proto": "^1.0.1",
+
+  445        "dependencies": {
+  446:         "function-bind": "^1.1.2"
+  447        },
+
+frontend/src/App.jsx:
+  14  import React from "react";
+  15: export default function App() {
+  16    return (
+
+frontend/src/components/Button.jsx:
+    1: import React from "react";
+    2: export default function Button({ onClick, children }) {
+    3 return (
+
+frontend/src/components/InputField.jsx:
+  1: import React from "react";
+  2: export default function InputField({
+  3    value,
+
+frontend/src/pages/BirthInput/BirthInput.jsx:
+  5  import React from "react";
+  6: export default function BirthInput() {
+  7    const [birth, setBirth] = useState("");
+
+frontend/src/pages/CharacterSelect/CharacterSelect.jsx:
+  4  import React from "react";
+  5: export default function CharacterSelect() {
+  6    const navigate = useNavigate();
+
+frontend/src/pages/Complete/Complete.jsx:
+  4  import React from "react";
+  5: export default function Complete() {
+  6    const navigate = useNavigate();
+
+frontend/src/pages/GenderSelect/GenderSelect.jsx:
+  5  import React from "react";
+  6: export default function GenderSelect() {
+  7    const [gender, setGender] = useState("");
+
+frontend/src/pages/Home/Home.jsx:
+  5  import React from "react";
+  6: export default function Home() {
+  7    const navigate = useNavigate();
+
+frontend/src/pages/NameInput/NameInput.jsx:
+  6  import React from "react";
+  7: export default function NameInput() {
+  8    const [name, setName] = useState("");
+
+frontend/src/pages/PasswordInput/PasswordInput.jsx:
+  6  import React from "react";
+  7: export default function PasswordInput() {
+  8    const [password, setPassword] = useState("");
+
+frontend/src/pages/Test/TestRoutes.jsx:
+  15  import React from "react";
+  16: export default function TestRoutes() {
+  17    return (
+
+frontend/src/pages/Test/House/HouseCanvas.jsx:
+  3  import React from "react";
+  4: export default function HouseCanvas() {
+  5    const canvasRef = useRef(null);
+
+frontend/src/pages/Test/House/HouseIntro.jsx:
+  3  import React from "react";
+  4: export default function HouseIntro() {
+  5    const navigate = useNavigate();

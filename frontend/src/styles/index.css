@@ -1,0 +1,40 @@
+/* ---------- 기본 Reset 및 전역 스타일 ---------- */
+:root {
+  font-family: "Pretendard";
+  color: #42413f;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: inherit;
+  background-color: #edf4ff;
+  overflow: hidden;
+}
+
+.question {
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 700;
+  margin-bottom: 39px;
+  text-align: center;
+}
+
+.page-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100dvh;
+}
+
+.highlight {
+  color: #3e70c7;
+}

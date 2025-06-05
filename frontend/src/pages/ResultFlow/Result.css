@@ -1,0 +1,24 @@
+.rotate-animation-to-l {
+  animation: swingRotate-to-l 3s ease-in-out infinite;
+  transform-origin: center center; /* 회전 중심 */
+  padding: 30px;
+}
+
+@keyframes swingRotate-to-l {
+  0% {
+    transform: rotate(-90deg);
+  }
+  30% {
+    transform: rotate(0deg);
+  }
+  80% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-90deg);
+  }
+}
+
+.voice-bar {
+  padding: 30px;
+}

@@ -1,0 +1,10 @@
+.gender-options {
+  display: flex;
+  gap: 16px;
+}
+
+.gender-button.selected {
+  background-color: #3e70c7;
+  color: #ffffff;
+  border-color: #3e70c7;
+}

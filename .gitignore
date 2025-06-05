@@ -1,0 +1,23 @@
+# Node.js
+node_modules/
+uploads/
+models/db.json
+
+# React
+frontend/node_modules/
+frontend/build/
+
+# 기타
+.env
+
+# 환경 변수 파일
+.env
+
+# Node.js 관련 무시
+node_modules/
+dist/
+*.log
+
+# 시스템 파일
+.DS_Store
+Thumbs.db*.pt

@@ -1,0 +1,24 @@
+.message {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.description {
+  font-size: 20px;
+  color: #555;
+  margin-bottom: 24px;
+}
+
+.button-finish {
+  display: flex;
+  width: 271px;
+  height: 64px;
+  padding: 12px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  background-color: #3e70c7;
+  font-size: 32px;
+}

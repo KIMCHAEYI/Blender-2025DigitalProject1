@@ -1,0 +1,23 @@
+.character-list {
+  display: flex;
+  flex-direction: row; /* 기본값이긴 하지만 명시해주는 게 좋아요 */
+  justify-content: center; /* 가운데 정렬 (또는 space-between 등도 가능) */
+  gap: 100px; /* 아이템 사이 여백 */
+  flex-wrap: wrap; /* 줄바꿈 허용 (선택 사항) */
+  align-items: center;
+}
+
+.character-item {
+  display: flex;
+  flex-direction: column; /* 이미지 + 텍스트 세로로 배치 */
+  align-items: center;
+  cursor: pointer;
+  padding: 12px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  transition: 0.2s;
+}
+
+.character-item.selected {
+  border-color: #3b82f6;
+}

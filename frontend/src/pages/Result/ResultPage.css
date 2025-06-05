@@ -1,0 +1,58 @@
+.result-page {
+  padding: 40px;
+  font-family: "Pretendard", sans-serif;
+}
+
+.page-scroll {
+  max-height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.result-page h1 {
+  color: var(--, #1c1c1e);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  margin-bottom: 49px;
+}
+.short-result {
+  text-align: center;
+}
+
+.result-page section {
+  margin-top: 60px;
+  margin-bottom: 20px;
+}
+
+.result-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.result-buttons button {
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 25.2px;
+  min-width: 130px;
+  height: 52px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 82px;
+}
+.btn-black {
+  background: #1c1c1e;
+  color: white;
+}
+.btn-white {
+  border: 2px solid var(--, #42413f);
+  background: none;
+  color: #1c1c1e;
+}

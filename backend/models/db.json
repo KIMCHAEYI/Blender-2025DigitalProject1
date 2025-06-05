@@ -1,0 +1,50 @@
+[
+  {
+    "id": "1747049435725",
+    "name": "김채이",
+    "gender": "여자",
+    "birth": 12,
+    "password": "1234",
+    "createdAt": "2025-05-12T11:30:35.725Z"
+  },
+  {
+    "id": "1747049999779",
+    "name": "김민주",
+    "gender": "여자",
+    "birth": 9,
+    "password": "$2b$10$U9lZ.NTSNqkBsjzz92T39OWpDs.xzyCMDaobtBDv9xhmlriQ7C/mm",
+    "createdAt": "2025-05-12T11:39:59.779Z"
+  },
+  {
+    "id": "1748507990800",
+    "name": "김민주",
+    "gender": "여자",
+    "birth": "2022-03-03",
+    "password": "$2b$10$w8Agmz55f6fgTBJMYyK6FOK23GACPxa3zV72PGMR9ddg1X1Yy51yq",
+    "createdAt": "2025-05-29T08:39:50.801Z"
+  },
+  {
+    "id": "1748508032229",
+    "name": "김민주",
+    "gender": "여자",
+    "birth": "2022-03-03",
+    "password": "$2b$10$HPKu4X0O2OWMDu85NTKo8OlhgSyusAoHu1NrVn8NqqFETgWUI.jJm",
+    "createdAt": "2025-05-29T08:40:32.229Z"
+  },
+  {
+    "id": "1748509587101",
+    "name": "유우시",
+    "gender": "남자",
+    "birth": "2003-04-04",
+    "password": "$2b$10$y/n3uQ83dBfJ5doi3ch28.Y2r36XEyCW150Vna3GsMp.hDnqPgHRe",
+    "createdAt": "2025-05-29T09:06:27.101Z"
+  },
+  {
+    "id": "1749123361242",
+    "name": "홍길동",
+    "gender": "male",
+    "birth": "1995-03-01",
+    "password": "$2b$10$1QgV1zVvu1JWzfbAjZV35.Oa9.WTaIBLcAHfVBtMwU6pb/qS8z8v6",
+    "createdAt": "2025-06-05T11:36:01.242Z"
+  }
+]

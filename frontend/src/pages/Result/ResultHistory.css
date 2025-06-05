@@ -1,0 +1,62 @@
+/* src/pages/Result/ResultHistory.css */
+.result-history {
+  padding: 40px;
+  text-align: center;
+  background-color: #edf4ff;
+  min-height: 100dvh;
+}
+
+.card-slider {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  margin-top: 32px;
+  padding-bottom: 20px;
+}
+
+.result-card {
+  background: #eaf1fb;
+  padding: 20px;
+  min-width: 180px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  text-align: left;
+}
+
+.result-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.result-card p {
+  font-size: 14px;
+  margin-top: 8px;
+  color: #555;
+}
+
+.result-card.highlighted {
+  background-color: #3e70c7;
+  color: white;
+}
+
+.button-wrap {
+  margin-top: 32px;
+}
+
+.btn-gohome {
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 25.2px;
+  min-width: 130px;
+  height: 52px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 82px;
+
+  border: 2px solid var(--, #42413f);
+  background: none;
+  color: #1c1c1e;
+}
