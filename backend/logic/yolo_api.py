@@ -1,54 +1,59 @@
-# backend/logic/yolo_api.py
-
-from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import JSONResponse
-from PIL import Image
+# yolo_api.py
+from fastapi import FastAPI, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from ultralytics import YOLO
+import cv2
+import numpy as np
+from io import BytesIO
+import os
 import torch
-import io
+
 
 app = FastAPI()
 
-# 모델 로딩 (YOLOv5)
+# CORS 설정 (필요 시)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# 모델 로드
+base_dir = os.path.dirname(__file__)  # backend/logic/
+model_path = os.path.join(os.path.dirname(__file__), "house_model.pt")
 model = torch.hub.load(
-    'ultralytics/yolov5', 
-    'custom', 
-    path='E:/Blender-2025DigitalProject1/backend/logic/house_model.pt',
+    'ultralytics/yolov5',
+    'custom',
+    path=model_path,
     force_reload=True
 )
 
-@app.post("/analyze/house")
-async def analyze_house_image(file: UploadFile = File(...)):
-    try:
-        image_bytes = await file.read()
-        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+@app.post("/detect")
+async def detect_objects(image: UploadFile = File(...)):
+    contents = await image.read()
+    nparr = np.frombuffer(contents, np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-        # 추론 실행
-        results = model(image)
+    results = model(img)[0]  # ✅ 수정된 코드
+    response = []
 
-        detections = []
-        for det in results.xyxy[0]:
-            x1, y1, x2, y2, conf, cls = det.tolist()
-            label = model.names[int(cls)]
-            w, h = x2 - x1, y2 - y1
-            cx, cy = x1 + w / 2, y1 + h / 2
-            area = w * h
-            image_area = image.width * image.height
-            area_ratio = area / image_area
+    for box in results.boxes:
+        label = model.names[int(box.cls[0])]
+        x1, y1, x2, y2 = map(int, box.xyxy[0])
+        w = x2 - x1
+        h = y2 - y1
+        response.append({
+            "label": label,
+            "x": x1,
+            "y": y1,
+            "w": w,
+            "h": h
+        })
 
-            # 위치 영역 분류
-            x_zone = "left" if cx < image.width / 3 else "right" if cx > image.width * 2 / 3 else "center"
-            y_zone = "top" if cy < image.height / 3 else "bottom" if cy > image.height * 2 / 3 else "middle"
-            position = f"{x_zone}-{y_zone}"
+    return response 
 
-            detections.append({
-                "label": label,
-                "bbox": [x1, y1, x2, y2],
-                "confidence": round(conf, 3),
-                "area_ratio": round(area_ratio, 4),
-                "position": position
-            })
-
-        return JSONResponse(content=detections)
-
-    except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("logic.yolo_api:app", host="127.0.0.1", port=8000, reload=True)
