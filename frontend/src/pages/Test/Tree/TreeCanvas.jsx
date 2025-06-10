@@ -123,81 +123,11 @@ export default function TreeCanvas() {
   const scale = canvasWidth / BASE_WIDTH;
 
   return (
-    <div className="page-center tree-page">
-      {/* 헤더 */}
-      <div className="canvas-header-row">
-        <div className="rectangle-header">
-          <h2 className="rectangle-title">나무</h2>
-        </div>
-      </div>
-
-      <div className="canvas-body">
-        <div className="toolbar">
-          <button className="btn-toolbar" onClick={() => setPenSize(2)}>
-            <img src="/assets/pen-mid.svg" alt="얇게" className="icon" />
-            얇게
-          </button>
-          <button className="btn-toolbar" onClick={() => setPenSize(4)}>
-            <img src="/assets/pen-mid.svg" alt="중간" className="icon" />
-            중간
-          </button>
-          <button className="btn-toolbar" onClick={() => setPenSize(8)}>
-            <img src="/assets/pen-mid.svg" alt="굵게" className="icon" />
-            굵게
-          </button>
-          <button className="btn-toolbar" onClick={handleUndo}>
-            <img src="/assets/eraser.svg" alt="지우개" className="icon" />
-            지우개
-          </button>
-          <button className="btn-toolbar" onClick={handleClear}>
-            <img src="/assets/re-draw.svg" alt="새로 그리기" className="icon" />
-            새로 <br /> 그리기
-          </button>
-        </div>
-
-        <div className="canvas-wrapper">
-          <div className="progress-indicator static-overlay">
-            {[...Array(totalSteps)].map((_, i) => (
-              <span
-                key={i}
-                className={`dot ${i < currentStep ? "active" : ""}`}
-              />
-            ))}
-          </div>
-
-          <Stage
-            width={canvasWidth}
-            height={(canvasWidth * BASE_HEIGHT) / BASE_WIDTH}
-            scale={{ x: scale, y: scale }}
-            className="drawing-canvas"
-            onMouseDown={handleMouseDown}
-            onMousemove={handleMouseMove}
-            onMouseup={handleMouseUp}
-            ref={stageRef}
-          >
-            <Layer>
-              {lines.map((line, i) => (
-                <Line
-                  key={i}
-                  points={line.points}
-                  stroke={line.stroke}
-                  strokeWidth={line.strokeWidth}
-                  tension={0.5}
-                  lineCap="round"
-                  globalCompositeOperation="source-over"
-                />
-              ))}
-            </Layer>
-          </Stage>
-        </div>
-      </div>
-
-      {/* 다음 버튼 */}
-      <div className="canvas-footer">
-        <button className="btn-base btn-nextblue" onClick={handleNext}>
-          다음으로
-        </button>
-      </div>
-    </div>
+    <CanvasTemplate
+      drawingType="tree"
+      title="나무"
+      nextRoute="/test/person/intro"
+      currentStep={2}
+    />
   );
 }
