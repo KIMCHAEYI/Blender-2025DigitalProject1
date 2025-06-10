@@ -1,36 +1,31 @@
-import { useNavigate } from "react-router-dom";
 import React from "react";
-import Button from "../../components/Button";
-import "./Complete.css";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import Button from "../../components/Button";
 import { useUserContext } from "../../contexts/UserContext";
+import "./Complete.css";
 
 export default function Complete() {
   const { userData } = useUserContext();
   const navigate = useNavigate();
 
-  const handleStart = () => {
-    navigate("/test/house/intro");
-  };
-
   const handleSubmit = async () => {
     try {
       console.log("보내는 데이터:", userData);
 
-      // 서버로 정보 전송
-      const res = await axios.post(
-        "http://localhost:5000/sessions/start",
+      // 1. 세션 저장 (Express 서버)
+      const sessionRes = await axios.post(
+        "http://172.20.24.235:5000/api/sessions/start",
         userData
       );
-      console.log("서버 응답:", res.data);
-      alert("정보가 성공적으로 저장되었습니다!");
+      console.log("세션 저장 응답:", sessionRes.data);
 
-      // 다음 페이지로 이동 (예: 집 그리기 시작)
+      // 2. 바로 다음 페이지로 이동
+      alert("정보가 성공적으로 저장되었습니다!");
       navigate("/test/house/intro");
     } catch (err) {
-      console.error("저장 실패:", err);
-      alert("저장에 실패했어요 😢 다시 시도해 주세요.");
+      console.error("요청 실패:", err);
+      alert("처리에 실패했어요 😢 다시 시도해 주세요.");
     }
   };
 
@@ -42,6 +37,7 @@ export default function Complete() {
         <br />
         마음을 편하게 먹고, 차분히 그림을 그려주세요.
       </p>
+
       <Button className="button-finish" onClick={handleSubmit}>
         검사 시작하기
       </Button>
