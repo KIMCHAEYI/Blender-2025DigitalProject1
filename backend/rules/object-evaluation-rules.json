@@ -1,2 +1,80 @@
-cd E:/Blender-2025DigitalProject1/backend
-npm install axios
+{
+  "house": [
+    {
+      "label": "집전체",
+      "position": "any",
+      "area_min": 0.1,
+      "area_max": 1.0,
+      "meaning": "전체적인 구조가 안정적입니다."
+    },
+    {
+      "label": "지붕",
+      "position": "top-middle",
+      "area_min": 0.05,
+      "area_max": 0.4,
+      "meaning": "보호 욕구가 강합니다."
+    },
+    {
+      "label": "문",
+      "position": "bottom-center",
+      "area_min": 0.01,
+      "area_max": 0.2,
+      "meaning": "타인과의 관계에 열려 있습니다."
+    },
+    {
+      "label": "창문",
+      "position": "any",
+      "area_min": 0.005,
+      "area_max": 0.1,
+      "meaning": "외부 세계에 대한 관심이 있습니다."
+    },
+    {
+      "label": "굴뚝",
+      "position": "top-right",
+      "area_min": 0.005,
+      "area_max": 0.2,
+      "meaning": "감정 표현 욕구가 있습니다."
+    },
+    {
+      "label": "연기",
+      "position": "top-right",
+      "area_min": 0.005,
+      "area_max": 0.1,
+      "meaning": "감정이 표출되고 있습니다."
+    },
+    {
+      "label": "태양",
+      "position": "top-right",
+      "area_min": 0.02,
+      "area_max": 0.3,
+      "meaning": "낙관적인 성향이 반영되어 있습니다."
+    }
+  ],
+
+  "tree": [
+    {
+      "label": "나무",
+      "position": "center-middle",
+      "area_min": 0.1,
+      "area_max": 1.0,
+      "meaning": "성장 에너지와 안정감이 표현되어 있습니다."
+    }
+  ],
+
+  "person": [
+    {
+      "label": "길",
+      "position": "bottom-center",
+      "area_min": 0.05,
+      "area_max": 0.5,
+      "meaning": "삶의 방향과 목표가 분명합니다."
+    },
+    {
+      "label": "태양",
+      "position": "top-middle",
+      "area_min": 0.02,
+      "area_max": 0.3,
+      "meaning": "외향적이고 긍정적인 성향이 강합니다."
+    }
+  ]
+}

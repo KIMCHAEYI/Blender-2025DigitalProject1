@@ -37,4 +37,32 @@ router.get("/analyze", async (req, res) => {
   }
 });
 
+router.post("/:type", async (req, res) => {
+  const { type } = req.params;
+  const { image_path } = req.body;
+
+  if (!image_path || !["tree", "house", "personF", "personM"].includes(type)) {
+    return res.status(400).json({ error: "image_path와 type이 필요합니다" });
+  }
+
+  try {
+    const yoloResults = await runYOLOAnalysis(image_path, type);
+    const detectedObjects = yoloResults.map((obj) => obj.label);
+
+    const result = analyzeDrawing({
+      type,
+      checkedItems: [],
+      detectedObjects,
+    });
+
+    res.json({
+      objects: yoloResults,
+      analysis: result,
+    });
+  } catch (err) {
+    console.error("분석 실패:", err);
+    res.status(500).json({ error: "YOLO 분석 실패", detail: err.message });
+  }
+});
+
 module.exports = router;

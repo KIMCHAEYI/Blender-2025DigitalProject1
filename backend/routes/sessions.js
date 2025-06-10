@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 const multer = require("multer");
 const puppeteer = require("puppeteer");
 const axios = require("axios");
+const FormData = require("form-data");
 
 const { interpretMultipleDrawings } = require("../logic/gptPrompt");
 const { interpretYOLOResult } = require("../logic/analyzeResult");
@@ -38,11 +39,16 @@ router.post("/start", async (req, res) => {
       createdAt: new Date().toISOString(),
     };
 
-    const db = fs.existsSync(DB_FILE) ? JSON.parse(fs.readFileSync(DB_FILE)) : [];
+    const db = fs.existsSync(DB_FILE)
+      ? JSON.parse(fs.readFileSync(DB_FILE))
+      : [];
     db.push(newSession);
     fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
 
-    res.status(201).json({ message: "검사 세션이 저장되었습니다.", session_id: newSession.id });
+    res.status(201).json({
+      message: "검사 세션이 저장되었습니다.",
+      session_id: newSession.id,
+    });
   } catch (err) {
     console.error("저장 오류:", err);
     res.status(500).json({ message: "서버 오류로 저장 실패" });
@@ -60,7 +66,9 @@ router.post("/find", async (req, res) => {
   }
 
   try {
-    const db = fs.existsSync(DB_FILE) ? JSON.parse(fs.readFileSync(DB_FILE)) : [];
+    const db = fs.existsSync(DB_FILE)
+      ? JSON.parse(fs.readFileSync(DB_FILE))
+      : [];
     const matchingSessions = [];
 
     for (const session of db) {
@@ -71,10 +79,14 @@ router.post("/find", async (req, res) => {
     }
 
     if (matchingSessions.length === 0) {
-      return res.status(404).json({ message: "일치하는 검사 결과가 없습니다." });
+      return res
+        .status(404)
+        .json({ message: "일치하는 검사 결과가 없습니다." });
     }
 
-    res.status(200).json({ message: "검사 결과 조회 성공", results: matchingSessions });
+    res
+      .status(200)
+      .json({ message: "검사 결과 조회 성공", results: matchingSessions });
   } catch (err) {
     console.error("조회 오류:", err);
     res.status(500).json({ message: "서버 오류로 조회 실패" });
@@ -119,11 +131,30 @@ router.post("/analyze-drawing", upload.single("drawing"), async (req, res) => {
     const drawingType = req.body.type || "house";
     const absPath = path.join(__dirname, "../uploads", req.file.filename);
 
-    const yoloResponse = await axios.post(`http://localhost:8000/analyze/${drawingType}`, {
-      image_path: absPath,
-    });
+    const form = new FormData();
+    form.append("image", fs.createReadStream(absPath));
 
-    const yoloResult = yoloResponse.data;
+    const yoloResponse = await axios.post(
+      `http://localhost:8000/analyze/${drawingType}`,
+      form,
+      { headers: form.getHeaders() }
+    );
+
+    //console.log("📥 YOLO 응답 원본:", yoloResponse);
+    console.log("📦 yoloResponse.data:", yoloResponse?.data);
+
+    const yoloResultRaw = yoloResponse.data;
+
+    // YOLO 응답이 배열이면 objects 필드로 래핑
+    const yoloResult = Array.isArray(yoloResultRaw)
+      ? { type: drawingType, objects: yoloResultRaw }
+      : yoloResultRaw;
+
+    if (!yoloResult || !Array.isArray(yoloResult.objects)) {
+      console.log("🚨 yoloResult.objects 문제 있음:", yoloResult.objects);
+      throw new Error("YOLO 응답 구조가 예상과 다릅니다.");
+    }
+
     const interpreted = interpretYOLOResult(yoloResult, drawingType);
 
     res.status(200).json({
@@ -133,8 +164,14 @@ router.post("/analyze-drawing", upload.single("drawing"), async (req, res) => {
       analysis: interpreted,
     });
   } catch (err) {
-    console.error("YOLO 분석 실패:", err.message);
-    res.status(500).json({ message: "분석 실패", error: err.message });
+    console.error("🚨 YOLO 분석 실패:");
+    console.error("에러 타입:", typeof err);
+    console.error("에러 전체:", err);
+    console.error("스택:", err.stack);
+    res.status(500).json({
+      message: "분석 실패",
+      error: err?.message || "서버 내부 오류",
+    });
   }
 });
 
@@ -162,7 +199,9 @@ router.post("/interpret", async (req, res) => {
 router.post("/generate-pdf", async (req, res) => {
   const { html, filename } = req.body;
   if (!html || !filename) {
-    return res.status(400).json({ message: "html과 filename을 모두 보내주세요." });
+    return res
+      .status(400)
+      .json({ message: "html과 filename을 모두 보내주세요." });
   }
 
   const pdfPath = path.join(__dirname, "../uploads", `${filename}.pdf`);
@@ -176,7 +215,9 @@ router.post("/generate-pdf", async (req, res) => {
 
     await browser.close();
 
-    res.status(200).json({ message: "PDF 생성 완료", path: `/uploads/${filename}.pdf` });
+    res
+      .status(200)
+      .json({ message: "PDF 생성 완료", path: `/uploads/${filename}.pdf` });
   } catch (err) {
     console.error("PDF 생성 오류:", err);
     res.status(500).json({ message: "PDF 생성 실패" });
