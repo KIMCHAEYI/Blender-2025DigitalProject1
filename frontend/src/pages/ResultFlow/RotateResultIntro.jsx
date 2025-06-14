@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import rotateImg from "/Users/minju/Blender-2025DigitalProject1/frontend/public/assets/tablet_rotate.png";
+import rotateImg from "/assets/tablet_rotate.png";
 import "./Result.css";
 
 export default function RotateResultIntro() {

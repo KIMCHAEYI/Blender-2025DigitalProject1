@@ -1,3 +1,12 @@
+// 해석 방법
+// {
+//   "label": "객체 이름",
+//   "position": "위치 조건(top-left, center, bottom-right 등 or "any"로 무시)",
+//   "area_min": 최소 면적 비율(0.0~1.0),
+//   "area_max": 최대 면적 비율(0.0~1.0),
+//   "meaning": "해석 문장"
+// }
+
 {
   "house": [
     {
@@ -9,10 +18,31 @@
     },
     {
       "label": "지붕",
+      "position": "any",
+      "area_min": 0.0,
+      "area_max": 0.0,
+      "meaning": "지붕이 없습니다. 이는 공상력이 없는 사람에게서 흔히 보여지며, 위축된 성격을 갖고 있으며 구체적인 것만을 추구하는 경향이 있습니다."
+    },
+    {
+      "label": "지붕",
+      // "position": "top-middle",
+      "area_min": 0.4,
+      "area_max": 1.0,
+      "meaning": "공상에 열중하며 외면적인 대인관계로부터 도피하려는 경향"
+    },
+    {
+      "label": "지붕",
       "position": "top-middle",
+      "area_min": 0.0,
+      "area_max": 0.02,
+      "meaning": "보호에 대한 개념이 약하거나 결여되어 있습니다."
+    },
+    {
+      "label": "집벽",
+      "position": "middle",
       "area_min": 0.05,
       "area_max": 0.4,
-      "meaning": "보호 욕구가 강합니다."
+      "meaning": "기본적인 자아 구조가 견고합니다."
     },
     {
       "label": "문",
@@ -22,11 +52,46 @@
       "meaning": "타인과의 관계에 열려 있습니다."
     },
     {
+      "label": "문",
+      "position": "bottom-center",
+      "area_min": 0.0,
+      "area_max": 0.005,
+      "meaning": "사회적 접촉에 대해 닫혀 있거나 두려움이 있습니다."
+    },
+    {
       "label": "창문",
       "position": "any",
       "area_min": 0.005,
       "area_max": 0.1,
       "meaning": "외부 세계에 대한 관심이 있습니다."
+    },
+    {
+      "label": "창문",
+      "position": "any",
+      "area_min": 0.0,
+      "area_max": 0.004,
+      "meaning": "외부와의 단절 경향이 있습니다."
+    },
+    {
+      "label": "창문",
+      "position": "right",
+      "area_min": 0.005,
+      "area_max": 0.2,
+      "meaning": "미래나 타인에 대한 의식이 강합니다."
+    },
+    {
+      "label": "창문",
+      "position": "left",
+      "area_min": 0.005,
+      "area_max": 0.2,
+      "meaning": "과거 또는 내면에 대한 관심이 많습니다."
+    },
+    {
+      "label": "창문",
+      "position": "any",
+      "area_min": 0.005,
+      "area_max": 0.2,
+      "meaning": "창문이 3개 이상일 경우, 외부와의 활발한 소통 욕구가 있습니다."
     },
     {
       "label": "굴뚝",
@@ -36,11 +101,67 @@
       "meaning": "감정 표현 욕구가 있습니다."
     },
     {
+      "label": "굴뚝",
+      "position": "top-right",
+      "area_min": 0.0,
+      "area_max": 0.004,
+      "meaning": "감정 표현이 억제되어 있을 수 있습니다."
+    },
+    {
       "label": "연기",
       "position": "top-right",
       "area_min": 0.005,
       "area_max": 0.1,
       "meaning": "감정이 표출되고 있습니다."
+    },
+    {
+      "label": "울타리",
+      "position": "bottom",
+      "area_min": 0.005,
+      "area_max": 0.1,
+      "meaning": "경계 설정이 분명하며 자기 보호 욕구가 존재합니다."
+    },
+    {
+      "label": "길",
+      "position": "bottom-center",
+      "area_min": 0.005,
+      "area_max": 0.1,
+      "meaning": "타인과 연결되려는 심리가 반영되어 있습니다."
+    },
+    {
+      "label": "연못",
+      "position": "bottom-right",
+      "area_min": 0.005,
+      "area_max": 0.1,
+      "meaning": "감성적 측면이 풍부하며 감정이 정체되어 있을 수 있습니다."
+    },
+    {
+      "label": "산",
+      "position": "background",
+      "area_min": 0.01,
+      "area_max": 0.3,
+      "meaning": "장기적인 목표나 이상이 존재합니다."
+    },
+    {
+      "label": "나무",
+      "position": "side",
+      "area_min": 0.005,
+      "area_max": 0.1,
+      "meaning": "생명력과 성장 욕구가 함께 표현되었습니다."
+    },
+    {
+      "label": "꽃",
+      "position": "front",
+      "area_min": 0.005,
+      "area_max": 0.1,
+      "meaning": "감정 표현이 섬세하고 섬세한 감성이 드러납니다."
+    },
+    {
+      "label": "잔디",
+      "position": "bottom",
+      "area_min": 0.005,
+      "area_max": 0.1,
+      "meaning": "현실적 안정감과 삶의 기반에 대한 표현입니다."
     },
     {
       "label": "태양",
