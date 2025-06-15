@@ -302,5 +302,69 @@
     "birth": "2008-02-19",
     "password": "$2b$10$T4lhjcA50Y9ZbWYzsJnp0erzwHxRTShzjlt.jaA3xN4fKFvM9/8V.",
     "createdAt": "2025-06-10T16:41:59.993Z"
+  },
+  {
+    "id": "1749977698499",
+    "name": "김민주",
+    "gender": "남자",
+    "birth": "2023-02-02",
+    "password": "$2b$10$64JmQE0fSNVjHMqrnENdEukueSe4Wgtnf6V7rPDH7BNf8inKLrRZW",
+    "createdAt": "2025-06-15T08:54:58.500Z"
+  },
+  {
+    "id": "1749977972164",
+    "name": "0615 김채이",
+    "gender": "남자",
+    "birth": "2007-04-19",
+    "password": "$2b$10$BcGpsoUvxpvAg.CuF8L0R.l/z0UsJeg8bm0tul.1U7IJwv.yMTZhy",
+    "createdAt": "2025-06-15T08:59:32.164Z"
+  },
+  {
+    "id": "1749978561707",
+    "name": "ㅇ",
+    "gender": "남자",
+    "birth": "1959-01-17",
+    "password": "$2b$10$IcoG5eXE1mo2C1e9veHH3uup9fItLyWEBOEaZnx0LJoctRtUJkdJW",
+    "createdAt": "2025-06-15T09:09:21.707Z"
+  },
+  {
+    "id": "1749978727395",
+    "name": "dsa",
+    "gender": "남자",
+    "birth": "2010-05-19",
+    "password": "$2b$10$JCUzGMdzxs/4Hg.ZLH0QYuv8N7cWmU5ePwfMTMNhhTX/qPCWwpL6m",
+    "createdAt": "2025-06-15T09:12:07.395Z"
+  },
+  {
+    "id": "1749979510697",
+    "name": "아",
+    "gender": "여자",
+    "birth": "2014-12-10",
+    "password": "$2b$10$KBCbJHabaZq9osPASB/Fne8V8yodsvtzBlo6Nj0q4pOBxNJ1qoihy",
+    "createdAt": "2025-06-15T09:25:10.697Z"
+  },
+  {
+    "id": "1749979588699",
+    "name": "dsa",
+    "gender": "남자",
+    "birth": "2007-01-11",
+    "password": "$2b$10$vb3tTsiOi6VmIPtZskZb/eOoUd75ogH5lunWVL2sGnIChyUbRdpUK",
+    "createdAt": "2025-06-15T09:26:28.699Z"
+  },
+  {
+    "id": "1749979812930",
+    "name": "ㄹ",
+    "gender": "남자",
+    "birth": "2008-03-19",
+    "password": "$2b$10$v4tKKPDF9qu0.akzDMV8NeTHAePtr9goPhU5cmxrABaTFn3Q4ZmRq",
+    "createdAt": "2025-06-15T09:30:12.930Z"
+  },
+  {
+    "id": "1749979832503",
+    "name": "이.",
+    "gender": "여자",
+    "birth": "2019-07-13",
+    "password": "$2b$10$9VFqKlE./excw4atKRRpi.Y9AZEFq9/t4c4wcEF7SuwK7zghyI54a",
+    "createdAt": "2025-06-15T09:30:32.503Z"
   }
 ]

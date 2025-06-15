@@ -31,7 +31,6 @@ function interpretYOLOResult(yoloResult, drawingType) {
   const ruleData = JSON.parse(fs.readFileSync(rulePath, "utf-8"));
   const rules = ruleData[drawingType] || [];
 
-  // 👇 YOLO bounding box 원시 데이터 → 분석된 객체 데이터로 변환
   const detectedObjects = analyzeYOLOResult(yoloResult.objects);
 
   return detectedObjects.map((obj) => {
@@ -44,6 +43,18 @@ function interpretYOLOResult(yoloResult, drawingType) {
         areaRatio >= r.area_min &&
         areaRatio <= r.area_max
     );
+
+    // ✅ 콘솔에 position, areaRatio, area_min, area_max 출력
+    console.log(`\n🧩 [${label}] 감지됨`);
+    console.log(`  - 위치(position): ${position}`);
+    console.log(`  - 면적 비율(areaRatio): ${areaRatio}`);
+    if (match) {
+      console.log(
+        `  - 매칭된 룰: area_min=${match.area_min}, area_max=${match.area_max}`
+      );
+    } else {
+      console.log(`  - 매칭되는 해석 룰 없음`);
+    }
 
     return {
       ...obj,

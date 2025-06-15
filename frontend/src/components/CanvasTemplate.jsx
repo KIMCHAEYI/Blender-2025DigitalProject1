@@ -75,7 +75,7 @@ export default function CanvasTemplate({
 
       axios
         .post(
-          "http://172.20.24.235:5000/api/sessions/analyze-drawing",
+          "http://172.16.100.250:5000/api/sessions/analyze-drawing",
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },

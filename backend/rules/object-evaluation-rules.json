@@ -1,12 +1,3 @@
-// 해석 방법
-// {
-//   "label": "객체 이름",
-//   "position": "위치 조건(top-left, center, bottom-right 등 or "any"로 무시)",
-//   "area_min": 최소 면적 비율(0.0~1.0),
-//   "area_max": 최대 면적 비율(0.0~1.0),
-//   "meaning": "해석 문장"
-// }
-
 {
   "house": [
     {
@@ -25,7 +16,6 @@
     },
     {
       "label": "지붕",
-      // "position": "top-middle",
       "area_min": 0.4,
       "area_max": 1.0,
       "meaning": "공상에 열중하며 외면적인 대인관계로부터 도피하려는 경향"
