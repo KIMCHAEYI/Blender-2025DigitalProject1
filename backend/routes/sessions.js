@@ -101,10 +101,10 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, "../uploads"));
   },
   filename: (req, file, cb) => {
-    const uniqueName = Date.now() + "-" + file.originalname;
-    cb(null, uniqueName);
+    cb(null, file.originalname);
   },
 });
+
 const upload = multer({ storage });
 
 router.post("/upload-drawing", upload.single("drawing"), (req, res) => {
