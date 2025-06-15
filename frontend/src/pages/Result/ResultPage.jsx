@@ -55,15 +55,13 @@ export default function ResultPage() {
                         ${analysis
                           .map(
                             (obj) => `
-                            <li>
-                              ✅ <b>${obj.label}</b> - x: ${obj.x}, y: ${
-                              obj.y
-                            }, w: ${obj.w}, h: ${obj.h}
-                              ${
-                                obj.meaning
-                                  ? `<div class="meaning-line">🧠 <b>의미:</b> ${obj.meaning}</div>`
-                                  : ""
-                              }
+                            <li key={idx}>
+                            ✅ <b>{obj.label}</b>
+                            {obj.meaning && (
+                            <div className="meaning-line"> 
+                            🧠 <b>의미:</b> {obj.meaning}
+                            </div>
+                            )}
                             </li>
                           `
                           )
@@ -126,14 +124,11 @@ export default function ResultPage() {
                 <h4>객체 인식 결과</h4>
                 <ul>
                   {analysis.map((obj, idx) => (
-                    <li key={idx}>
-                      ✅ <b>{obj.label}</b> - x: {obj.x}, y: {obj.y}, w: {obj.w}
-                      , h: {obj.h}
-                      {obj.meaning && (
-                        <div className="meaning-line">
-                          🧠 <b>의미:</b> {obj.meaning}
-                        </div>
-                      )}
+                    <li>
+                      ✅ <b>${obj.label}</b>$
+                      {obj.meaning
+                        ? `<div class="meaning-line">🧠 <b>의미:</b> ${obj.meaning}</div>`
+                        : ""}
                     </li>
                   ))}
                 </ul>
