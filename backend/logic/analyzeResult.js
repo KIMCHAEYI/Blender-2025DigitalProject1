@@ -1,7 +1,45 @@
 const fs = require("fs");
 const path = require("path");
+// 상대 위치 해석 함수
+function getReferenceLabelByType(type) {
+  if (type === "house") return "집벽";
+  if (type === "tree") return "나무";
+  if (type === "personF" || type === "personM") return "사람";
+  return null;
+}
 
-// YOLO bounding box 결과 해석 (위치 + 면적 기준)
+function getRelativeMeanings(objects, type) {
+  const referenceLabel = getReferenceLabelByType(type);
+  const reference = objects.find((o) => o.label === referenceLabel);
+  if (!reference) return []; // 기준이 없으면 생략
+
+  const refArea = reference.w * reference.h;
+  const results = [];
+
+  objects.forEach((obj) => {
+    if (obj.label === referenceLabel) return;
+
+    const objArea = obj.w * obj.h;
+    const ratio = objArea / refArea;
+
+    if (ratio < 0.3) {
+      results.push({
+        label: obj.label,
+        meaning: `${obj.label}이 기준 객체(${referenceLabel})보다 작습니다. 위축되거나 보조적 요소일 수 있습니다.`
+      });
+    } else if (ratio > 0.7) {
+      results.push({
+        label: obj.label,
+        meaning: `${obj.label}이 기준 객체(${referenceLabel})보다 큽니다. 강조되었거나 심리적으로 중요한 요소일 수 있습니다.`
+      });
+    }
+  });
+
+  return results;
+}
+
+
+// YOLO bounding box 결과 절대 해석 (위치 + 면적 기준)
 function analyzeYOLOResult(bboxes) {
   const imageWidth = 1280;
   const imageHeight = 1280;
@@ -46,7 +84,7 @@ function interpretYOLOResult(yoloResult, drawingType) {
 
   const detectedObjects = analyzeYOLOResult(yoloResult.objects);
 
-  return detectedObjects.map((obj) => {
+  const absoluteMeanings = detectedObjects.map((obj) => {
     const { label, areaRatio, position } = obj;
 
     const match = rules.find(
@@ -74,6 +112,19 @@ function interpretYOLOResult(yoloResult, drawingType) {
       meaning: match ? match.meaning : "해석 기준 없음",
     };
   });
+
+  const relativeMeanings = getRelativeMeanings(detectedObjects, drawingType);
+
+  if (relativeMeanings.length > 0) {
+    console.log(`\n📏 상대 크기 해석 (${drawingType}) 기준:`);
+    relativeMeanings.forEach((m) => {
+      console.log(`  [${m.label}] → ${m.meaning}`);
+    });
+  } else {
+    console.log(`\n📏 상대 크기 해석 없음 (기준 객체가 없거나 비교 불가)`);
+  }
+
+  return [...absoluteMeanings, ...relativeMeanings];
 }
 
 module.exports = {
