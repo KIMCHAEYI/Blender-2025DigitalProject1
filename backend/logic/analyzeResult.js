@@ -45,7 +45,7 @@ function interpretYOLOResult(yoloResult, drawingType) {
     );
 
     // ✅ 콘솔에 position, areaRatio, area_min, area_max 출력
-    console.log(`\n🧩 [${label}] 감지됨`);
+    console.log(`\n[${label}] 감지됨`);
     console.log(`  - 위치(position): ${position}`);
     console.log(`  - 면적 비율(areaRatio): ${areaRatio}`);
     if (match) {
@@ -58,7 +58,7 @@ function interpretYOLOResult(yoloResult, drawingType) {
 
     return {
       ...obj,
-      meaning: match ? match.meaning : "해석 기준 없음",
+      meaning: match ? match.meaning : "해석 기준이 없습니다.",
     };
   });
 }
