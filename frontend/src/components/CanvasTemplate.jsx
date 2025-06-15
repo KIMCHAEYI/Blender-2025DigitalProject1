@@ -3,9 +3,9 @@ import React, { useRef, useState, useEffect } from "react";
 import { Stage, Layer, Line, Rect } from "react-konva";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useUserContext } from "/Users/minju/Blender-2025DigitalProject1/frontend/src/contexts/UserContext.jsx";
-import { generateDrawingFileName } from "/Users/minju/Blender-2025DigitalProject1/frontend/src/utils/generateFileName.js";
-import { dataURLtoFile } from "/Users/minju/Blender-2025DigitalProject1/frontend/src/utils/dataURLtoFile";
+import { useUserContext } from "../contexts/UserContext.jsx";
+import { generateDrawingFileName } from "../utils/generateFileName.js";
+import { dataURLtoFile } from "../utils/dataURLtoFile";
 
 export default function CanvasTemplate({
   drawingType,
@@ -75,7 +75,7 @@ export default function CanvasTemplate({
 
       axios
         .post(
-          "http://172.16.100.250:5000/api/sessions/analyze-drawing",
+          "http://192.168.0.250:5000/api/sessions/analyze-drawing",
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
