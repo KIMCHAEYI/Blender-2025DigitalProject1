@@ -1,12 +1,11 @@
 .result-page {
-  padding: 40px;
-  font-family: "Pretendard", sans-serif;
+  min-height: 100vh;
+  padding: 40px 40px 120px;
 }
 
 .page-scroll {
-  max-height: 100dvh;
+  min-height: 100vh;
   overflow-y: auto;
-  overscroll-behavior: contain;
 }
 
 .result-page h1 {
@@ -55,4 +54,5 @@
   border: 2px solid var(--, #42413f);
   background: none;
   color: #1c1c1e;
+  background-color: white;
 }
