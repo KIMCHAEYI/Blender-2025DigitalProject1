@@ -224,4 +224,49 @@ router.post("/generate-pdf", async (req, res) => {
   }
 });
 
+// -----------------------
+// ✅ 새로 저장된 그림 분석 API
+// -----------------------
+router.post("/analyze-saved-drawing", async (req, res) => {
+  try {
+    const { imagePath, type } = req.body;
+
+    if (!imagePath) {
+      return res.status(400).json({ message: "imagePath가 필요합니다." });
+    }
+
+    const drawingType = type || "house";
+    const absPath = path.join(__dirname, "..", imagePath); // 이미지 경로
+
+    const form = new FormData();
+    form.append("image", fs.createReadStream(absPath));
+
+    const yoloResponse = await axios.post(
+      `http://localhost:8000/analyze/${drawingType}`,
+      form,
+      { headers: form.getHeaders() }
+    );
+
+    const yoloResultRaw = yoloResponse.data;
+    const yoloResult = Array.isArray(yoloResultRaw)
+      ? { type: drawingType, objects: yoloResultRaw }
+      : yoloResultRaw;
+
+    if (!yoloResult || !Array.isArray(yoloResult.objects)) {
+      console.log("🚨 yoloResult.objects 문제 있음:", yoloResult.objects);
+      throw new Error("YOLO 응답 구조가 예상과 다릅니다.");
+    }
+
+    const interpreted = interpretYOLOResult(yoloResult, drawingType);
+
+    res.status(200).json({
+      message: "기존 이미지 분석 완료",
+      analysis: interpreted,
+    });
+  } catch (err) {
+    console.error("🚨 저장된 그림 분석 실패:", err);
+    res.status(500).json({ message: "분석 실패", error: err.message });
+  }
+});
+
 module.exports = router;

@@ -3,165 +3,154 @@
     {
       "label": "집전체",
       "position": "any",
+      "area_min": 0.0,
+      "area_max": 0.05,
+      "meaning": "그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+    },
+    {
+      "label": "집전체",
+      "position": "any",
       "area_min": 0.1,
+      "area_max": 0.3,
+      "meaning": "보통 크기의 그림은 평균적이고 안정된 자아 구조를 반영할 수 있습니다."
+    },
+    {
+      "label": "집전체",
+      "position": "any",
+      "area_min": 0.35,
       "area_max": 1.0,
-      "meaning": "전체적인 구조가 안정적입니다."
+      "meaning": "그림이 지나치게 큰 경우, 과장된 자기 표현, 과잉행동, 통제력 부족, 공격성 또는 조증적 특성을 시사할 수 있습니다."
     },
     {
       "label": "지붕",
       "position": "any",
       "area_min": 0.0,
-      "area_max": 0.0,
-      "meaning": "지붕이 없습니다. 이는 공상력이 없는 사람에게서 흔히 보여지며, 위축된 성격을 갖고 있으며 구체적인 것만을 추구하는 경향이 있습니다."
-    },
-    {
-      "label": "지붕",
-      "area_min": 0.4,
       "area_max": 1.0,
-      "meaning": "공상에 열중하며 외면적인 대인관계로부터 도피하려는 경향"
-    },
-    {
-      "label": "지붕",
-      "position": "top-middle",
-      "area_min": 0.0,
-      "area_max": 0.02,
-      "meaning": "보호에 대한 개념이 약하거나 결여되어 있습니다."
+      "meaning": "지붕의 형태가 비정상적인 경우 자기통제력이 약할 수 있습니다."
     },
     {
       "label": "집벽",
-      "position": "middle",
-      "area_min": 0.05,
-      "area_max": 0.4,
-      "meaning": "기본적인 자아 구조가 견고합니다."
+      "position": "any",
+      "area_min": 0.0,
+      "area_max": 1.0,
+      "meaning": "만족을 공상에서 구하며 현실과의 접촉이 적습니다."
     },
     {
       "label": "문",
-      "position": "bottom-center",
-      "area_min": 0.01,
-      "area_max": 0.2,
-      "meaning": "타인과의 관계에 열려 있습니다."
+      "position": "any",
+      "area_min": 0.0,
+      "area_max": 0.5,
+      "meaning": "환경과의 접촉을 꺼리고 우유부단함에 비대되고 있습니다. 현실도피, 사회성의 결핍과 무력감을 뜻합니다."
     },
     {
       "label": "문",
-      "position": "bottom-center",
+      "position": "any",
+      "area_min": 0.5,
+      "area_max": 0.8,
+      "meaning": "문은 대인관계에 대한 태도를 나타냅니다."
+    },
+    {
+      "label": "문",
+      "position": "any",
+      "area_min": 0.8,
+      "area_max": 1.0,
+      "meaning": "지나치게 큰 문은 아주 의존적인 사람에게서 보이며 적극적인 사회접촉을 통해 타인에게 인상적인 존재가 되고 싶은 욕구를 나타냅니다."
+    },
+    {
+      "label": "창문",
+      "position": "any",
       "area_min": 0.0,
-      "area_max": 0.005,
-      "meaning": "사회적 접촉에 대해 닫혀 있거나 두려움이 있습니다."
-    },
-    {
-      "label": "창문",
-      "position": "any",
-      "area_min": 0.005,
-      "area_max": 0.1,
-      "meaning": "외부 세계에 대한 관심이 있습니다."
+      "area_max": 1.0,
+      "meaning": "일반적으로 많은 사람에게서 나타나는 크기와 개수입니다. "
     },
     {
       "label": "창문",
       "position": "any",
       "area_min": 0.0,
-      "area_max": 0.004,
-      "meaning": "외부와의 단절 경향이 있습니다."
-    },
-    {
-      "label": "창문",
-      "position": "right",
-      "area_min": 0.005,
-      "area_max": 0.2,
-      "meaning": "미래나 타인에 대한 의식이 강합니다."
-    },
-    {
-      "label": "창문",
-      "position": "left",
-      "area_min": 0.005,
-      "area_max": 0.2,
-      "meaning": "과거 또는 내면에 대한 관심이 많습니다."
-    },
-    {
-      "label": "창문",
-      "position": "any",
-      "area_min": 0.005,
-      "area_max": 0.2,
-      "meaning": "창문이 3개 이상일 경우, 외부와의 활발한 소통 욕구가 있습니다."
+      "area_max": 1.0,
+      "min_count": 2,
+      "meaning": "창문이 여러 개인 경우, 개방성과 외부와의 접촉에 대한 갈망이 드러납니다."
     },
     {
       "label": "굴뚝",
-      "position": "top-right",
-      "area_min": 0.005,
-      "area_max": 0.2,
-      "meaning": "감정 표현 욕구가 있습니다."
+      "position": "any",
+      "area_min": 0.0,
+      "area_max": 1.0,
+      "meaning": "가족 간의 애정과 교류, 분위기를 나타냅니다. 굴뚝의 개수가 하나로 확인되며, 이는 일반적입니다."
     },
     {
       "label": "굴뚝",
-      "position": "top-right",
+      "position": "any",
       "area_min": 0.0,
-      "area_max": 0.004,
-      "meaning": "감정 표현이 억제되어 있을 수 있습니다."
+      "area_max": 1.0,
+      "min_count": 2,
+      "meaning": "굴뚝이 많은 경우, 애정과 따뜻함에 대한 결핍과 갈망을 드러냅니다."
     },
     {
       "label": "연기",
-      "position": "top-right",
-      "area_min": 0.005,
-      "area_max": 0.1,
-      "meaning": "감정이 표출되고 있습니다."
+      "position": "any",
+      "area_min": 0.01,
+      "area_max": 1.0,
+      "min_count": 2,
+      "meaning": "피검자의 마음 속에 긴장이 존재하며 가정환경 내에 갈등이나 정서 혼란이 있을 수 있습니다."
     },
     {
       "label": "울타리",
-      "position": "bottom",
-      "area_min": 0.005,
-      "area_max": 0.1,
-      "meaning": "경계 설정이 분명하며 자기 보호 욕구가 존재합니다."
+      "position": "any",
+      "area_min": 0.0,
+      "area_max": 1.0,
+      "meaning": "심리적 안전을 방해받고 싶지 않은 방어적 태도가 반영되어 있습니다."
     },
     {
       "label": "길",
-      "position": "bottom-center",
-      "area_min": 0.005,
-      "area_max": 0.1,
-      "meaning": "타인과 연결되려는 심리가 반영되어 있습니다."
+      "position": "any",
+      "area_min": 0.0,
+      "area_max": 1.0,
+      "meaning": "타인과의 접촉에 있어서 균형 잡힌 통제력을 나타냅니다."
     },
     {
       "label": "연못",
-      "position": "bottom-right",
-      "area_min": 0.005,
-      "area_max": 0.1,
-      "meaning": "감성적 측면이 풍부하며 감정이 정체되어 있을 수 있습니다."
+      "position": "any",
+      "area_min": 0.0,
+      "area_max": 1.0,
+      "meaning": "연못에 대한 심리적 해석은 추후 내용으로 보완될 예정입니다."
     },
     {
       "label": "산",
-      "position": "background",
-      "area_min": 0.01,
-      "area_max": 0.3,
-      "meaning": "장기적인 목표나 이상이 존재합니다."
+      "position": "any",
+      "area_min": 0.0,
+      "area_max": 1.0,
+      "meaning": "어머니의 보호에 대한 욕구와 안전에 대한 갈망이 반영되어 있습니다."
     },
     {
       "label": "나무",
-      "position": "side",
-      "area_min": 0.005,
-      "area_max": 0.1,
-      "meaning": "생명력과 성장 욕구가 함께 표현되었습니다."
+      "position": "any",
+      "area_min": 0.0,
+      "area_max": 1.0,
+      "meaning": "인간 또는 자기 자신을 상징합니다."
     },
     {
       "label": "꽃",
-      "position": "front",
-      "area_min": 0.005,
-      "area_max": 0.1,
-      "meaning": "감정 표현이 섬세하고 섬세한 감성이 드러납니다."
+      "position": "any",
+      "area_min": 0.0,
+      "area_max": 1.0,
+      "meaning": "사람 또는 자기 표현에 대한 욕구를 반영합니다."
     },
     {
       "label": "잔디",
-      "position": "bottom",
-      "area_min": 0.005,
-      "area_max": 0.1,
-      "meaning": "현실적 안정감과 삶의 기반에 대한 표현입니다."
+      "position": "any",
+      "area_min": 0.0,
+      "area_max": 1.0,
+      "meaning": "잔디에 대한 심리적 해석은 추후 내용으로 보완될 예정입니다."
     },
     {
       "label": "태양",
-      "position": "top-right",
-      "area_min": 0.02,
-      "area_max": 0.3,
-      "meaning": "낙관적인 성향이 반영되어 있습니다."
+      "position": "any",
+      "area_min": 0.0,
+      "area_max": 1.0,
+      "meaning": "강한 애정욕구와 의존성, 혹은 이에 대한 좌절감을 의미합니다."
     }
   ],
-
   "tree": [
     {
       "label": "나무",
@@ -171,7 +160,6 @@
       "meaning": "성장 에너지와 안정감이 표현되어 있습니다."
     }
   ],
-
   "person": [
     {
       "label": "길",

@@ -21,44 +21,44 @@ async function interpretMultipleDrawings(drawings) {
 
   const promptParts = drawingDetails.map((d) => {
     return `
-[그림 종류]: ${d.type}
-[객체 분석 JSON]:
-${JSON.stringify(d.json, null, 2)}
+  [그림 종류]: ${d.type}
+  [객체 분석 JSON]:
+  ${JSON.stringify(d.json, null, 2)}
 
-[감정 점수]:
-${Object.entries(d.emotionScores)
-  .map(([k, v]) => `${k}: ${v}`)
-  .join(", ")}
-`;
+  [감정 점수]:
+  ${Object.entries(d.emotionScores)
+    .map(([k, v]) => `${k}: ${v}`)
+    .join(", ")}
+  `;
   });
 
   const fullPrompt = `
-다음은 총 4개의 HTP 그림 분석 결과입니다. 각 그림별로 '객체 분석'과 '감정 점수'가 주어집니다.
-아래 정보를 바탕으로:
+  다음은 총 4개의 HTP 그림 분석 결과입니다. 각 그림별로 '객체 분석'과 '감정 점수'가 주어집니다.
+  아래 정보를 바탕으로:
 
-1. 각 그림에 대한 심리 해석을 제공해 주세요.
-2. 전체 종합 해석을 추가해 주세요. (성격 요약, 불안 요소, 대인관계 특성, 정서 상태, 조언 등)
+  1. 각 그림에 대한 심리 해석을 제공해 주세요.
+  2. 전체 종합 해석을 추가해 주세요. (성격 요약, 불안 요소, 대인관계 특성, 정서 상태, 조언 등)
 
-결과는 다음 구조의 JSON으로 작성해 주세요:
+  결과는 다음 구조의 JSON으로 작성해 주세요:
 
-{
-  "per_drawing": {
-    "house": "...",
-    "tree": "...",
-    "person_woman": "...",
-    "person_man": "..."
-  },
-  "overall_summary": {
-    "summary": "...",
-    "traits": ["..."],
-    "psychological_notes": "...",
-    "suggestion": "..."
+  {
+    "per_drawing": {
+      "house": "...",
+      "tree": "...",
+      "person_woman": "...",
+      "person_man": "..."
+    },
+    "overall_summary": {
+      "summary": "...",
+      "traits": ["..."],
+      "psychological_notes": "...",
+      "suggestion": "..."
+    }
   }
-}
 
-[아래는 그림별 분석 정보입니다]
-${promptParts.join("\n========================\n")}
-`;
+  [아래는 그림별 분석 정보입니다]
+  ${promptParts.join("\n========================\n")}
+  `;
 
   const completion = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",

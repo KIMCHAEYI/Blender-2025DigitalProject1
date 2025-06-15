@@ -1,45 +1,18 @@
 const fs = require("fs");
 const path = require("path");
-// 상대 위치 해석 함수
-function getReferenceLabelByType(type) {
-  if (type === "house") return "집벽";
-  if (type === "tree") return "나무";
-  if (type === "personF" || type === "personM") return "사람";
-  return null;
+
+// 위치 비교: 정확 일치 또는 "any" 허용
+function positionMatch(rulePos, objPos) {
+  return rulePos === "any" || rulePos === objPos;
 }
 
-function getRelativeMeanings(objects, type) {
-  const referenceLabel = getReferenceLabelByType(type);
-  const reference = objects.find((o) => o.label === referenceLabel);
-  if (!reference) return []; // 기준이 없으면 생략
-
-  const refArea = reference.w * reference.h;
-  const results = [];
-
-  objects.forEach((obj) => {
-    if (obj.label === referenceLabel) return;
-
-    const objArea = obj.w * obj.h;
-    const ratio = objArea / refArea;
-
-    if (ratio < 0.3) {
-      results.push({
-        label: obj.label,
-        meaning: `${obj.label}이 기준 객체(${referenceLabel})보다 작습니다. 위축되거나 보조적 요소일 수 있습니다.`
-      });
-    } else if (ratio > 0.7) {
-      results.push({
-        label: obj.label,
-        meaning: `${obj.label}이 기준 객체(${referenceLabel})보다 큽니다. 강조되었거나 심리적으로 중요한 요소일 수 있습니다.`
-      });
-    }
-  });
-
-  return results;
+// 면적 비교: 약간의 오차 허용
+function areaMatch(areaRatio, min, max) {
+  const buffer = 0.005;
+  return areaRatio >= min - buffer && areaRatio <= max + buffer;
 }
 
-
-// YOLO bounding box 결과 절대 해석 (위치 + 면적 기준)
+// YOLO bounding box 결과 해석 (위치 + 면적 기준)
 function analyzeYOLOResult(bboxes) {
   const imageWidth = 1280;
   const imageHeight = 1280;
@@ -52,13 +25,20 @@ function analyzeYOLOResult(bboxes) {
     const cx = obj.x + obj.w / 2;
     const cy = obj.y + obj.h / 2;
 
-    // 9분할 절대 위치 측정
-    const xZone = cx < imageWidth * 0.33 ? "left" :
-                  cx > imageWidth * 0.66 ? "right" : "center";
-    const yZone = cy < imageHeight * 0.33 ? "top" :
-                  cy > imageHeight * 0.66 ? "bottom" : "middle";
+    const xZone =
+      cx < imageWidth * 0.33
+        ? "left"
+        : cx > imageWidth * 0.66
+        ? "right"
+        : "center";
+    const yZone =
+      cy < imageHeight * 0.33
+        ? "top"
+        : cy > imageHeight * 0.66
+        ? "bottom"
+        : "middle";
 
-    const position = `${yZone}-${xZone}`; // ex: top-left
+    const position = `${yZone}-${xZone}`; // 예: top-left
 
     return {
       label: obj.label,
@@ -67,64 +47,84 @@ function analyzeYOLOResult(bboxes) {
       w: obj.w,
       h: obj.h,
       cx,
-      cy
+      cy,
     };
   });
 }
 
-
-// 객체별 해석 평가 (YOLO 결과 → 위치/면적 해석 → 평가 룰 적용)
+// YOLO 결과 해석 적용
 function interpretYOLOResult(yoloResult, drawingType) {
   const rulePath = path.join(
     __dirname,
     "../rules/object-evaluation-rules.json"
   );
-  const ruleData = JSON.parse(fs.readFileSync(rulePath, "utf-8"));
-  const rules = ruleData[drawingType] || [];
 
+  let ruleData;
+  try {
+    ruleData = JSON.parse(fs.readFileSync(rulePath, "utf-8"));
+  } catch (err) {
+    console.error("❌ JSON 파싱 오류:", err.message);
+    return yoloResult.objects.map((obj) => ({
+      ...obj,
+      meaning: "❌ 룰 파일 파싱 실패로 해석할 수 없습니다.",
+    }));
+  }
+
+  const rules = ruleData[drawingType] || [];
   const detectedObjects = analyzeYOLOResult(yoloResult.objects);
 
-  const absoluteMeanings = detectedObjects.map((obj) => {
+  // ✅ label별 개수 집계
+  const labelCounts = {};
+  for (const obj of detectedObjects) {
+    labelCounts[obj.label] = (labelCounts[obj.label] || 0) + 1;
+  }
+
+  return detectedObjects.map((obj) => {
     const { label, areaRatio, position } = obj;
 
-    const match = rules.find(
+    const strictMatch = rules.find(
       (r) =>
         r.label === label &&
-        (r.position === "any" || r.position === position) &&
-        areaRatio >= r.area_min &&
-        areaRatio <= r.area_max
+        positionMatch(r.position, position) &&
+        areaMatch(areaRatio, r.area_min, r.area_max) &&
+        (!r.min_count || labelCounts[label] >= r.min_count)
     );
 
-    // ✅ 콘솔에 position, areaRatio, area_min, area_max 출력
-    console.log(`\n[${label}] 감지됨`);
+    const fallbackMatch = rules.find(
+      (r) =>
+        r.label === label &&
+        r.position === "any" &&
+        (!r.min_count || labelCounts[label] >= r.min_count)
+    );
+
+    const labelOnlyMatch = rules.find((r) => r.label === label);
+
+    const match = strictMatch || fallbackMatch || labelOnlyMatch;
+
+    // 콘솔 로그 출력
+    console.log(`\n🧩 [${label}] 감지됨`);
     console.log(`  - 위치(position): ${position}`);
     console.log(`  - 면적 비율(areaRatio): ${areaRatio}`);
-    if (match) {
-      console.log(
-        `  - 매칭된 룰: area_min=${match.area_min}, area_max=${match.area_max}`
-      );
+    if (strictMatch) {
+      console.log(`  - 🔍 정확 매칭된 룰 적용`);
+      if (strictMatch.min_count) {
+        console.log(
+          `  - ✅ 최소 개수 조건 (${strictMatch.min_count}개 이상) 충족`
+        );
+      }
+    } else if (fallbackMatch) {
+      console.log(`  - ♻ fallback 룰 적용`);
+    } else if (labelOnlyMatch) {
+      console.log(`  - ❓ label 일치만으로 기본 해석 적용`);
     } else {
-      console.log(`  - 매칭되는 해석 룰 없음`);
+      console.log(`  - ⚠ 매칭되는 해석 룰 없음`);
     }
 
     return {
       ...obj,
-      meaning: match ? match.meaning : "해석 기준이 없습니다.",
+      meaning: match ? match.meaning : "해석 기준 없음",
     };
   });
-
-  const relativeMeanings = getRelativeMeanings(detectedObjects, drawingType);
-
-  if (relativeMeanings.length > 0) {
-    console.log(`\n📏 상대 크기 해석 (${drawingType}) 기준:`);
-    relativeMeanings.forEach((m) => {
-      console.log(`  [${m.label}] → ${m.meaning}`);
-    });
-  } else {
-    console.log(`\n📏 상대 크기 해석 없음 (기준 객체가 없거나 비교 불가)`);
-  }
-
-  return [...absoluteMeanings, ...relativeMeanings];
 }
 
 module.exports = {
