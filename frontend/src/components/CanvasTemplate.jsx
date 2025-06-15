@@ -169,15 +169,25 @@ export default function CanvasTemplate({
 
       <div className="canvas-body">
         <div className="toolbar">
-          <button className="btn-toolbar" onClick={() => setPenSize(2)}>
+          <button
+            className={`btn-toolbar ${penSize === 2 ? "selected" : ""}`}
+            onClick={() => setPenSize(2)}
+          >
             <img src="/assets/pen-mid.svg" alt="얇게" className="icon" /> 얇게
           </button>
-          <button className="btn-toolbar" onClick={() => setPenSize(4)}>
+          <button
+            className={`btn-toolbar ${penSize === 4 ? "selected" : ""}`}
+            onClick={() => setPenSize(4)}
+          >
             <img src="/assets/pen-mid.svg" alt="중간" className="icon" /> 중간
           </button>
-          <button className="btn-toolbar" onClick={() => setPenSize(8)}>
+          <button
+            className={`btn-toolbar ${penSize === 8 ? "selected" : ""}`}
+            onClick={() => setPenSize(8)}
+          >
             <img src="/assets/pen-mid.svg" alt="굵게" className="icon" /> 굵게
           </button>
+
           <button className="btn-toolbar" onClick={handleUndo}>
             <img src="/assets/eraser.svg" alt="지우개" className="icon" />{" "}
             지우개

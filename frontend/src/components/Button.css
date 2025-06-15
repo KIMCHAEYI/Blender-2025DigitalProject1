@@ -72,7 +72,13 @@
   font-weight: 700;
 
   background: white;
-  border-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
   border: 1px solid #ccc;
   cursor: pointer;
+}
+
+.btn-toolbar.selected {
+  border: 2px solid black;
+  font-weight: 800;
 }

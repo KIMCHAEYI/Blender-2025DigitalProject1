@@ -17,6 +17,17 @@
   font-weight: 700;
   margin-bottom: 49px;
 }
+.result-page li {
+  margin-bottom: 12px; /* ✅ 항목 간 간격 */
+}
+
+.meaning-line {
+  margin-top: 4px;
+  margin-left: 16px;
+  font-style: italic;
+  color: #555;
+}
+
 .short-result {
   text-align: center;
 }

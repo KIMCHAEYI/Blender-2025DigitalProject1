@@ -15,6 +15,26 @@ export default function ResultPage() {
   const handleDownloadPDF = async () => {
     const drawingSections = ["house", "tree", "person"];
 
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const date = `${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
+    const time = `${pad(now.getHours())}${pad(now.getMinutes())}`;
+
+    const cleanName = userData.name.replace(/[^\w가-힣]/g, "");
+    const birthShort = userData.birth.replaceAll("-", "").slice(2);
+
+    const genderMap = {
+      여자: "F",
+      남자: "M",
+      female: "F",
+      male: "M",
+      여: "F",
+      남: "M",
+    };
+    const genderCode = genderMap[userData.gender] || "X";
+
+    const filename = `HTP_${cleanName}_${birthShort}_${genderCode}_${date}${time}`;
+
     const htmlContent = `
       <html>
         <head>
@@ -23,7 +43,8 @@ export default function ResultPage() {
             h1 { font-size: 24px; margin-bottom: 10px; }
             h2 { font-size: 20px; margin-top: 20px; }
             ul { padding-left: 20px; }
-            .meaning-line { margin-left: 10px; font-style: italic; color: #555; }
+            li { margin-bottom: 6px; }
+            .meaning-line { margin-left: 16px; font-style: italic; color: #555; }
             img { width: 100%; max-height: 300px; margin: 10px 0; }
           </style>
         </head>
@@ -39,42 +60,51 @@ export default function ResultPage() {
               const analysis = userData.drawings[type]?.analysis || [];
               const image = userData.drawings[type]?.image;
 
+              const uniqueLabels = [
+                ...new Map(
+                  analysis.map((obj) => [obj.label, obj.meaning])
+                ).entries(),
+              ];
+
               return `
                 <h2>${index + 1}. ${
                 type === "house" ? "집" : type === "tree" ? "나무" : "사람"
               } 그림 분석</h2>
+
                 ${
                   image
                     ? `<img src="${image}" alt="${type} 그림" />`
                     : `<p>(그림 이미지 없음)</p>`
                 }
+
                 ${
-                  analysis.length > 0
+                  uniqueLabels.length > 0
                     ? `
-                      <ul>
-                        ${analysis
-                          .map(
-                            (obj) => `
-                            <li key={idx}>
-                            ✅ <b>{obj.label}</b>
-                            {obj.meaning && (
-                            <div className="meaning-line"> 
-                            🧠 <b>의미:</b> {obj.meaning}
-                            </div>
-                            )}
+                    <ul>
+                      ${uniqueLabels
+                        .map(
+                          ([label, meaning]) => `
+                            <li>
+                              ✅ <b>${label}</b>
+                              ${
+                                meaning
+                                  ? `<div class="meaning-line"><b>의미:</b> ${meaning}</div>`
+                                  : ""
+                              }
+              
                             </li>
                           `
-                          )
-                          .join("")}
-                      </ul>
-                    `
+                        )
+                        .join("")}
+                    </ul>
+                  `
                     : `<p>아직 분석된 결과가 없습니다.</p>`
                 }
               `;
             })
             .join("")}
 
-          <h2>🧠 종합 해석</h2>
+          <h2>종합 해석</h2>
           <p>
             피검자는 전반적으로 정서적 안정성과 자기표현 의지를 갖추고 있으며,
             집과 사람 그림에서는 현실 감각과 사회적 적응력이 양호하게 나타납니다.
@@ -86,13 +116,9 @@ export default function ResultPage() {
     `;
 
     try {
-      const filename = `HTP_Report_${userData.name}`;
       const res = await axios.post(
         "http://172.16.100.250:5000/api/sessions/generate-pdf",
-        {
-          html: htmlContent,
-          filename,
-        }
+        { html: htmlContent, filename }
       );
 
       const pdfUrl = `http://172.16.100.250:5000${res.data.path}`;
@@ -112,6 +138,10 @@ export default function ResultPage() {
 
       {drawingSections.map((type, index) => {
         const analysis = userData.drawings[type]?.analysis || [];
+        const uniqueLabels = [
+          ...new Map(analysis.map((obj) => [obj.label, obj.meaning])).entries(),
+        ];
+
         return (
           <section key={type}>
             <h2>
@@ -123,12 +153,14 @@ export default function ResultPage() {
               <div>
                 <h4>객체 인식 결과</h4>
                 <ul>
-                  {analysis.map((obj, idx) => (
-                    <li>
-                      ✅ <b>${obj.label}</b>$
-                      {obj.meaning
-                        ? `<div class="meaning-line">🧠 <b>의미:</b> ${obj.meaning}</div>`
-                        : ""}
+                  {uniqueLabels.map(([label, meaning], idx) => (
+                    <li key={idx}>
+                      ✅ <b>{label}</b>
+                      {meaning && (
+                        <div className="meaning-line">
+                          <b>의미:</b> {meaning}
+                        </div>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -141,7 +173,7 @@ export default function ResultPage() {
       })}
 
       <section>
-        <h2>🧠 종합 해석</h2>
+        <h2>종합 해석</h2>
         <p className="short-result">
           피검자는 전반적으로 정서적 안정성과 자기표현 의지를 갖추고 있으며,
           집과 사람 그림에서는 현실 감각과 사회적 적응력이 양호하게 나타납니다.
