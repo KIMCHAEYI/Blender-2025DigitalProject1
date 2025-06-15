@@ -17,7 +17,6 @@
 .drawing-canvas {
   max-width: 100%;
   height: auto;
-  border-radius: 16px;
   background: #ffffff;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
   border: 2px solid #ccc;

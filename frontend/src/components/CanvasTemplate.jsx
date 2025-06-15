@@ -83,6 +83,7 @@ export default function CanvasTemplate({
         )
         .then((res) => {
           const { path, filename, analysis } = res.data;
+          console.log("분석 응답 결과:", res.data); // 이거 찍으면 원인 바로 보임
 
           setUserData((prev) => ({
             ...prev,

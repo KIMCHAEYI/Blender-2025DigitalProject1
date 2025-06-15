@@ -15,7 +15,7 @@ export default function Complete() {
 
       // 1. 세션 저장 (Express 서버)
       const sessionRes = await axios.post(
-        "http://172.20.24.235:5000/api/sessions/start",
+        "http://172.16.100.250:5000/api/sessions/start",
         userData
       );
       console.log("세션 저장 응답:", sessionRes.data);
