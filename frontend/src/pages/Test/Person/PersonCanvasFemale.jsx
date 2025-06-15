@@ -1,7 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Stage, Layer, Line } from "react-konva";
-import "./PersonCanvas.css";
+import React from "react";
+import CanvasTemplate from "../../../components/CanvasTemplate";
 
 export default function PersonCanvasFemale() {
   const firstGender = localStorage.getItem("firstGender");

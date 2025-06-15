@@ -6,7 +6,7 @@ export default function HouseCanvas() {
     <CanvasTemplate
       drawingType="house"
       title="집"
-      nextRoute="/test/tree/intro"
+      nextRoute="/test/tree/rotate"
       currentStep={1}
     />
   );
