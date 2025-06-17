@@ -27,7 +27,7 @@ export default function Home() {
 
       <div className="main-section">
         <div className="text-section">
-          <h1 className="title">HTP 그림 검사 서비스</h1>
+          <h1 className="title">몽글(mongle)</h1>
           <p className="subtitle">
             AI 기반의 맞춤형 HTP 그림 검사 서비스를 제공합니다.
           </p>
