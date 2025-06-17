@@ -3,9 +3,9 @@ import React, { useRef, useState, useEffect } from "react";
 import { Stage, Layer, Line, Rect } from "react-konva";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useUserContext } from "../contexts/UserContext.jsx";
-import { generateDrawingFileName } from "../utils/generateFileName.js";
-import { dataURLtoFile } from "../utils/dataURLtoFile";
+import { useUserContext } from "/Users/minju/Blender-2025DigitalProject1/frontend/src/contexts/UserContext.jsx";
+import { generateSafePngFileName } from "../utils/generateFileName";
+import { dataURLtoFile } from "/Users/minju/Blender-2025DigitalProject1/frontend/src/utils/dataURLtoFile";
 
 export default function CanvasTemplate({
   drawingType,
@@ -59,12 +59,7 @@ export default function CanvasTemplate({
       const dataURL = stageRef.current.toDataURL({ pixelRatio: 2 });
       console.log("저장된 이미지:", dataURL); // 일단 콘솔에 찍기
 
-      const fileName = generateDrawingFileName({
-        name: userData.name,
-        birth: userData.birth,
-        gender: userData.gender,
-        type: drawingType,
-      });
+      const fileName = generateSafePngFileName(userData, drawingType);
 
       const file = dataURLtoFile(dataURL, fileName);
       const formData = new FormData();
@@ -75,7 +70,7 @@ export default function CanvasTemplate({
 
       axios
         .post(
-          "http://192.168.0.250:5000/api/sessions/analyze-drawing",
+          "http://172.16.100.250:5000/api/sessions/analyze-drawing",
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },

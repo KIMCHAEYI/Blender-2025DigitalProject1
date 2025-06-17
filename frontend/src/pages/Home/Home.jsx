@@ -1,17 +1,28 @@
 // src/pages/Home.jsx
 import { useNavigate } from "react-router-dom";
-import React from "react";
-import "./Home.css"; // CSS는 따로 분리해서 관리해도 좋아요
+import React, { useState } from "react";
+import "./Home.css"; // 스타일은 아래 참고
 
 export default function Home() {
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+
+  const handleInquiryClick = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div className="home-container">
       <header className="home-header">
         <div className="logo">Logo</div>
         <div className="spacer" />
-        <div className="inquiry">문의하기</div>
+        <div className="inquiry" onClick={handleInquiryClick}>
+          문의하기
+        </div>
       </header>
 
       <div className="main-section">
@@ -21,12 +32,15 @@ export default function Home() {
             AI 기반의 맞춤형 HTP 그림 검사 서비스를 제공합니다.
           </p>
           <p className="description">
-            집-나무-사람 검사(House-Tree-Person test), 간단히 HTP 검사(HTP
-            test)는 인격의 양상을 측정하기 위해 설계된 투영 검사법이다. 이
-            검사는 뇌손상과 일반적인 정신 기능을 분석하기 위해 사용될 수도 있다.
-            이 검사는 임상심리학자, 교육자, 고용주들을 위한 진단 도구이다.
-            검사를 받는 사람은 집, 나무, 사람 그림을 그려보라는 분명하지 않은
-            짧은 지시를 받는다. {" "}
+            AI 기반의 맞춤형 HTP 그림 검사 서비스는 아동의 심리 상태를
+            비대면으로 분석할 수 있도록 개발된 디지털 심리 검사 플랫폼입니다.
+            사용자가 컴퓨터나 태블릿으로 집, 나무, 사람을 그리면, AI가 이를
+            실시간 분석해 정서 안정성, 자아개념, 가족관계, 사회적 적응 등을
+            평가합니다. <p></p> 본 서비스는 언어 표현이 서툰 아동도 감정과
+            내면을 자연스럽게 드러낼 수 있도록 설계되었으며, 다양한 환경에서
+            겪는 심리적 스트레스를 조기에 파악하고 대응할 수 있도록 돕습니다.
+            장소에 구애받지 않고 쉽게 접근할 수 있으며, 반복 검사와 비교 분석이
+            가능해 보다 체계적인 심리 지원을 제공합니다.
           </p>
 
           <div className="button-group">
@@ -45,6 +59,22 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* 모달 팝업 */}
+      {showModal && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-image-wrapper">
+              <img src="/assets/ganadi.png" alt="문의 이미지" />
+            </div>
+            <div className="modal-footer">
+              <button className="modal-close" onClick={closeModal}>
+                닫기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

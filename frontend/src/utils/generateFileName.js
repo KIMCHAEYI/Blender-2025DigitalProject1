@@ -1,17 +1,17 @@
-export function generateDrawingFileName({ name, birth, gender, type }) {
+export function generateSafePngFileName(userData, type) {
   const now = new Date();
   const pad = (n) => String(n).padStart(2, "0");
   const date = `${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
   const time = `${pad(now.getHours())}${pad(now.getMinutes())}`;
 
-  // ✔ 한글 포함 허용, 단 공백/특수문자 제거
-  const birthShort = birth.replaceAll("-", "").slice(2);
+  const cleanName = userData.name?.replace(/[^\w가-힣]/g, "") || "사용자";
+  const birthShort = userData.birth?.replaceAll("-", "").slice(2) || "000000";
 
   const genderMap = {
     여자: "F",
     남자: "M",
   };
-  const genderCode = genderMap[gender] || "X";
+  const genderCode = genderMap[userData.gender] || "X";
 
   const typeMap = {
     house: "H",
@@ -21,5 +21,5 @@ export function generateDrawingFileName({ name, birth, gender, type }) {
   };
   const typeCode = typeMap[type] || "X";
 
-  return `${typeCode}_${name}_${birthShort}_${genderCode}_${date}${time}.png`;
+  return `${date}_${time}_${cleanName}_${genderCode}_${birthShort}_${typeCode}.png`;
 }
