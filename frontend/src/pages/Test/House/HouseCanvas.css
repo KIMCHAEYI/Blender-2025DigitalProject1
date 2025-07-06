@@ -116,3 +116,63 @@
   height: 16px;
   display: inline-block;
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  width: 300px;
+  text-align: center;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.modal-button.confirm {
+  background-color: #3b82f6;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+}
+.modal-button.confirm:active {
+  background-color: #2563eb; /* 더 진한 파랑 */
+  transform: scale(0.97); /* 살짝 눌리는 느낌 */
+}
+
+.modal-button.cancel {
+  background-color: #d8d8d8;
+  color: black;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+}
+
+.modal-button.cancel:active {
+  background-color: #e5e7eb; /* 더 진한 회색 */
+  transform: scale(0.97);
+}
+
+.canvas-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+}

@@ -61,6 +61,21 @@
   color: white;
 }
 
+.btn-nextred {
+  bottom: 24px;
+  right: 24px;
+  width: 100%;
+  max-width: 100px;
+  font-size: 16px;
+  height: 52px;
+  border-radius: 10px;
+  border: none;
+  position: static;
+
+  background: #e62b2b;
+  color: white;
+}
+
 .btn-toolbar {
   display: flex;
   flex-direction: column; /* ← 세로로 쌓기 */

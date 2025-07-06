@@ -1,7 +1,7 @@
 // src/pages/Home.jsx
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import "./Home.css"; // 스타일은 아래 참고
+import "./Home.css";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -36,11 +36,11 @@ export default function Home() {
             비대면으로 분석할 수 있도록 개발된 디지털 심리 검사 플랫폼입니다.
             사용자가 컴퓨터나 태블릿으로 집, 나무, 사람을 그리면, AI가 이를
             실시간 분석해 정서 안정성, 자아개념, 가족관계, 사회적 적응 등을
-            평가합니다. <p></p> 본 서비스는 언어 표현이 서툰 아동도 감정과
-            내면을 자연스럽게 드러낼 수 있도록 설계되었으며, 다양한 환경에서
-            겪는 심리적 스트레스를 조기에 파악하고 대응할 수 있도록 돕습니다.
-            장소에 구애받지 않고 쉽게 접근할 수 있으며, 반복 검사와 비교 분석이
-            가능해 보다 체계적인 심리 지원을 제공합니다.
+            평가합니다. <br /> 본 서비스는 언어 표현이 서툰 아동도 감정과 내면을
+            자연스럽게 드러낼 수 있도록 설계되었으며, 다양한 환경에서 겪는
+            심리적 스트레스를 조기에 파악하고 대응할 수 있도록 돕습니다. 장소에
+            구애받지 않고 쉽게 접근할 수 있으며, 반복 검사와 비교 분석이 가능해
+            보다 체계적인 심리 지원을 제공합니다.
           </p>
 
           <div className="button-group">
@@ -64,8 +64,24 @@ export default function Home() {
       {showModal && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-image-wrapper">
+            {/* <div className="modal-image-wrapper">
               <img src="/assets/ganadi.png" alt="문의 이미지" />
+            </div> */}
+            <div className="modal-buttons">
+              <a
+                href="https://open.kakao.com/o/smdd9xFh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="modal-button kakao"
+              >
+                💬 카카오톡으로 문의하기
+              </a>
+              <a
+                href="mailto:blender2025dp@gmail.com"
+                className="modal-button email"
+              >
+                📩 이메일로 문의하기
+              </a>
             </div>
             <div className="modal-footer">
               <button className="modal-close" onClick={closeModal}>

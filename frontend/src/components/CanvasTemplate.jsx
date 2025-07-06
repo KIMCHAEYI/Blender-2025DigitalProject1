@@ -33,6 +33,10 @@ export default function CanvasTemplate({
   const { userData, setUserData } = useUserContext();
   const [startTime] = useState(Date.now());
 
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false); // 그만두기
+  const [showSubmitModal, setShowSubmitModal] = useState(false); // ✅ 제출 모달 추가
+
   useEffect(() => {
     const handleResize = () => {
       const aspectRatio = BASE_WIDTH / BASE_HEIGHT;
@@ -51,6 +55,18 @@ export default function CanvasTemplate({
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [BASE_WIDTH, BASE_HEIGHT]);
+
+  const handleNextClick = () => {
+    setShowSubmitModal(true);
+  };
+
+  const handleCancelClick = () => {
+    setShowCancelModal(true);
+  };
+
+  const handleCancelConfirm = () => {
+    navigate("/"); // 홈화면으로 이동
+  };
 
   const handleNext = async () => {
     if (!stageRef.current || !userData) return;
@@ -184,8 +200,8 @@ export default function CanvasTemplate({
           </button>
 
           <button className="btn-toolbar" onClick={handleUndo}>
-            <img src="/assets/eraser.svg" alt="지우개" className="icon" />{" "}
-            지우개
+            <img src="/assets/eraser.svg" alt="한 획 지우기" className="icon" />{" "}
+            한 획<br></br>지우기
           </button>
           <button className="btn-toolbar" onClick={handleClear}>
             <img src="/assets/re-draw.svg" alt="새로 그리기" className="icon" />
@@ -237,11 +253,74 @@ export default function CanvasTemplate({
               ))}
             </Layer>
           </Stage>
+
+          {showSubmitModal && (
+            <div
+              className="modal-overlay"
+              onClick={() => setShowSubmitModal(false)}
+            >
+              <div
+                className="modal-content"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h3>제출하시겠습니까?</h3>
+                <p>제출 후에는 그림을 수정할 수 없습니다.</p>
+                <div className="modal-buttons">
+                  <button
+                    className="modal-button confirm"
+                    onClick={() => {
+                      setShowSubmitModal(false);
+                      handleNext();
+                    }}
+                  >
+                    확인
+                  </button>
+                  <button
+                    className="modal-button cancel"
+                    onClick={() => setShowSubmitModal(false)}
+                  >
+                    취소
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {showCancelModal && (
+            <div
+              className="modal-overlay"
+              onClick={() => setShowCancelModal(false)}
+            >
+              <div
+                className="modal-content"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h3>정말 그만두시겠습니까?</h3>
+                <p>페이지를 나가면 처음부터 다시 시작해야 합니다.</p>
+                <div className="modal-buttons">
+                  <button
+                    className="modal-button confirm"
+                    onClick={handleCancelConfirm}
+                  >
+                    확인
+                  </button>
+                  <button
+                    className="modal-button cancel"
+                    onClick={() => setShowCancelModal(false)}
+                  >
+                    취소
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="canvas-footer">
-        <button className="btn-base btn-nextblue" onClick={handleNext}>
+        <button className="btn-base btn-nextred" onClick={handleCancelClick}>
+          검사 그만두기
+        </button>
+        <button className="btn-base btn-nextblue" onClick={handleNextClick}>
           다음으로
         </button>
       </div>
