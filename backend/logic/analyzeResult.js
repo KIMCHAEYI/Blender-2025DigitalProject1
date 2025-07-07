@@ -81,48 +81,43 @@ function interpretYOLOResult(yoloResult, drawingType) {
 
   return detectedObjects.map((obj) => {
     const { label, areaRatio, position } = obj;
+    const count = labelCounts[label];
 
-    const strictMatch = rules.find(
+    // 조건을 만족하는 룰 필터링
+    const matchedRules = rules.filter(
       (r) =>
         r.label === label &&
         positionMatch(r.position, position) &&
         areaMatch(areaRatio, r.area_min, r.area_max) &&
-        (!r.min_count || labelCounts[label] >= r.min_count)
+        (!r.min_count || count >= r.min_count)
     );
 
-    const fallbackMatch = rules.find(
-      (r) =>
-        r.label === label &&
-        r.position === "any" &&
-        (!r.min_count || labelCounts[label] >= r.min_count)
-    );
+    // 우선순위 룰 선택
+    const bestMatch =
+      matchedRules.find((r) => r.position !== "any" && r.min_count) ||
+      matchedRules.find((r) => r.position !== "any") ||
+      matchedRules.find((r) => r.min_count) ||
+      matchedRules[0];
 
-    const labelOnlyMatch = rules.find((r) => r.label === label);
+    // 의미 병합: 모든 매칭된 룰 기반
+    const allMeanings = matchedRules.map((r) => `- ${r.meaning}`);
+    const meaningText =
+      allMeanings.length > 0 ? allMeanings.join("\n") : "해석 기준 없음";
 
-    const match = strictMatch || fallbackMatch || labelOnlyMatch;
-
-    // 콘솔 로그 출력
+    // 🔎 콘솔 로그
     console.log(`\n🧩 [${label}] 감지됨`);
     console.log(`  - 위치(position): ${position}`);
     console.log(`  - 면적 비율(areaRatio): ${areaRatio}`);
-    if (strictMatch) {
-      console.log(`  - 🔍 정확 매칭된 룰 적용`);
-      if (strictMatch.min_count) {
-        console.log(
-          `  - ✅ 최소 개수 조건 (${strictMatch.min_count}개 이상) 충족`
-        );
-      }
-    } else if (fallbackMatch) {
-      console.log(`  - ♻ fallback 룰 적용`);
-    } else if (labelOnlyMatch) {
-      console.log(`  - ❓ label 일치만으로 기본 해석 적용`);
+    console.log(`  - 개수(count): ${count}`);
+    if (matchedRules.length > 0) {
+      console.log(`  - ✅ ${matchedRules.length}개의 룰과 매칭됨`);
     } else {
       console.log(`  - ⚠ 매칭되는 해석 룰 없음`);
     }
 
     return {
       ...obj,
-      meaning: match ? match.meaning : "해석 기준 없음",
+      meaning: meaningText,
     };
   });
 }

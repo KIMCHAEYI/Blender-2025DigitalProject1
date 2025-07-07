@@ -1,16 +1,20 @@
+// backend/logic/yoloRunner.js
+
 const axios = require("axios");
 const FormData = require("form-data");
 const fs = require("fs");
 
-async function runYOLOAnalysis(imagePath) {
+async function runYOLOAnalysis(imagePath, type = "house") {
   const form = new FormData();
   form.append("image", fs.createReadStream(imagePath));
 
-  const response = await axios.post("http://localhost:8000/detect", form, {
-    headers: form.getHeaders(),
-  });
+  const response = await axios.post(
+    `http://localhost:8000/analyze/${type}`,
+    form,
+    { headers: form.getHeaders() }
+  );
 
-  return response.data; // YOLO 인식 결과: [{ label, x, y, w, h }, ...]
+  return response.data.objects || []; // Python 서버 응답 구조에 맞게
 }
 
 module.exports = { runYOLOAnalysis };

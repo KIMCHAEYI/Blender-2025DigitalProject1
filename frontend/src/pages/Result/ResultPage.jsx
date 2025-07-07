@@ -117,11 +117,11 @@ export default function ResultPage() {
 
     try {
       const res = await axios.post(
-        "http://172.20.18.17:5000/api/sessions/generate-pdf",
+        "http://192.168.0.250:5000/api/sessions/generate-pdf",
         { html: htmlContent, filename }
       );
 
-      const pdfUrl = `http://172.20.18.17:5000${res.data.path}`;
+      const pdfUrl = `http://192.168.0.250:5000${res.data.path}`;
       window.open(pdfUrl, "_blank");
     } catch (err) {
       console.error("PDF 생성 실패:", err);
