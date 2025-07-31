@@ -317,11 +317,11 @@ export default function CanvasTemplate({
       </div>
 
       <div className="canvas-footer">
-        <button className="btn-base btn-nextred" onClick={handleCancelClick}>
-          검사 그만두기
-        </button>
         <button className="btn-base btn-nextblue" onClick={handleNextClick}>
           다음으로
+        </button>
+        <button className="btn-base btn-nextred" onClick={handleCancelClick}>
+          검사 그만두기
         </button>
       </div>
     </div>

@@ -39,7 +39,7 @@ export default function ResultPage() {
       <html>
         <head>
           <style>
-            body { font-family: sans-serif; padding: 30px; }
+            body { padding: 30px; }
             h1 { font-size: 24px; margin-bottom: 10px; }
             h2 { font-size: 20px; margin-top: 20px; }
             ul { padding-left: 20px; }

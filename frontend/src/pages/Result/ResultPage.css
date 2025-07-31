@@ -11,7 +11,6 @@
 .result-page h1 {
   color: var(--, #1c1c1e);
   text-align: center;
-  font-family: Pretendard;
   font-size: 32px;
   font-style: normal;
   font-weight: 700;
@@ -45,7 +44,6 @@
 }
 
 .result-buttons button {
-  font-family: Pretendard;
   font-size: 18px;
   font-style: normal;
   font-weight: 700;

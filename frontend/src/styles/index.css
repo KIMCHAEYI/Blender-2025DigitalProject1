@@ -1,6 +1,7 @@
 /* ---------- 기본 Reset 및 전역 스타일 ---------- */
+
 :root {
-  font-family: "Pretendard";
+  font-family: "Pretendard", sans-serif;
   color: #42413f;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -19,7 +20,6 @@ body {
 
 .question {
   font-size: 48px;
-  font-style: normal;
   font-weight: 700;
   margin-bottom: 39px;
   text-align: center;
