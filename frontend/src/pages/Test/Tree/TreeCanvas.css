@@ -1,6 +1,23 @@
+.tree-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.tree-toolbar {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  justify-content: center;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 애니메이션은 TreeCanvas 전용이라면 남기기 */
 .rotate-animation-to-p {
   animation: swingRotate-to-p 3s ease-in-out infinite;
-  transform-origin: center center; /* 회전 중심 */
+  transform-origin: center center;
   padding: 30px;
 }
 
@@ -17,20 +34,4 @@
   100% {
     transform: rotate(0deg);
   }
-}
-
-.tree-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.tree-toolbar {
-  display: flex;
-  gap: 12px;
-  padding: 16px;
-  justify-content: center;
-  background-color: #ffffff;
-  border-bottom: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }

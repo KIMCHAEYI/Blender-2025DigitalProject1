@@ -3,8 +3,23 @@
   gap: 16px;
 }
 
+.gender-button {
+  width: 116px;
+  height: 47px;
+  font-size: 16px;
+  border: 3px solid #42413f;
+  border-radius: 8px;
+  width: 116px;
+  height: 47px;
+  font-size: 16px;
+  border-radius: 8px;
+  appearance: none;
+  background-color: #fff;
+}
+
 .gender-button.selected {
-  background-color: #3e70c7;
+  font-family: "Pretendard", sans-serif;
   color: #ffffff;
-  border-color: #3e70c7;
+  border-color: #0f3370;
+  background-color: #3e70c7;
 }

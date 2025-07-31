@@ -6,6 +6,7 @@ import axios from "axios";
 import { useUserContext } from "../contexts/UserContext.jsx";
 import { generateSafePngFileName } from "../utils/generateFileName.js";
 import { dataURLtoFile } from "../utils/dataURLtoFile";
+import "./CanvasTemplate.css";
 
 export default function CanvasTemplate({
   drawingType,
@@ -315,14 +316,15 @@ export default function CanvasTemplate({
           )}
         </div>
       </div>
-
       <div className="canvas-footer">
-        <button className="btn-base btn-nextblue" onClick={handleNextClick}>
-          다음으로
-        </button>
-        <button className="btn-base btn-nextred" onClick={handleCancelClick}>
-          검사 그만두기
-        </button>
+        <div className="footer-buttons-row">
+          <button className="btn-base btn-nextred" onClick={handleCancelClick}>
+            검사 그만두기
+          </button>
+          <button className="btn-base btn-nextblue" onClick={handleNextClick}>
+            다음으로
+          </button>
+        </div>
       </div>
     </div>
   );

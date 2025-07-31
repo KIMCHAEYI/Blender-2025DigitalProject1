@@ -1,5 +1,6 @@
 import React from "react";
 import CanvasTemplate from "../../../components/CanvasTemplate";
+import "./HouseCanvas.css";
 
 export default function HouseCanvas() {
   return (

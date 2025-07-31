@@ -4,37 +4,6 @@
   min-height: 100vh;
 }
 
-.canvas-body {
-  display: flex;
-  flex: 1;
-  align-items: center; /* ← 수직 정중앙 정렬로 변경 */
-  justify-content: center;
-
-  padding: 16px 16px 32px;
-  box-sizing: border-box;
-}
-
-.drawing-canvas {
-  max-width: 100%;
-  height: auto;
-  background: #ffffff;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
-  border: 2px solid #ccc;
-  display: block;
-}
-
-.canvas-header-row {
-  position: fixed;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0 24px;
-  box-sizing: border-box;
-  /* z-index: 100;*/
-}
-
 .progress-indicator.static-overlay {
   top: 12px;
   left: 12px;
@@ -171,8 +140,12 @@
 
 .canvas-footer {
   display: flex;
-  justify-content: center;
+  justify-content: center; /* 가운데 정렬 */
   align-items: center;
+}
+
+.footer-buttons-row {
+  display: flex;
   gap: 12px;
-  margin-top: 32px;
+  align-items: center;
 }

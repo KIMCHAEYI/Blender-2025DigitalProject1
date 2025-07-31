@@ -49,14 +49,12 @@
 .btn-nextblue {
   bottom: 24px;
   right: 24px;
-  width: 100%;
   max-width: 100px;
   font-size: 16px;
   height: 52px;
   border-radius: 10px;
   border: none;
-  position: absolute;
-
+  position: static;
   background: #3e70c7;
   color: white;
 }
@@ -64,14 +62,11 @@
 .btn-nextred {
   bottom: 24px;
   right: 24px;
-  width: 100%;
-  max-width: 100px;
   font-size: 16px;
   height: 52px;
   border-radius: 10px;
   border: none;
   position: static;
-
   background: #e62b2b;
   color: white;
 }
