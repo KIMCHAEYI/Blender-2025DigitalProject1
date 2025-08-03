@@ -20,7 +20,7 @@ export default function LoginResult() {
     <div className="page-center">
       <h2 className="question">지난 검사 결과 열람하기</h2>
       <p className="subtext">
-        지난 검사 결과 열람을 위해 상담자의 이름과 비밀번호를 입력해 주세요.
+        지난 검사 결과 열람을 위해 검사자의 이름과 비밀번호를 입력해 주세요.
       </p>
 
       <InputField

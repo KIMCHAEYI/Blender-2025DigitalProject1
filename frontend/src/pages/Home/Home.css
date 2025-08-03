@@ -1,89 +1,80 @@
-/* src/pages/Home.css */
-
+/* 전체 컨테이너 높이 설정 */
 .home-container {
-  min-height: 100px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   background-color: #edf4ff;
   padding: 20px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
+/* 헤더 */
 .home-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
+  margin-bottom: 8px;
 }
 
-.logo {
-  background-color: white;
-  padding: 10px 20px;
-  border: 1px solid black;
-  font-weight: bold;
-}
-
-.inquiry {
-  color: #42413f;
-  font-size: 16px;
-}
-
+/* 메인 영역 위쪽 정렬 및 여백 조정 */
 .main-section {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-top: 40px;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-grow: 1;
+  overflow: hidden;
 }
 
+/* 텍스트 정렬 및 여백 최소화 */
 .text-section {
+  padding: 2vh 4vw;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  padding: 5vh 4vw;
-  box-sizing: border-box;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
 }
 
-/*HTP 그림 검사 서비스*/
 .title {
-  font-size: 56px;
+  font-size: 48px;
   font-weight: bold;
-  display: inline-block;
-  width: 100%;
+  margin-top: 1.2em;
 }
 
-/*AI 기반의...*/
 .subtitle {
-  margin-top: 75px;
+  font-size: 20px;
   font-weight: bold;
-  font-size: 24px;
-}
-/*집-나무-사람 검사는...*/
-.description {
-  margin-top: 40px;
-  width: 600px;
-  color: #555;
-  line-height: 1.5;
-  font-size: 14px;
+  margin-top: 16px;
 }
 
+.description {
+  font-size: 14px;
+  margin-top: 12px;
+  max-width: 600px;
+  line-height: 1.4;
+}
+
+/* 버튼 여백도 최소화 */
 .button-group {
-  margin-top: 24px;
+  margin-top: 5vh;
   display: flex;
-  gap: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .btn-home {
-  display: flex;
-  height: 52px;
-  padding: 16px 24px;
-  justify-content: center;
-  align-items: center;
+  height: 44px;
+  padding: 12px 20px;
   font-size: 16px;
   font-weight: 600;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  min-width: 200px;
 }
 
 .btn-1 {
@@ -102,7 +93,7 @@
   background-color: #f2f2f2;
 }
 
-/* 기존 스타일 외에 아래 모달 관련 코드 추가 */
+/* 모달 관련 스타일은 기존 그대로 유지 */
 
 .modal-overlay {
   position: fixed;

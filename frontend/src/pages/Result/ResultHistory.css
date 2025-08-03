@@ -1,61 +1,120 @@
-/* src/pages/Result/ResultHistory.css */
 .result-history {
-  padding: 40px;
+  padding: 24px;
+  max-width: 960px;
+  margin: 0 auto;
   text-align: center;
-  background-color: #edf4ff;
-  min-height: 100dvh;
+  overflow: auto; /* margin collapse 방지 */
 }
 
-.card-slider {
-  display: flex;
-  gap: 24px;
-  overflow-x: auto;
-  margin-top: 32px;
-  padding-bottom: 20px;
+.question {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  overflow: hidden;
 }
 
-.result-card {
-  background: #eaf1fb;
-  padding: 20px;
-  min-width: 180px;
+.highlight {
+  color: #3b5bdb;
+}
+
+.result-card-box {
+  margin-top: 40px;
+  background-color: #ffffff;
+  padding: 24px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.result-card.single-card {
   text-align: left;
+  width: 100%;
 }
 
 .result-card h3 {
-  font-size: 18px;
+  font-size: 1.2rem;
   font-weight: 700;
+  margin-bottom: 12px;
 }
 
 .result-card p {
-  font-size: 14px;
-  margin-top: 8px;
-  color: #555;
+  font-size: 1rem;
+  color: #333;
 }
 
-.result-card.highlighted {
-  background-color: #3e70c7;
+.result-card-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.result-card-buttons button {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 14px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 160px;
+}
+
+.btn-detail {
+  background-color: #3b5bdb;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+}
+
+.btn-download {
+  background-color: #333;
   color: white;
 }
 
+.btn-detail:hover {
+  background-color: #f1f1f1;
+}
+
+.btn-download:hover {
+  background-color: #111;
+}
+
 .button-wrap {
-  margin-top: 32px;
+  margin-top: 24px;
 }
 
 .btn-gohome {
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 25.2px;
-  min-width: 130px;
-  height: 52px;
-  padding: 10px 16px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  color: #000;
   border-radius: 8px;
+  border: 2px solid #000;
+  background: white;
   cursor: pointer;
-  margin-top: 82px;
+  transition: all 0.2s ease;
+}
 
-  border: 2px solid var(--, #42413f);
-  background: none;
-  color: #1c1c1e;
+.btn-gohome:hover {
+  background: #f5f5f5;
+}
+
+/* 📱 반응형: 작은 화면에서는 버튼 세로 배치 */
+@media (max-width: 100px) {
+  .result-card-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .result-card-buttons button {
+    width: 100%;
+  }
+
+  .result-card.single-card {
+    text-align: center;
+  }
 }
