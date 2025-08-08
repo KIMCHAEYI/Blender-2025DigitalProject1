@@ -1,9 +1,12 @@
+/* 전체 페이지 구조 */
 .canvas-page {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: #f5f5f5;
 }
 
+/* 헤더 고정 영역 */
 .canvas-header-row {
   position: fixed;
   top: 0;
@@ -13,6 +16,7 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  z-index: 100;
 }
 
 /* 페이지 제목용 박스 */
@@ -36,37 +40,13 @@
   margin: 0;
 }
 
-/* 캔버스 본문 (헤더 제외) */
+/* 본문 영역 */
 .canvas-body {
-  display: flex;
   flex: 1;
-  padding: 24px 16px 0px 16px;
-  box-sizing: border-box;
-}
-
-/* 캔버스 & 툴바 정렬 영역 */
-.canvas-center-area {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  gap: 32px;
-}
-
-/* 캔버스 영역 공통 */
-.drawing-area {
+  padding: 120px 32px 32px 32px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  max-width: 100%;
-}
-
-.drawing-canvas {
-  max-width: 100%;
-  height: auto;
-  background: #ffffff;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
-  border: 2px solid #ccc;
-  display: block;
+  box-sizing: border-box;
 }
 
 /* 툴바 버튼 영역 */
@@ -78,24 +58,35 @@
   flex-shrink: 0;
 }
 
-.toolbar .active {
+.toolbar .selected {
   border: 2px solid #3e70c7;
   background-color: #e0f4ff;
   border-radius: 8px;
 }
 
-/* 푸터 버튼 공통 */
-.canvas-footer {
+/* 캔버스 및 버튼 묶음 */
+.canvas-wrapper {
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
 }
 
+/* 캔버스 */
+.drawing-canvas {
+  max-width: 100%;
+  height: auto;
+  background: #ffffff;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  border: 2px solid #ccc;
+  display: block;
+}
+
+/* 버튼 그룹 */
 .footer-buttons-row {
   display: flex;
+  justify-content: center;
   gap: 12px;
-  align-items: center;
-  margin-bottom: 10px;
 }
 
 /* 단계 표시용 점 (진행바) */
@@ -105,6 +96,7 @@
   display: flex;
   gap: 8px;
   z-index: 10;
+  position: absolute;
 }
 
 .dot {

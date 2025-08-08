@@ -12,6 +12,7 @@
   width: 116px;
   height: 47px;
   font-size: 16px;
+  font-weight: bold;
   border-radius: 8px;
   appearance: none;
   background-color: #fff;
@@ -20,6 +21,7 @@
 .gender-button.selected {
   font-family: "Pretendard", sans-serif;
   color: #ffffff;
-  border-color: #0f3370;
+  border-color: #3e70c7;
   background-color: #3e70c7;
+  outline: none;
 }

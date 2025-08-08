@@ -10,8 +10,8 @@ export default function CharacterSelect() {
   //const { setUserData, userData } = useUserContext();
 
   const characters = [
-    { id: "cha1", name: "뽈록이", img: "/assets/cha1.png" },
-    { id: "cha2", name: "동글이", img: "/assets/cha2.png" },
+    { id: "cha1", name: "뽈록이", img: "/images/rabbit.png" },
+    { id: "cha2", name: "동글이", img: "/images/human.png" },
   ];
 
   const handleNext = () => {
