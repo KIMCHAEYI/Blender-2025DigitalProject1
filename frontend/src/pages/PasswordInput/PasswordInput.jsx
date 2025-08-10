@@ -25,6 +25,7 @@ export default function PasswordInput() {
   return (
     <div className="page-center password-page">
       <h2 className="question">
+        <p className="order">4/5</p>
         결과 다시보기를 위한
         <br />
         <span className="highlight">비밀번호</span>를 입력해 주세요

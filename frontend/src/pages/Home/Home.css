@@ -1,16 +1,20 @@
-/* 전체 컨테이너 높이 설정 */
+/* ===== 기본 레이아웃 ===== */
 .home-container {
-  height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  background-color: #edf4ff;
-  padding: 20px;
   box-sizing: border-box;
-  overflow: hidden;
+  padding: 20px;
+  /* 위 흰색 → 중간 연파랑 → 아래 진파랑 (Pickabeau-ish) */
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #edf4ff 20%,
+    #94aed9 70%,
+    #77a1eb 100%
+  );
 }
 
-/* 헤더 */
 .home-header {
   display: flex;
   justify-content: space-between;
@@ -19,172 +23,323 @@
   margin-bottom: 8px;
 }
 
-/* 메인 영역 위쪽 정렬 및 여백 조정 */
+.inquiry {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px; /* 정사각형으로 맞춰 원형 버튼 */
+  height: 56px;
+  margin: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: none; /* 외곽선 제거 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.contact {
+  width: 28px;
+}
+
+.home-header .inquiry:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+.home-header .inquiry:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== Hero ===== */
 .main-section {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  flex-grow: 1;
-  overflow: hidden;
-  padding: clamp(24px, 5vw, 80px) 16px;
-}
-
-/* 텍스트 정렬 및 여백 최소화 */
-.text-section {
-  max-width: min(860px, 92vw);
-  text-align: center;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+  justify-content: flex-start; /* 세로 상단 정렬 */
   align-items: center;
-  overflow: hidden;
+  min-height: unset; /* 높이 강제 X */
+  padding: clamp(32px, 5vw, 64px) 20px;
 }
 
-.title {
-  font-size: 48px;
-  font-weight: bold;
-  margin: 0 0 clamp(8px, 2vw, 16px);
+.hero-grid {
+  width: 100%;
+  max-width: 1120px; /* 여유 있는 최대 폭 */
+  grid-template-columns: 1.2fr 0.8fr; /* 텍스트 넓게, 비주얼 좁게 */
+  align-items: center;
+  gap: clamp(20px, 3.5vw, 40px);
+}
+
+/* 텍스트 블록 중앙 정렬 */
+.text-section {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.main-title {
+  display: inline-flex; /* 로고 + 텍스트 한 줄 */
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: clamp(34px, 5.2vw, 46px);
+  letter-spacing: -0.2px;
+  line-height: 1.12;
+  font-weight: 1000;
+  color: #3e70c7;
+  margin-bottom: 14px;
+}
+.main-round {
+  align-items: center;
+  padding: 12px;
+  border-radius: 999px;
+  width: 50%;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: #fff;
+  border: none;
+  background: linear-gradient(85deg, #8dade4, #320b3e);
+  margin-bottom: 20px;
 }
 
 .mongle-logo {
-  display: block;
-  margin: 0 auto;
-  width: clamp(250px, 28vw, 520px); /* 모바일~데스크톱 */
+  display: inline-block;
+  width: 300px;
   height: auto;
-  object-fit: contain;
 }
 
-.subtitle {
-  font-weight: 700;
-  font-size: clamp(18px, 2.2vw, 24px);
-  margin: clamp(10px, 2vw, 16px) 0;
+.main-subtitle {
+  font-size: clamp(20px, 2.3vw, 22px);
+  line-height: 1.65;
+  font-weight: 600;
   color: #222;
+  line-height: 1.6;
+  margin-bottom: 14px;
 }
 
-.description {
-  font-size: clamp(14px, 1.6vw, 18px);
+.main-description {
+  font-size: 17px;
   line-height: 1.9;
   color: #4a4a4a;
-  margin: 0 auto clamp(24px, 4vw, 40px);
-  letter-spacing: 0.2px;
+  max-width: 640px;
+  margin: 0 auto 28px;
 }
 
-.description br {
-  content: "";
-  display: block;
-  margin-bottom: 8px;
-}
-
-/* 버튼 여백도 최소화 */
+/* CTA 버튼 */
 .button-group {
   display: flex;
-  gap: 12px;
-  justify-content: center;
   flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center; /* 버튼 중앙 정렬 */
 }
 
 .btn-home {
-  padding: 14px 22px;
-  border-radius: 10px;
-  font-size: clamp(14px, 1.6vw, 16px);
-  transition: transform 0.12s ease, box-shadow 0.12s ease,
-    background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease;
-  cursor: pointer;
+  min-width: 140px;
+  min-height: 50px;
+  font-size: 20px;
+  border-radius: 12px;
   border: 1px solid transparent;
+  cursor: pointer;
 }
-
 .btn-1 {
-  background-color: black;
+  background-color: rgb(0, 0, 0);
   color: white;
-  border: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
-
-.btn-home.btn-1:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
-}
-
 .btn-2 {
   background-color: white;
   color: black;
   border: 2px solid #42413f;
 }
 
-.btn-2:hover {
-  transform: translateY(-1px);
-  background-color: #f2f2f2;
+/* ===== Visual ===== */
+.visual-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
-/* 모달 관련 스타일은 기존 그대로 유지 */
+.device-mock {
+  width: 100%;
+  max-width: 360px; /* 가볍게 축소 */
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(2px) saturate(120%);
+}
 
+/* Pill */
+.pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.pill {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  backdrop-filter: saturate(120%) blur(3px);
+}
+
+/* ===== Steps ===== */
+.steps {
+  /* 기존: margin: clamp(24px, 6vw, 72px) auto; */
+  margin: clamp(12px, 3vw, 28px) auto;
+}
+
+.steps-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 2.2vw, 22px);
+  list-style: none;
+  padding: 0;
+}
+
+.steps-list li {
+  background: #ffffffcf;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 18px;
+  padding: clamp(16px, 2.2vw, 22px);
+  box-shadow: 0 8px 24px rgba(62, 112, 199, 0.12); /* 블루 톤 그림자 */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.7s ease forwards;
+}
+.steps-list li:nth-child(1) {
+  animation-delay: 0.25s;
+}
+.steps-list li:nth-child(2) {
+  animation-delay: 0.6s;
+}
+.steps-list li:nth-child(3) {
+  animation-delay: 1s;
+}
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.steps-list li:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(62, 112, 199, 0.18);
+}
+.steps h3 {
+  font-size: 18px;
+  letter-spacing: -0.1px;
+  margin: 8px 0 6px;
+}
+.steps-list p {
+  font-size: 15.5px;
+  line-height: 1.65;
+}
+
+/* STEP 배지 */
+.step-num {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: #fff;
+  border: none;
+  background: linear-gradient(90deg, #3e70c7, #5a8de0);
+  margin-bottom: 10px;
+}
+
+/* 카드 안 이미지(반응형 + 중앙) */
+.steps-list li img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 180px;
+  margin: 10px auto 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Modal ===== */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1000;
+  justify-content: center;
 }
-
 .modal-content {
   background: white;
+  color: inherit;
   padding: 20px;
   border-radius: 10px;
-  position: relative;
   max-width: 90%;
   max-height: 90%;
   text-align: center;
 }
-
-.modal-content img {
-  max-width: 100%;
-  max-height: 70vh;
-  border-radius: 6px;
-}
-
-.modal-close {
-  margin-top: 15px;
-  padding: 8px 16px;
-  background-color: #444;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.inquiry {
-  cursor: pointer;
-}
-
 .modal-buttons {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-top: 16px;
-  align-items: center;
 }
-
 .modal-button {
   width: 90%;
   padding: 12px 16px;
   border-radius: 12px;
   font-size: 16px;
   font-weight: 600;
-  text-align: center;
-  text-decoration: none;
 }
-
 .modal-button.kakao {
   background-color: #fae100;
   color: #3c1e1e;
 }
-
 .modal-button.email {
   background-color: #3b82f6;
-  color: white;
+  color: #fff;
+}
+.modal-close {
+  margin-top: 15px;
+  padding: 8px 16px;
+  background-color: #444;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
+/* ===== Responsive ===== */
+
+/* iPad Air 구간: 3열 유지 + 히어로 균형 */
+@media (min-width: 820px) and (max-width: 1180px) {
+  .hero-grid {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 28px;
+  }
+  .steps-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 960px 이하: 1열 스택 + 비주얼 위로 */
+@media (max-width: 960px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .visual-section {
+    order: -1;
+  }
+  .steps-list {
+    grid-template-columns: 1fr;
+  }
 }

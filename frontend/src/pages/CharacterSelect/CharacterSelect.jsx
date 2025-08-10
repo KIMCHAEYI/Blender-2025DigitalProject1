@@ -28,6 +28,7 @@ export default function CharacterSelect() {
   return (
     <div className="page-center character-page">
       <h2 className="question">
+        <p className="order">5/5</p>
         <span className="highlight">여정을 함께할 캐릭터</span>를 골라주세요
       </h2>
 

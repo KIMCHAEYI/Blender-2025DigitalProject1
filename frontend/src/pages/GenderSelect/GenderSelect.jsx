@@ -28,6 +28,7 @@ export default function GenderSelect() {
   return (
     <div className="page-center gender-page">
       <h2 className="question">
+        <p className="order">3/5</p>
         <span className="highlight">성별</span>을 선택해 주세요
       </h2>
 

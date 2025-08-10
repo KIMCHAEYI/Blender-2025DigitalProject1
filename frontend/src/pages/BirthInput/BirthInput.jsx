@@ -50,6 +50,7 @@ export default function BirthInput() {
   return (
     <div className="page-center birth-page page-no-scroll">
       <h2 className="question">
+        <p className="order">2/5</p>
         <span className="highlight">생년월일</span>을 입력해 주세요
       </h2>
 

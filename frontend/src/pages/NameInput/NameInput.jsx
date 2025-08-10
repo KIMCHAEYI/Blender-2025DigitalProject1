@@ -25,6 +25,7 @@ export default function NameInput() {
   return (
     <div className="page-center name-page">
       <h2 className="question">
+        <p className="order">1/5</p>
         <span className="highlight">이름</span>을 입력해 주세요
       </h2>
       <InputField value={name} onChange={setName} className="name-input" />
