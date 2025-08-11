@@ -15,18 +15,20 @@ export default function CanvasTemplate({
   currentStep,
 }) {
   const navigate = useNavigate();
-  const stageRef = useRef();
+  const stageRef = useRef(null);
+  const headerRef = useRef(null);
+  const toolbarRef = useRef(null);
+  const wrapperRef = useRef(null);
+  const footerRef = useRef(null);
 
   const [lines, setLines] = useState([]);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [penSize, setPenSize] = useState(2);
+  const [penSize, setPenSize] = useState(4);
   const [canvasWidth, setCanvasWidth] = useState(1123);
-  const [history, setHistory] = useState([]);
   const [eraseCount, setEraseCount] = useState(0);
   const [resetCount, setResetCount] = useState(0);
 
   const totalSteps = 4;
-
   const isHorizontal = drawingType === "house";
   const BASE_WIDTH = isHorizontal ? 1123 : 794;
   const BASE_HEIGHT = isHorizontal ? 794 : 1123;
@@ -34,55 +36,83 @@ export default function CanvasTemplate({
   const { userData, setUserData } = useUserContext();
   const [startTime] = useState(Date.now());
 
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [showCancelModal, setShowCancelModal] = useState(false); // 그만두기
-  const [showSubmitModal, setShowSubmitModal] = useState(false); // ✅ 제출 모달 추가
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
 
+  // 처음 방문 시 한 번만 안내 모달
   useEffect(() => {
-    const handleResize = () => {
-      const aspectRatio = BASE_WIDTH / BASE_HEIGHT;
-      const screenWidth = window.innerWidth - 40;
-      const screenHeight = window.innerHeight - 200;
+    const seen = localStorage.getItem("seenToolbarGuideV2");
+    if (!seen) {
+      setShowGuide(true);
+      localStorage.setItem("seenToolbarGuideV2", "true");
+    }
+  }, []);
 
-      const finalWidth =
-        screenHeight * aspectRatio <= screenWidth
-          ? screenHeight * aspectRatio
-          : screenWidth;
+  // 캔버스 크기 계산
+  useEffect(() => {
+    const aspect = BASE_WIDTH / BASE_HEIGHT;
 
-      setCanvasWidth(finalWidth);
+    const measureAndSet = () => {
+      const headerH = headerRef.current?.getBoundingClientRect().height || 0;
+      const toolbarW = toolbarRef.current?.getBoundingClientRect().width || 0;
+      const footerRect = footerRef.current?.getBoundingClientRect();
+      const footerW = footerRect?.width || 0;
+      const footerH = footerRect?.height || 0;
+
+      const screenW = window.innerWidth;
+      const screenH = window.innerHeight;
+
+      const H_GUTTER = 24;
+      const V_GUTTER = 24;
+      const EXTRA_TITLE_GAP = 16;
+      const RIGHT_RESERVED = footerW + 24;
+      const BOTTOM_RESERVED = footerH + 24;
+
+      const availW = Math.max(
+        0,
+        screenW - toolbarW - RIGHT_RESERVED - H_GUTTER * 2
+      );
+      const availH = Math.max(
+        0,
+        screenH - headerH - BOTTOM_RESERVED - (V_GUTTER * 2 + EXTRA_TITLE_GAP)
+      );
+
+      const widthIfHeightLimited = availH * aspect;
+      const finalWidth = Math.floor(Math.min(availW, widthIfHeightLimited));
+      setCanvasWidth(Math.max(240, finalWidth));
     };
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    measureAndSet();
+    const ro = new ResizeObserver(measureAndSet);
+    ro.observe(document.body);
+    if (headerRef.current) ro.observe(headerRef.current);
+    if (toolbarRef.current) ro.observe(toolbarRef.current);
+    if (footerRef.current) ro.observe(footerRef.current);
+
+    window.addEventListener("resize", measureAndSet);
+    window.addEventListener("orientationchange", measureAndSet);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measureAndSet);
+      window.removeEventListener("orientationchange", measureAndSet);
+    };
   }, [BASE_WIDTH, BASE_HEIGHT]);
 
-  const handleNextClick = () => {
-    setShowSubmitModal(true);
-  };
-
-  const handleCancelClick = () => {
-    setShowCancelModal(true);
-  };
-
-  const handleCancelConfirm = () => {
-    navigate("/"); // 홈화면으로 이동
-  };
+  const handleCancelClick = () => setShowCancelModal(true);
+  const handleCancelConfirm = () => navigate("/");
+  const handleNextClick = () => setShowSubmitModal(true);
 
   const handleNext = async () => {
     if (!stageRef.current || !userData) return;
-
     requestAnimationFrame(() => {
       const dataURL = stageRef.current.toDataURL({ pixelRatio: 2 });
-      console.log("저장된 이미지:", dataURL); // 일단 콘솔에 찍기
-
       const fileName = generateSafePngFileName(userData, drawingType);
-
       const file = dataURLtoFile(dataURL, fileName);
       const formData = new FormData();
       formData.append("drawing", file);
       formData.append("type", drawingType);
-
       const duration = Math.floor((Date.now() - startTime) / 1000);
 
       axios
@@ -94,9 +124,7 @@ export default function CanvasTemplate({
           }
         )
         .then((res) => {
-          const { path, filename, analysis } = res.data;
-          console.log("분석 응답 결과:", res.data); // 이거 찍으면 원인 바로 보임
-
+          const { path, analysis } = res.data;
           setUserData((prev) => ({
             ...prev,
             drawings: {
@@ -110,17 +138,16 @@ export default function CanvasTemplate({
               },
             },
           }));
-
           navigate(nextRoute);
         })
-        .catch((err) => {
-          console.error("YOLO 분석 실패:", err);
+        .catch(() => {
           alert("그림은 저장됐지만 분석에 실패했어요 😢");
           navigate(nextRoute);
         });
     });
   };
 
+  // 그리기 핸들러
   const handleMouseDown = (e) => {
     setIsDrawing(true);
     const stage = e.target.getStage();
@@ -133,86 +160,93 @@ export default function CanvasTemplate({
       strokeWidth: penSize,
       timestamp: Date.now(),
     };
-    setLines([...lines, newLine]);
-    setHistory([...history, { action: "start", data: newLine }]);
+    setLines((prev) => [...prev, newLine]);
   };
 
   const handleMouseMove = (e) => {
-    if (!isDrawing || lines.length === 0) return;
+    if (!isDrawing) return;
     const stage = e.target.getStage();
     const pointer = stage.getPointerPosition();
     const scale = stage.scaleX();
     const point = { x: pointer.x / scale, y: pointer.y / scale };
-    const lastLine = lines[lines.length - 1];
-    if (!lastLine) return;
-    const updatedLine = {
-      ...lastLine,
-      points: [...lastLine.points, point.x, point.y],
-    };
-    setLines([...lines.slice(0, -1), updatedLine]);
+    setLines((prev) => {
+      if (prev.length === 0) return prev;
+      const last = prev[prev.length - 1];
+      const updated = { ...last, points: [...last.points, point.x, point.y] };
+      return [...prev.slice(0, -1), updated];
+    });
   };
 
   const handleMouseUp = () => setIsDrawing(false);
-
   const handleClear = () => {
     setLines([]);
     setIsDrawing(false);
-    setHistory([...history, { action: "clear", at: Date.now() }]);
-    setResetCount((prev) => prev + 1);
+    setResetCount((p) => p + 1);
   };
-
   const handleUndo = () => {
-    if (lines.length === 0) return;
-    const undone = lines[lines.length - 1];
-    setLines(lines.slice(0, -1));
-    setHistory([...history, { action: "undo", data: undone, at: Date.now() }]);
-    setEraseCount((prev) => prev + 1);
+    setLines((p) => p.slice(0, -1));
+    setEraseCount((c) => c + 1);
   };
 
   const scale = canvasWidth / BASE_WIDTH;
 
   return (
     <div className="page-center house-page">
-      <div className="canvas-header-row">
+      <div className="canvas-header-row" ref={headerRef}>
         <div className="rectangle-header">
           <h2 className="rectangle-title">{title}</h2>
         </div>
       </div>
 
-      <div className="canvas-body">
-        <div className="toolbar">
+      <div className="canvas-body" ref={wrapperRef}>
+        {/* 툴바 */}
+        <div className="toolbar" ref={toolbarRef} aria-label="그림 도구">
           <button
+            type="button"
             className={`btn-toolbar ${penSize === 2 ? "selected" : ""}`}
             onClick={() => setPenSize(2)}
+            title="펜 굵기: 얇게"
           >
-            <img src="/assets/pen-mid.svg" alt="얇게" className="icon" /> 얇게
+            ✏️ 얇게
           </button>
           <button
+            type="button"
             className={`btn-toolbar ${penSize === 4 ? "selected" : ""}`}
             onClick={() => setPenSize(4)}
+            title="펜 굵기: 중간"
           >
-            <img src="/assets/pen-mid.svg" alt="중간" className="icon" /> 중간
+            ✏️ ✏️ 중간
           </button>
           <button
+            type="button"
             className={`btn-toolbar ${penSize === 8 ? "selected" : ""}`}
             onClick={() => setPenSize(8)}
+            title="펜 굵기: 굵게"
           >
-            <img src="/assets/pen-mid.svg" alt="굵게" className="icon" /> 굵게
+            ✏️✏️ ✏️ 굵게
           </button>
 
-          <button className="btn-toolbar" onClick={handleUndo}>
-            <img src="/assets/eraser.svg" alt="한 획 지우기" className="icon" />{" "}
-            한 획<br></br>지우기
+          <button
+            type="button"
+            className="btn-toolbar"
+            onClick={handleUndo}
+            title="되돌리기"
+          >
+            ↩️ 되돌리기
           </button>
-          <button className="btn-toolbar" onClick={handleClear}>
-            <img src="/assets/re-draw.svg" alt="새로 그리기" className="icon" />
-            새로 <br /> 그리기
+          <button
+            type="button"
+            className="btn-toolbar"
+            onClick={handleClear}
+            title="처음부터"
+          >
+            🗑 처음부터
           </button>
         </div>
 
         <div className="canvas-wrapper">
           <div className="progress-indicator static-overlay">
-            {[...Array(totalSteps)].map((_, i) => (
+            {Array.from({ length: totalSteps }).map((_, i) => (
               <span
                 key={i}
                 className={`dot ${i < currentStep ? "active" : ""}`}
@@ -226,8 +260,8 @@ export default function CanvasTemplate({
             scale={{ x: scale, y: scale }}
             className="drawing-canvas"
             onMouseDown={handleMouseDown}
-            onMousemove={handleMouseMove}
-            onMouseup={handleMouseUp}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
             onTouchStart={handleMouseDown}
             onTouchMove={handleMouseMove}
             onTouchEnd={handleMouseUp}
@@ -249,83 +283,126 @@ export default function CanvasTemplate({
                   strokeWidth={line.strokeWidth}
                   tension={0.5}
                   lineCap="round"
-                  globalCompositeOperation="source-over"
                 />
               ))}
             </Layer>
           </Stage>
+        </div>
+      </div>
 
-          {showSubmitModal && (
-            <div
-              className="modal-overlay"
-              onClick={() => setShowSubmitModal(false)}
+      {/* 처음 방문 안내 모달 (한 번만 표시) */}
+      {showGuide && (
+        <div className="modal-overlay" onClick={() => setShowGuide(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                justifyContent: "center",
+              }}
             >
-              <div
-                className="modal-content"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <h3>제출하시겠습니까?</h3>
-                <p>제출 후에는 그림을 수정할 수 없습니다.</p>
-                <div className="modal-buttons">
-                  <button
-                    className="modal-button confirm"
-                    onClick={() => {
-                      setShowSubmitModal(false);
-                      handleNext();
-                    }}
-                  >
-                    확인
-                  </button>
-                  <button
-                    className="modal-button cancel"
-                    onClick={() => setShowSubmitModal(false)}
-                  >
-                    취소
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-          {showCancelModal && (
-            <div
-              className="modal-overlay"
-              onClick={() => setShowCancelModal(false)}
+              <span role="img" aria-label="sparkles">
+                ✨
+              </span>{" "}
+              그림 도구 사용법
+            </h3>
+            <ul
+              style={{
+                textAlign: "left",
+                padding: "0 1rem",
+                lineHeight: 1.7,
+                fontSize: "16px",
+                marginTop: 8,
+              }}
             >
-              <div
-                className="modal-content"
-                onClick={(e) => e.stopPropagation()}
+              <li>
+                ✏️ <b>굵기</b>는 <b>얇게 / 중간 / 굵게</b> 중에서 골라요.
+              </li>
+              <li>
+                ↩️ <b>되돌리기</b>: 방금 그린 선을 지워요.
+              </li>
+              <li>
+                🗑 <b>처음부터</b>: 그림을 모두 지워요.
+              </li>
+              <li>
+                👉 다 그렸으면 <b>다음으로</b> 버튼을 눌러요!
+              </li>
+            </ul>
+            <button
+              className="modal-button confirm"
+              onClick={() => setShowGuide(false)}
+              style={{ marginTop: 12 }}
+            >
+              알겠어요!
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="footer-buttons-row" ref={footerRef}>
+        <button className="btn-base btn-nextred" onClick={handleCancelClick}>
+          검사 그만두기
+        </button>
+        <button className="btn-base btn-nextblue" onClick={handleNextClick}>
+          다음으로
+        </button>
+      </div>
+
+      {showSubmitModal && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowSubmitModal(false)}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>제출하시겠습니까?</h3>
+            <p>제출 후에는 그림을 수정할 수 없습니다.</p>
+            <div className="modal-buttons">
+              <button
+                className="modal-button confirm"
+                onClick={() => {
+                  setShowSubmitModal(false);
+                  handleNext();
+                }}
               >
-                <h3>정말 그만두시겠습니까?</h3>
-                <p>페이지를 나가면 처음부터 다시 시작해야 합니다.</p>
-                <div className="modal-buttons">
-                  <button
-                    className="modal-button confirm"
-                    onClick={handleCancelConfirm}
-                  >
-                    확인
-                  </button>
-                  <button
-                    className="modal-button cancel"
-                    onClick={() => setShowCancelModal(false)}
-                  >
-                    취소
-                  </button>
-                </div>
-              </div>
+                확인
+              </button>
+              <button
+                className="modal-button cancel"
+                onClick={() => setShowSubmitModal(false)}
+              >
+                취소
+              </button>
             </div>
-          )}
+          </div>
         </div>
-      </div>
-      <div className="canvas-footer">
-        <div className="footer-buttons-row">
-          <button className="btn-base btn-nextred" onClick={handleCancelClick}>
-            검사 그만두기
-          </button>
-          <button className="btn-base btn-nextblue" onClick={handleNextClick}>
-            다음으로
-          </button>
+      )}
+
+      {showCancelModal && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowCancelModal(false)}
+        >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>정말 그만두시겠습니까?</h3>
+            <p>페이지를 나가면 처음부터 다시 시작해야 합니다.</p>
+            <div className="modal-buttons">
+              <button
+                className="modal-button confirm"
+                onClick={handleCancelConfirm}
+              >
+                확인
+              </button>
+              <button
+                className="modal-button cancel"
+                onClick={() => setShowCancelModal(false)}
+              >
+                취소
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

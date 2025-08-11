@@ -26,7 +26,7 @@
 
 .button-finish {
   position: relative;
-  --cta-color: #b3ddef; /* 링 색(원하는 브랜드 컬러로 변경) */
+  --cta-color: #5052bb; /* 링 색(원하는 브랜드 컬러로 변경) */
   transition: transform 40ms ease, filter 160ms ease;
 }
 
