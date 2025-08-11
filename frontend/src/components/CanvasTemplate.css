@@ -94,6 +94,26 @@
   display: block;
 }
 
+.btn-toolbar.btn-help {
+  min-width: 90px;
+  min-height: 44px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 6px;
+}
+.btn-toolbar.btn-help:hover {
+  background: #e8eef7;
+}
+.btn-toolbar.btn-help:active {
+  transform: translateY(1px);
+}
+
 /* 진행 점: 캔버스 상단 좌측에 고정 */
 .progress-indicator.static-overlay {
   position: absolute;

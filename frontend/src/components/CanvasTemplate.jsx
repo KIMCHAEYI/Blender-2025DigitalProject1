@@ -242,6 +242,15 @@ export default function CanvasTemplate({
           >
             🗑 처음부터
           </button>
+          <button
+            type="button"
+            className="btn-toolbar btn-help"
+            onClick={() => setShowGuide(true)}
+            aria-label="그림 도구 도움말 열기"
+            title="도움말"
+          >
+            ❓ 도움말
+          </button>
         </div>
 
         <div className="canvas-wrapper">
@@ -328,6 +337,12 @@ export default function CanvasTemplate({
               <li>
                 👉 다 그렸으면 <b>다음으로</b> 버튼을 눌러요!
               </li>
+              <li>
+                🟥 <b>검사 그만두기</b>: 지금 멈추면 <b>처음부터 다시 시작</b>
+                해요.
+              </li>
+              <br />
+              모르는 게 있으면 어른에게 도움을 요청하세요!
             </ul>
             <button
               className="modal-button confirm"
@@ -384,8 +399,8 @@ export default function CanvasTemplate({
           onClick={() => setShowCancelModal(false)}
         >
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>정말 그만두시겠습니까?</h3>
-            <p>페이지를 나가면 처음부터 다시 시작해야 합니다.</p>
+            <h3>나중에 다시 할래요</h3>
+            <p>지금 멈추면 처음부터 다시 시작해요</p>
             <div className="modal-buttons">
               <button
                 className="modal-button confirm"
