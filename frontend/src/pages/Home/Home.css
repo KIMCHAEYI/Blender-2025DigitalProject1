@@ -85,7 +85,7 @@
   font-size: clamp(34px, 5.2vw, 46px);
   letter-spacing: -0.2px;
   line-height: 1.12;
-  font-weight: 1000;
+  font-weight: 800;
   color: #3e70c7;
   margin-bottom: 14px;
 }
@@ -110,9 +110,9 @@
 }
 
 .main-subtitle {
-  font-size: clamp(20px, 2.3vw, 22px);
+  font-size: clamp(20px, 2.3vw, 25px);
   line-height: 1.65;
-  font-weight: 600;
+  font-weight: bold;
   color: #222;
   line-height: 1.6;
   margin-bottom: 14px;
@@ -310,8 +310,9 @@
   color: #fff;
 }
 .modal-close {
-  margin-top: 15px;
+  margin-top: 18px;
   padding: 8px 16px;
+  font-size: 16px;
   background-color: #444;
   color: #fff;
   border: none;

@@ -3,7 +3,16 @@
   height: 47px;
 }
 
-.order {
-  font-size: 18px;
-  color: rgb(116, 116, 116);
+.btn:disabled,
+.btn.is-disabled,
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(10%);
+  pointer-events: none; /* 클릭/탭 막기 */
+}
+
+/* 선택: 활성일 때만 살짝 밝아지는 호버 */
+.btn-primary:not(:disabled):hover {
+  filter: brightness(1.03);
 }

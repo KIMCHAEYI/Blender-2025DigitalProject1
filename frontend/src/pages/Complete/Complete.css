@@ -23,3 +23,50 @@
   background-color: #3e70c7;
   font-size: 32px;
 }
+
+.button-finish {
+  position: relative;
+  --cta-color: #b3ddef; /* 링 색(원하는 브랜드 컬러로 변경) */
+  transition: transform 40ms ease, filter 160ms ease;
+}
+
+.cta-pulse {
+  animation: cta-breathe 1.4s ease-in-out infinite;
+}
+.cta-pulse::after {
+  content: "";
+  position: absolute;
+  inset: -6px; /* 버튼보다 약간 크게 */
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 var(--cta-color);
+  opacity: 0.55;
+  pointer-events: none;
+  animation: cta-ring 1.4s ease-out infinite;
+}
+
+@keyframes cta-breathe {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(-1px) scale(1.03);
+  }
+}
+@keyframes cta-ring {
+  0% {
+    box-shadow: 0 0 0 0 var(--cta-color);
+    opacity: 0.55;
+  }
+  100% {
+    box-shadow: 0 0 0 16px rgba(79, 70, 229, 0);
+    opacity: 0;
+  }
+}
+
+/* 접근성: 모션 최소화 설정 존중 */
+@media (prefers-reduced-motion: reduce) {
+  .cta-pulse,
+  .cta-pulse::after {
+    animation: none !important;
+  }
+}

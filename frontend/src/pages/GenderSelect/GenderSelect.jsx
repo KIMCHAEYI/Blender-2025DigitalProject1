@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import "./GenderSelect.css";
 import { useUserContext } from "../../contexts/UserContext";
+import StepIndicator from "../../components/StepIndicator";
 
 export default function GenderSelect() {
   const [gender, setGender] = useState("");
   const navigate = useNavigate();
   const { setUserData, userData } = useUserContext();
+
+  const canNext = !!gender;
 
   const handleSelect = (value) => {
     setGender(value);
@@ -27,8 +30,9 @@ export default function GenderSelect() {
 
   return (
     <div className="page-center gender-page">
+      <StepIndicator current={3} total={5} variant="topline" />
+
       <h2 className="question">
-        <p className="order">3/5</p>
         <span className="highlight">성별</span>을 선택해 주세요
       </h2>
 
@@ -46,7 +50,12 @@ export default function GenderSelect() {
         ))}
       </div>
 
-      <Button type="primary" className="btn-primary" onClick={handleNext}>
+      <Button
+        type="primary"
+        className="btn-primary"
+        onClick={handleNext}
+        disabled={!canNext}
+      >
         선택했어요
       </Button>
     </div>

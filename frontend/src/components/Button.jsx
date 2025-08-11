@@ -14,6 +14,7 @@ export default function Button({
   type = "primary",
   className = "",
   children,
+  disabled = false,
 }) {
   const typeClass =
     {
@@ -23,7 +24,11 @@ export default function Button({
     }[type] || "btn-primary";
 
   return (
-    <button onClick={onClick} className={`btn-base ${typeClass} ${className}`}>
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`btn-base ${typeClass} ${className}`}
+    >
       {children}
     </button>
   );

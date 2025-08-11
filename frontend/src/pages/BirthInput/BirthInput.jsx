@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import "./BirthInput.css";
 import { useUserContext } from "../../contexts/UserContext";
+import StepIndicator from "../../components/StepIndicator";
+import NextButton from "../../components/NextButton";
 
 export default function BirthInput() {
   // 상태 저장: 선택된 연/월/일
@@ -32,6 +34,7 @@ export default function BirthInput() {
     }
     return options;
   };
+  const canNext = !!(year && month && day);
 
   // 다음 페이지 이동 처리
   const handleNext = () => {
@@ -49,8 +52,9 @@ export default function BirthInput() {
 
   return (
     <div className="page-center birth-page page-no-scroll">
+      <StepIndicator current={2} total={5} variant="topline" />
+
       <h2 className="question">
-        <p className="order">2/5</p>
         <span className="highlight">생년월일</span>을 입력해 주세요
       </h2>
 
@@ -78,13 +82,9 @@ export default function BirthInput() {
         </select>
       </div>
 
-      <Button
-        type="primary"
-        className="btn-base btn-primary"
-        onClick={handleNext}
-      >
+      <NextButton enabled={canNext} onClick={handleNext}>
         입력했어요
-      </Button>
+      </NextButton>
     </div>
   );
 }

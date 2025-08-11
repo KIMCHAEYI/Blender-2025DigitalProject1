@@ -86,9 +86,9 @@ export default function Home() {
             <h3>그림 그리기</h3>
             <img src="/images/YUSHI.png" alt="step1" className="step1" />
             <div className="pill-list">
-              <div className="pill">✍️ 캔버스에 바로 그리기</div>
-              <div className="pill">🧠 AI 기반 해석</div>
-              <div className="pill">🔒 안전한 저장</div>
+              <div className="pill">✍️ 그림 시작</div>
+              <div className="pill">🏡 집, 나무, 사람</div>
+              <div className="pill">🎯 1차 진단</div>
             </div>
             <p>
               몽글이 준비한 주제(집, 나무, 사람 등)에 맞춰 자유롭게 그림을
@@ -96,43 +96,47 @@ export default function Home() {
             </p>
             <br />
             <div className="pill2">🛠 AI 분석</div>
-            YOLO 모델이 그림 속 요소(창문, 나무 가지, 표정 등)를 인식하고
-            위치·크기를 데이터로 변환해요.
+            YOLO 모델이 그림 속 요소(창문, 나무 가지, 표정 등)를 인식하고,
+            위치·크기·색·화면 채움 비율·지우개 사용 횟수를 데이터로 변환해
+            아동의 1차 심리 상태를 파악해요.
           </li>
           <li>
             <span className="step-num">STEP 2</span>
-            <h3>AI 질문 & 추가 그림</h3>
+            <h3>추가로 그림 그리기</h3>
             <img src="/images/YUSHI.png" alt="step1" className="step1" />
             <div className="pill-list">
-              <div className="pill">✍️ 캔버스에 바로 그리기</div>
-              <div className="pill">🧠 AI 기반 해석</div>
-              <div className="pill">🔒 안전한 저장</div>
+              <div className="pill">✍️ 추가 그리기</div>
+              <div className="pill">🎯 심층 탐색</div>
             </div>
             <p>
-              몽글이 그림 분석 결과를 보고 궁금한 점을 물어봐요. 예: “집 주변에
-              누가 살고 있나요?”
+              몽글이 1차 분석 결과를 보고, 더 알아보고 싶은 부분을 그림 주제로
+              제시해요. 질문에 맞춰 이어 그려주세요. (예: “이 사람 주변에 있는
+              장면을 그려주세요.”)
             </p>
             <br />
             <div className="pill2">🛠 AI 분석</div>
-            GPT가 1차 분석 데이터를 읽고, 심리적 의미가 모호한 부분을 더 알아낼
-            수 있는 ‘맞춤 질문’을 생성해요. 사용자는 대답을 그림으로 표현해요.
+            몽글의 데이터 기반 해석 알고리즘이 기존 검사에서는 놓칠 수 있는
+            무의식적 표현을 탐지하여, 이를 확인·보완할 수 있는 주제를 자동
+            설계합니다. 아이는 말 대신 그림으로 응답하며 자신의 생각을
+            자연스럽게 표현해요.
           </li>
           <li>
             <span className="step-num">STEP 3</span>
-            <h3>AI 마음 리포트 확인</h3>
+            <h3>AI 마음 리포트 확인하기</h3>
             <img src="/images/YUSHI.png" alt="step1" className="step1" />
             <div className="pill-list">
-              <div className="pill">✍️ 캔버스에 바로 그리기</div>
-              <div className="pill">🧠 AI 기반 해석</div>
-              <div className="pill">🔒 안전한 저장</div>
+              <div className="pill">📄 리포트 제공</div>
+              <div className="pill">🧠 AI 해석</div>
+              <div className="pill">🌟 최종 진단</div>
             </div>
             <p>
               몽글이 모든 그림을 종합해 마음 속 이야기를 리포트로 보여줘요.
               <br />
             </p>
-            <div className="pill2">🛠 AI 분석</div> 1차·2차 그림 데이터를
+            <div className="pill2">🛠 AI 분석</div> 1차와 2차 그림 데이터를
             비교하고, 정량 지표(크기, 비율, 위치 변화)와 정성 분석(그림
-            내용·구성)을 함께 적용해 최종 해석을 완성해요.
+            내용·구성)을 함께 적용해 최종 심리 해석을 완성해요. 아동용 요약
+            리포트와 전문가용 상세 분석본을 제공합니다.
           </li>
         </ol>
       </section>

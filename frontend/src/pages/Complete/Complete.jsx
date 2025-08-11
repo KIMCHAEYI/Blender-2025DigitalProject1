@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../../components/Button";
@@ -9,18 +9,23 @@ export default function Complete() {
   const { userData } = useUserContext();
   const navigate = useNavigate();
 
+  // ▶ 버튼에 주의를 끄는 힌트 애니메이션 on/off
+  const [hint, setHint] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setHint(true), 800); // 페이지 뜨고 0.8s 후 시작
+    return () => clearTimeout(t);
+  }, []);
+  const stopHint = () => setHint(false);
+
   const handleSubmit = async () => {
     try {
+      stopHint(); // 클릭 시 애니메이션 중지
       console.log("보내는 데이터:", userData);
-
-      // 1. 세션 저장 (Express 서버)
       const sessionRes = await axios.post(
         "http://192.168.0.250:5000/api/sessions/start",
         userData
       );
       console.log("세션 저장 응답:", sessionRes.data);
-
-      // 2. 바로 다음 페이지로 이동
       alert("정보가 성공적으로 저장되었습니다!");
       navigate("/test/house/intro");
     } catch (err) {
@@ -38,9 +43,14 @@ export default function Complete() {
         마음을 편하게 먹고, 차분히 그림을 그려주세요.
       </p>
 
-      <Button className="button-finish" onClick={handleSubmit}>
-        검사 시작하기
-      </Button>
+      <div onMouseEnter={stopHint} onFocus={stopHint}>
+        <Button
+          className={`button-finish ${hint ? "cta-pulse" : ""}`}
+          onClick={handleSubmit}
+        >
+          검사 시작하기
+        </Button>
+      </div>
     </div>
   );
 }

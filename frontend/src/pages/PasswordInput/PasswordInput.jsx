@@ -5,11 +5,14 @@ import InputField from "../../components/InputField";
 import Button from "../../components/Button";
 import "./PasswordInput.css";
 import { useUserContext } from "../../contexts/UserContext";
+import StepIndicator from "../../components/StepIndicator";
 
 export default function PasswordInput() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { setUserData, userData } = useUserContext();
+
+  const canNext = password.trim().length > 0;
 
   const handleNext = () => {
     if (password.trim()) {
@@ -24,8 +27,9 @@ export default function PasswordInput() {
 
   return (
     <div className="page-center password-page">
+      <StepIndicator current={4} total={5} variant="topline" />
+
       <h2 className="question">
-        <p className="order">4/5</p>
         결과 다시보기를 위한
         <br />
         <span className="highlight">비밀번호</span>를 입력해 주세요
@@ -37,7 +41,9 @@ export default function PasswordInput() {
         className="password-input"
         type="password"
       />
-      <Button onClick={handleNext}>입력했어요</Button>
+      <Button onClick={handleNext} disabled={!canNext}>
+        입력했어요
+      </Button>
     </div>
   );
 }

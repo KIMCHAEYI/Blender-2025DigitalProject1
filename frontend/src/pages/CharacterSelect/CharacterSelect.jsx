@@ -2,12 +2,11 @@ import { useState } from "react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./CharacterSelect.css";
-//import { useUserContext } from "../../contexts/UserContext";
+import StepIndicator from "../../components/StepIndicator";
 
 export default function CharacterSelect() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
-  //const { setUserData, userData } = useUserContext();
 
   const characters = [
     { id: "cha1", name: "뽈록이", img: "/images/rabbit.png" },
@@ -16,19 +15,15 @@ export default function CharacterSelect() {
 
   const handleNext = () => {
     if (selected) {
-      //setUserData((prev) => ({
-      //  ...prev,
-      //  character: selected,
-      // }));
-
       navigate("/complete");
     }
   };
 
   return (
     <div className="page-center character-page">
+      <StepIndicator current={5} total={5} variant="topline" />
+
       <h2 className="question">
-        <p className="order">5/5</p>
         <span className="highlight">여정을 함께할 캐릭터</span>를 골라주세요
       </h2>
 
