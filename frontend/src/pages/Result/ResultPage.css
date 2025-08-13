@@ -21,9 +21,18 @@
   margin-bottom: 12px; /* ✅ 항목 간 간격 */
 }
 
+/* 객체 인식 결과 리스트 스타일 */
+.object-list {
+  list-style: none; /* 기본 • 제거 */
+  padding-left: 0;
+}
+
+.object-list li {
+  margin-bottom: 8px;
+}
+
 .meaning-line {
-  margin-top: 4px;
-  margin-left: 16px;
+  margin-left: 24px; /* 체크아이콘 아래로 들여쓰기 */
   font-style: italic;
   color: #555;
 }
@@ -66,4 +75,51 @@
   background: none;
   color: #42413f;
   background-color: white;
+}
+
+/* 이미지 2단 배치 + 단독일 때 왼쪽 정렬 */
+.image-row {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap; /* 화면 좁아지면 세로로 떨어짐 */
+  margin: 10px 0 8px;
+}
+
+.image-row.single {
+  /* 한 장만 있을 때 영역을 자연스럽게 왼쪽에 */
+  justify-content: flex-start;
+}
+
+.img-figure {
+  flex: 1 1 360px;
+  max-width: 520px;
+  margin: 0; /* 기본 figure margin 제거 */
+}
+
+.drawing-img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  background: #fff;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  display: block;
+}
+
+.img-caption {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #666;
+  text-align: center;
+}
+
+/* 반응형: iPad 세로/좁은 화면에서 세로 스택 */
+@media (max-width: 900px) {
+  .image-row {
+    flex-direction: column;
+  }
+  .img-figure {
+    max-width: 100%;
+  }
 }
