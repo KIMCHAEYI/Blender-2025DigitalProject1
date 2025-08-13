@@ -58,12 +58,12 @@
   margin-top: 82px;
 }
 .btn-black {
-  background: #1c1c1e;
+  background: #42413f;
   color: white;
 }
 .btn-white {
   border: 2px solid var(--, #42413f);
   background: none;
-  color: #1c1c1e;
+  color: #42413f;
   background-color: white;
 }
