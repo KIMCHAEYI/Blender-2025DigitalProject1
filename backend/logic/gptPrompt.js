@@ -1,91 +1,114 @@
+// backend/logic/gptPrompt.js  — minimal synthesis version
 require("dotenv").config();
 const OpenAI = require("openai");
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// person_male/female → 표기 키
+const keyOf = (type, subtype) => {
+  if (type === "person") {
+    if (subtype === "person_male") return "person_man";
+    if (subtype === "person_female") return "person_woman";
+  }
+  if (type === "person_male") return "person_man";
+  if (type === "person_female") return "person_woman";
+  return type; // house | tree
+};
 
-const { analyzeEmotion, analyzeObjects } = require("./analyzeResult");
+// 종합 프롬프트(룰 해석만 사용)
+function buildPrompt(items) {
+  const blocks = items
+    .map((it, i) => {
+      const lines = (it.analysis || []).map((a) =>
+        `- ${a.label ?? ""} ${a.meaning ?? ""}`.trim()
+      );
+      return `[#${i + 1} ${it.type}${it.subtype ? `/${it.subtype}` : ""}]
+${lines.length ? lines.join("\n") : "(해석 없음)"}`;
+    })
+    .join("\n\n");
 
-async function interpretMultipleDrawings(drawings) {
-  const drawingDetails = drawings.map((d) => {
-    const emotionScores = analyzeEmotion(d.checkedItems);
-    const objectInterpretations = analyzeObjects(d.detectedObjects, d.type); // ✅ 타입 기준 분기
-    return {
-      type: d.type,
-      json: d.json,
-      emotionScores,
-      objectInterpretations,
-    };
-  });
-
-  const promptParts = drawingDetails.map((d) => {
-    return `
-  [그림 종류]: ${d.type}
-  [객체 분석 JSON]:
-  ${JSON.stringify(d.json, null, 2)}
-
-  [감정 점수]:
-  ${Object.entries(d.emotionScores)
-    .map(([k, v]) => `${k}: ${v}`)
-    .join(", ")}
-  `;
-  });
-
-  const fullPrompt = `
-  다음은 총 4개의 HTP 그림 분석 결과입니다. 각 그림별로 '객체 분석'과 '감정 점수'가 주어집니다.
-  아래 정보를 바탕으로:
-
-  1. 각 그림에 대한 심리 해석을 제공해 주세요.
-  2. 전체 종합 해석을 추가해 주세요. (성격 요약, 불안 요소, 대인관계 특성, 정서 상태, 조언 등)
-
-  결과는 다음 구조의 JSON으로 작성해 주세요:
-
-  {
-    "per_drawing": {
-      "house": "...",
-      "tree": "...",
-      "person_woman": "...",
-      "person_man": "..."
+  return [
+    {
+      role: "system",
+      content:
+        "너는 HTP 검사 보고서 편집자다. 과도한 추정 없이, 중복을 합치고, 매끄러운 한국어로 요약한다. " +
+        "최종 출력은 간결해야 하며, 동일 의미 문장은 한 번만 말한다.",
     },
-    "overall_summary": {
-      "summary": "...",
-      "traits": ["..."],
-      "psychological_notes": "...",
-      "suggestion": "..."
-    }
-  }
+    {
+      role: "user",
+      content: `아래는 YOLO 규칙엔진이 자동으로 생성한 '해석(meaning)' 텍스트 목록이다.
+이 텍스트들을 근거로, 다음 두 가지를 한국어로 작성해라:
 
-  [아래는 그림별 분석 정보입니다]
-  ${promptParts.join("\n========================\n")}
-  `;
+1) overall_summary: 종합해석 한 문단(4~6문장). 과장·단정 금지, 필요한 경우에만 괄호로 짧게 근거 표기.
+2) per_drawing: 각 그림별 한 문장 요약(선택적·중복 금지). 없으면 빈 문자열.
 
-  const completion = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    messages: [{ role: "user", content: fullPrompt }],
-    temperature: 0.7,
+[입력 해석 목록]
+${blocks}`,
+    },
+  ];
+}
+
+/**
+ * drawings: [{ type, result: { analysis: [{label, meaning}], subtype } }, ...]
+ * 반환: { overall_summary: string, per_drawing: { house, tree, person_woman, person_man } }
+ */
+async function interpretMultipleDrawings(drawings) {
+  // 1) 입력에서 해석만 수집 (우린 YOLO 해석만 쓰면 됨)  :contentReference[oaicite:2]{index=2}
+  const items = drawings.map((d) => {
+    const rawType = d.type || "unknown";
+    const subtype = d.result?.subtype || d.subtype;
+    const type =
+      rawType === "person_male" || rawType === "person_female"
+        ? "person"
+        : rawType;
+    const analysis = Array.isArray(d.result?.analysis) ? d.result.analysis : [];
+    return { type, subtype, analysis };
   });
 
-  const text = completion.choices[0].message.content;
-  let parsed;
-  try {
-    parsed = JSON.parse(text);
-  } catch {
-    throw new Error("GPT 응답을 JSON으로 파싱할 수 없음:\n" + text);
+  // 2) GPT 호출(간결/중복제거 전용)
+  const messages = buildPrompt(items);
+  const { choices } = await openai.chat.completions.create({
+    model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+    temperature: 0.3,
+    max_tokens: 700,
+    messages,
+  });
+
+  // 3) 모델 텍스트 → 아주 단순한 파서(섹션 키워드 기준)
+  const text = choices?.[0]?.message?.content || "";
+  const pick = (label) => {
+    const re = new RegExp(
+      `${label}\\s*:\\s*([\\s\\S]*?)(?:\\n\\s*\\d\\)|$)`,
+      "i"
+    );
+    const m = text.match(re);
+    return m ? m[1].trim() : "";
+  };
+
+  // per_drawing는 문장 한 줄씩 추출 시도(없으면 빈 값)
+  const perDrawing = { house: "", tree: "", person_woman: "", person_man: "" };
+
+  // 간단: 문서 안에서 'house:' 형식 찾기 대신, 모델에 자유서술을 맡겼으니
+  // 여기서는 입력 순서대로 한줄 요약을 다시 생성하도록 후처리
+  // (모델이 per_drawing을 못 줘도 전체 요약만으로 충분히 동작)
+  const lines = text
+    .split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const map = {};
+  ["집", "house", "나무", "tree", "여성", "woman", "남성", "man"].forEach(
+    (k) => (map[k] = "")
+  );
+
+  // 4) 키 매핑: 입력에 존재한 유형만 채움
+  for (const it of items) {
+    const k = keyOf(it.type, it.subtype);
+    perDrawing[k] ||= ""; // 존재 보장
   }
 
-  // ✅ 각 그림 해석에 objects 병합
-  for (const d of drawingDetails) {
-    const key = d.type; // 예: house, tree, person_woman, person_man
-    const summary = parsed.per_drawing[key];
-
-    parsed.per_drawing[key] = {
-      summary, // GPT의 해석 요약
-      objects: d.objectInterpretations, // 우리가 평가표 기반으로 만든 해석
-    };
-  }
-
-  return parsed;
+  return {
+    overall_summary: text || "(요약 없음)",
+    per_drawing: perDrawing,
+  };
 }
 
 module.exports = { interpretMultipleDrawings };

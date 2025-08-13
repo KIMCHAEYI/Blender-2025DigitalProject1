@@ -40,6 +40,12 @@ export default function CanvasTemplate({
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
 
+  // ✅ 세션ID 가져오기(컨텍스트 → 세션스토리지 순서)
+  const getSessionId = () =>
+    (userData && userData.session_id) ||
+    sessionStorage.getItem("session_id") ||
+    sessionStorage.getItem("user_id"); // 과거 키도 대비
+
   // 처음 방문 시 한 번만 안내 모달
   useEffect(() => {
     const seen = localStorage.getItem("seenToolbarGuideV2");
@@ -49,7 +55,7 @@ export default function CanvasTemplate({
     }
   }, []);
 
-  // 캔버스 크기 계산
+  // ✅ 캔버스 크기 계산
   useEffect(() => {
     const aspect = BASE_WIDTH / BASE_HEIGHT;
 
@@ -100,51 +106,70 @@ export default function CanvasTemplate({
     };
   }, [BASE_WIDTH, BASE_HEIGHT]);
 
+  // ✅ 세션ID 자동 복구(없으면 세션스토리지에서 끌어와 컨텍스트에 넣기)
+  useEffect(() => {
+    const sid = getSessionId();
+    if (sid && !userData?.session_id) {
+      setUserData((prev) => ({ ...prev, session_id: sid }));
+    }
+  }, []); // 최초 1회
+
   const handleCancelClick = () => setShowCancelModal(true);
   const handleCancelConfirm = () => navigate("/");
   const handleNextClick = () => setShowSubmitModal(true);
 
+  // ✅ 업로드 후 바로 다음 화면으로
   const handleNext = async () => {
-    if (!stageRef.current || !userData) return;
-    requestAnimationFrame(() => {
+    if (!stageRef.current) return;
+
+    const sid = getSessionId();
+    if (!sid) {
+      alert("세션이 없습니다. 검사 시작(로그인/정보 입력)부터 해주세요.");
+      return;
+    }
+
+    try {
+      // 캔버스 → 파일로 변환
       const dataURL = stageRef.current.toDataURL({ pixelRatio: 2 });
       const fileName = generateSafePngFileName(userData, drawingType);
       const file = dataURLtoFile(dataURL, fileName);
-      const formData = new FormData();
-      formData.append("drawing", file);
-      formData.append("type", drawingType);
-      const duration = Math.floor((Date.now() - startTime) / 1000);
 
-      axios
-        .post(
-          "http://192.168.0.250:5000/api/sessions/analyze-drawing",
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        )
-        .then((res) => {
-          const { path, analysis } = res.data;
-          setUserData((prev) => ({
-            ...prev,
-            drawings: {
-              ...prev.drawings,
-              [drawingType]: {
-                image: path,
-                eraseCount,
-                resetCount,
-                duration,
-                analysis,
-              },
-            },
-          }));
-          navigate(nextRoute);
-        })
-        .catch(() => {
-          alert("그림은 저장됐지만 분석에 실패했어요 😢");
-          navigate(nextRoute);
-        });
-    });
+      // 업로드 폼 구성
+      const formData = new FormData();
+      formData.append("drawing", file); // 서버에서 기대하는 키: drawing
+      formData.append("type", drawingType); // 예: 'house' | 'tree' ...
+      formData.append("session_id", sid);
+
+      // ★ 서버 업로드 주소: server.js 와 일치해야 함 → /api/drawings/upload
+      const uploadRes = await axios.post(
+        "http://172.20.8.138:5000/api/drawings/upload",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      const { drawing_id, path } = uploadRes.data;
+
+      // 업로드 성공 → 결과 기다리지 말고 바로 다음 화면으로 이동
+      setUserData((prev) => ({
+        ...prev,
+        session_id: sid, // 컨텍스트에도 보존
+        drawings: {
+          ...prev.drawings,
+          [drawingType]: {
+            image: path,
+            eraseCount,
+            resetCount,
+            duration: Math.floor((Date.now() - startTime) / 1000),
+            drawing_id, // 나중에 상태/결과 조회 때 사용
+          },
+        },
+      }));
+
+      navigate(nextRoute);
+    } catch (err) {
+      console.error("업로드 실패:", err?.response?.data || err.message);
+      alert("그림 업로드에 실패했습니다.");
+    }
   };
 
   // 그리기 핸들러

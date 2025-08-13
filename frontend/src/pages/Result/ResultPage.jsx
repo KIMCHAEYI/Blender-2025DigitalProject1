@@ -1,20 +1,80 @@
-import React from "react";
+// src/pages/ResultPage.jsx
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../contexts/UserContext";
 import axios from "axios";
+import { waitForAnalysis } from "../../utils/pollDrawing";
 import "./ResultPage.css";
+
+const BASE = "http://172.20.8.138:5000";
+const TYPES = ["house", "tree", "person"];
 
 export default function ResultPage() {
   const navigate = useNavigate();
-  const { userData } = useUserContext();
+  const { userData, setUserData } = useUserContext();
 
-  const handleGoHome = () => {
-    navigate("/");
-  };
+  // UI 표시용
+  const [loadingMap, setLoadingMap] = useState({}); // {house:true/false,...}
+  const [errorMap, setErrorMap] = useState({}); // {house:"에러"...}
+
+  // 업로드된 각 그림(drawing_id)마다, 아직 analysis가 없으면 폴링 시작
+  useEffect(() => {
+    if (!userData?.session_id) return;
+    const cleaners = [];
+
+    TYPES.forEach((type) => {
+      const sec = userData?.drawings?.[type];
+      if (!sec?.drawing_id) return; // 업로드 안 된 타입은 건너뜀
+      if (Array.isArray(sec?.analysis) && sec.analysis.length > 0) return; // 이미 결과 있음
+
+      setLoadingMap((m) => ({ ...m, [type]: true }));
+      setErrorMap((m) => ({ ...m, [type]: "" }));
+
+      let canceled = false;
+      (async () => {
+        try {
+          const result = await waitForAnalysis(
+            userData.session_id,
+            sec.drawing_id,
+            {
+              onTick: () => {},
+            }
+          );
+          if (canceled) return;
+          // 결과 state 반영
+          setUserData((prev) => ({
+            ...prev,
+            drawings: {
+              ...prev.drawings,
+              [type]: {
+                ...prev.drawings?.[type],
+                analysis: result?.analysis || [],
+                yolo: result?.yolo || null, // 필요시 사용
+              },
+            },
+          }));
+        } catch (e) {
+          if (!canceled) {
+            setErrorMap((m) => ({ ...m, [type]: e?.message || "분석 실패" }));
+          }
+        } finally {
+          if (!canceled) {
+            setLoadingMap((m) => ({ ...m, [type]: false }));
+          }
+        }
+      })();
+
+      cleaners.push(() => {
+        canceled = true;
+      });
+    });
+
+    return () => cleaners.forEach((fn) => fn());
+  }, [userData?.session_id, userData?.drawings, setUserData]);
+
+  const handleGoHome = () => navigate("/");
 
   const handleDownloadPDF = async () => {
-    const drawingSections = ["house", "tree", "person"];
-
     const now = new Date();
     const pad = (n) => String(n).padStart(2, "0");
     const date = `${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
@@ -22,7 +82,6 @@ export default function ResultPage() {
 
     const cleanName = userData.name.replace(/[^\w가-힣]/g, "");
     const birthShort = userData.birth.replaceAll("-", "").slice(2);
-
     const genderMap = {
       여자: "F",
       남자: "M",
@@ -32,10 +91,9 @@ export default function ResultPage() {
       남: "M",
     };
     const genderCode = genderMap[userData.gender] || "X";
-
     const filename = `HTP_${cleanName}_${birthShort}_${genderCode}_${date}${time}`;
 
-    const htmlContent = `
+    const html = `
       <html>
         <head>
           <style>
@@ -46,6 +104,7 @@ export default function ResultPage() {
             li { margin-bottom: 6px; }
             .meaning-line { margin-left: 16px; font-style: italic; color: #555; }
             img { width: 100%; max-height: 300px; margin: 10px 0; }
+            .pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; border:1px solid #ddd; color:#333; }
           </style>
         </head>
         <body>
@@ -54,106 +113,112 @@ export default function ResultPage() {
           <p><strong>성별:</strong> ${userData.gender}</p>
           <p><strong>생년월일:</strong> ${userData.birth}</p>
           <hr />
-
-          ${drawingSections
-            .map((type, index) => {
-              const analysis = userData.drawings[type]?.analysis || [];
-              const image = userData.drawings[type]?.image;
-
-              const uniqueLabels = [
-                ...new Map(
-                  analysis.map((obj) => [obj.label, obj.meaning])
-                ).entries(),
-              ];
-
-              return `
-                <h2>${index + 1}. ${
-                type === "house" ? "집" : type === "tree" ? "나무" : "사람"
-              } 그림 분석</h2>
-
-                ${
-                  image
-                    ? `<img src="${image}" alt="${type} 그림" />`
-                    : `<p>(그림 이미지 없음)</p>`
-                }
-
-                ${
-                  uniqueLabels.length > 0
-                    ? `
-                    <ul>
-                      ${uniqueLabels
-                        .map(
-                          ([label, meaning]) => `
-                            <li>
-                              ✅ <b>${label}</b>
-                              ${
-                                meaning
-                                  ? `<div class="meaning-line"><b>의미:</b> ${meaning}</div>`
-                                  : ""
-                              }
-              
-                            </li>
-                          `
-                        )
-                        .join("")}
-                    </ul>
-                  `
-                    : `<p>아직 분석된 결과가 없습니다.</p>`
-                }
-              `;
-            })
-            .join("")}
-
+          ${TYPES.map((type, idx) => {
+            const sec = userData.drawings?.[type] || {};
+            const image = sec.image
+              ? `${BASE}${sec.image.startsWith("/") ? "" : "/"}${sec.image}`
+              : "";
+            const analysis = sec.analysis || [];
+            const unique = [
+              ...new Map(analysis.map((o) => [o.label, o.meaning])).entries(),
+            ];
+            return `
+              <h2>${idx + 1}. ${
+              type === "house" ? "집" : type === "tree" ? "나무" : "사람"
+            } 그림 분석</h2>
+              ${
+                image
+                  ? `<img src="${image}" alt="${type}">`
+                  : `<p>(그림 이미지 없음)</p>`
+              }
+              ${
+                unique.length
+                  ? `<ul>${unique
+                      .map(
+                        ([label, meaning]) =>
+                          `<li>✅ <b>${label}</b>${
+                            meaning
+                              ? `<div class="meaning-line"><b>의미:</b> ${meaning}</div>`
+                              : ""
+                          }</li>`
+                      )
+                      .join("")}</ul>`
+                  : `<p>아직 분석된 결과가 없습니다.</p>`
+              }
+            `;
+          }).join("")}
           <h2>종합 해석</h2>
-          <p>
-            피검자는 전반적으로 정서적 안정성과 자기표현 의지를 갖추고 있으며,
-            집과 사람 그림에서는 현실 감각과 사회적 적응력이 양호하게 나타납니다.
-            반면 나무와 여자 그림에서 감정 몰입과 표현 욕구가 강하게 드러나며,
-            이는 내면의 긴장이나 감정적 민감성이 일부 존재함을 시사합니다.
-          </p>
+          <p>…(요약)…</p>
         </body>
       </html>
     `;
 
     try {
-      const res = await axios.post(
-        "http://192.168.0.250:5000/api/sessions/generate-pdf",
-        { html: htmlContent, filename }
-      );
-
-      const pdfUrl = `http://192.168.0.250:5000${res.data.path}`;
-      window.open(pdfUrl, "_blank");
+      const res = await axios.post(`${BASE}/api/sessions/generate-pdf`, {
+        html,
+        filename,
+      });
+      window.open(`${BASE}${res.data.path}`, "_blank");
     } catch (err) {
       console.error("PDF 생성 실패:", err);
       alert("PDF 저장에 실패했어요 😢");
     }
   };
 
-  const drawingSections = ["house", "tree", "person"];
-
   return (
     <div className="result-page page-scroll">
       <h1>HTP 검사 결과지</h1>
       <hr className="divider" />
 
-      {drawingSections.map((type, index) => {
-        const analysis = userData.drawings[type]?.analysis || [];
-        const uniqueLabels = [
-          ...new Map(analysis.map((obj) => [obj.label, obj.meaning])).entries(),
+      {TYPES.map((type, index) => {
+        const sec = userData.drawings?.[type] || {};
+        const analysis = sec.analysis || [];
+        const unique = [
+          ...new Map(analysis.map((o) => [o.label, o.meaning])).entries(),
         ];
+        const isLoading = !!loadingMap[type];
+        const errText = errorMap[type];
 
         return (
           <section key={type}>
             <h2>
               {index + 1}.{" "}
               {type === "house" ? "집" : type === "tree" ? "나무" : "사람"} 그림
-              분석
+              분석 {isLoading && <span className="pill">분석 중…</span>}
+              {errText && (
+                <span
+                  className="pill"
+                  style={{ borderColor: "#f66", color: "#c00" }}
+                >
+                  실패
+                </span>
+              )}
             </h2>
-            {analysis.length > 0 ? (
+
+            {sec.image ? (
+              <img
+                src={`${BASE}${sec.image.startsWith("/") ? "" : "/"}${
+                  sec.image
+                }`}
+                alt={type}
+                style={{
+                  width: "100%",
+                  maxHeight: 300,
+                  objectFit: "contain",
+                  margin: "10px 0",
+                }}
+              />
+            ) : (
+              <p>(그림 이미지 없음)</p>
+            )}
+
+            {errText && <p style={{ color: "#c00" }}>에러: {errText}</p>}
+
+            {unique.length > 0 ? (
               <div>
                 <h4>객체 인식 결과</h4>
                 <ul>
-                  {uniqueLabels.map(([label, meaning], idx) => (
+                  {unique.map(([label, meaning], idx) => (
                     <li key={idx}>
                       ✅ <b>{label}</b>
                       {meaning && (
@@ -166,7 +231,7 @@ export default function ResultPage() {
                 </ul>
               </div>
             ) : (
-              <p>아직 분석된 결과가 없습니다.</p>
+              !isLoading && !errText && <p>아직 분석된 결과가 없습니다.</p>
             )}
           </section>
         );
@@ -174,12 +239,7 @@ export default function ResultPage() {
 
       <section>
         <h2>종합 해석</h2>
-        <p className="short-result">
-          피검자는 전반적으로 정서적 안정성과 자기표현 의지를 갖추고 있으며,
-          집과 사람 그림에서는 현실 감각과 사회적 적응력이 양호하게 나타납니다.
-          반면 나무와 여자 그림에서 감정 몰입과 표현 욕구가 강하게 드러나며,
-          이는 내면의 긴장이나 감정적 민감성이 일부 존재함을 시사합니다.
-        </p>
+        <p className="short-result">(원하시는 요약문구)</p>
       </section>
 
       <div className="result-buttons">

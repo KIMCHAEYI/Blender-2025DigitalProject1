@@ -65,31 +65,29 @@ const upload = multer({ storage });
 // ─────────────────────────────────────────────────────────────────────────────
 router.post("/upload", upload.single("drawing"), (req, res) => {
   const { session_id, type } = req.body;
-
   if (!session_id || !type || !req.file) {
     return res.status(400).json({ message: "session_id, type, drawing 필수" });
   }
 
-  const filename = req.file.filename; // 파일명
-  const relPath = "/uploads/" + filename; // 브라우저 접근용 경로
-  const absPath = req.file.path; // YOLO에 넘길 절대경로
+  const filename = req.file.filename;
+  const relPath = "/uploads/" + filename;
+  const absPath = req.file.path;
   const now = new Date().toISOString();
 
   const db = readDB();
   const session = db.find((s) => s.id === session_id);
-  if (!session) {
+  if (!session)
     return res.status(404).json({ message: "세션을 찾을 수 없습니다" });
-  }
   if (!session.drawings) session.drawings = [];
 
   const drawingId = Date.now().toString();
 
   session.drawings.push({
     id: drawingId,
-    type,
+    type, // person_male | person_female | house | tree
     filename,
     path: relPath,
-    absPath, // ★ YOLO 호출 시 사용할 절대경로
+    absPath,
     status: "uploaded",
     result: null,
     createdAt: now,
@@ -97,11 +95,6 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
   });
   writeDB(db);
 
-  console.log(
-    `[DRAWINGS] uploaded s=${session_id} d=${drawingId} type=${type} file=${filename}`
-  );
-
-  // 업로드 응답은 즉시 반환 → 프론트는 다음 화면으로 넘어갈 수 있음
   res.status(200).json({
     message: "그림 업로드 완료 (분석은 백그라운드)",
     drawing_id: drawingId,
@@ -111,46 +104,32 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
   // ── 백그라운드 분석 시작 ───────────────────────────────────────────────
   process.nextTick(async () => {
     try {
-      // 1) status: processing
       const db1 = readDB();
       const s1 = db1.find((s) => s.id === session_id);
       const d1 = s1?.drawings?.find((d) => d.id === drawingId);
-      if (!d1) {
-        console.error("[DRAWINGS] not found before processing");
-        return;
-      }
+      if (!d1) return;
       d1.status = "processing";
       d1.updatedAt = new Date().toISOString();
       writeDB(db1);
-      console.log(`[DRAWINGS] processing d=${drawingId} → YOLO`);
 
-      // 2) YOLO 호출 (절대경로 그대로 사용)
-      const yolo = await runYOLOAnalysis(absPath, type); // { type, objects: [...] }
+      // ★ YOLO는 person으로 통일 (남/여 모델이 같으므로)
+      const typeForYolo =
+        type === "person_male" || type === "person_female" ? "person" : type;
 
-      // 3) 해석(우리 로직)
-      //    ※ 기존 'analyzeDrawing' 아님. 'interpretYOLOResult(yolo, type)' 를 사용
-      const analysis = interpretYOLOResult(yolo, type);
+      const yolo = await runYOLOAnalysis(absPath, typeForYolo);
 
-      // 4) status: done
+      // 해석은 기본적으로 person 규칙(필요하면 성별 구분 규칙도 가능)
+      const analysis = interpretYOLOResult(yolo, typeForYolo);
+
       const db2 = readDB();
       const s2 = db2.find((s) => s.id === session_id);
       const d2 = s2?.drawings?.find((d) => d.id === drawingId);
-      if (!d2) {
-        console.error("[DRAWINGS] not found before done");
-        return;
-      }
+      if (!d2) return;
       d2.status = "done";
-      d2.result = { yolo, analysis };
+      d2.result = { yolo, analysis, subtype: type }; // ★ subtype으로 남/여 보존
       d2.updatedAt = new Date().toISOString();
       writeDB(db2);
-
-      console.log(
-        `[DRAWINGS] done d=${drawingId} objects=${
-          Array.isArray(yolo.objects) ? yolo.objects.length : 0
-        }`
-      );
     } catch (err) {
-      // 5) status: error
       const db3 = readDB();
       const s3 = db3.find((s) => s.id === session_id);
       const d3 = s3?.drawings?.find((d) => d.id === drawingId);
@@ -160,7 +139,7 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
         d3.updatedAt = new Date().toISOString();
         writeDB(db3);
       }
-      console.error(`[DRAWINGS] error d=${drawingId}:`, err?.message || err);
+      console.error("[DRAWINGS] error:", err?.message || err);
     }
   });
 });

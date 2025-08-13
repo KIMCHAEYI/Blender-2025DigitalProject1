@@ -30,3 +30,9 @@ __pycache__/
 *.pyc
 
 /yolov5/
+
+# 컴파일된 파이썬 캐시 파일 제외 
+backend/logic/__pycache__/
+
+# 추적에서 제거
+git rm --cached backend/logic/__pycache__/yolo_api.cpython-313.pyc

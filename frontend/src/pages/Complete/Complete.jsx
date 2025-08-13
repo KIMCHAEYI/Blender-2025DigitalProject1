@@ -6,7 +6,7 @@ import { useUserContext } from "../../contexts/UserContext";
 import "./Complete.css";
 
 export default function Complete() {
-  const { userData } = useUserContext();
+  const { userData, setUserData } = useUserContext();
   const navigate = useNavigate();
 
   // ▶ 버튼에 주의를 끄는 힌트 애니메이션 on/off
@@ -19,15 +19,20 @@ export default function Complete() {
 
   const handleSubmit = async () => {
     try {
-      stopHint(); // 클릭 시 애니메이션 중지
+      stopHint();
       console.log("보내는 데이터:", userData);
       const sessionRes = await axios.post(
-        "http://192.168.0.250:5000/api/sessions/start",
+        "http://172.20.8.138:5000/api/sessions/start",
         userData
       );
       console.log("세션 저장 응답:", sessionRes.data);
+      const sid = sessionRes.data?.session_id;
+      if (sid) {
+        setUserData((prev) => ({ ...prev, session_id: sid }));
+        sessionStorage.setItem("session_id", sid);
+      }
       alert("정보가 성공적으로 저장되었습니다!");
-      navigate("/test/house/intro");
+      navigate("/test/house/intro"); // 이후 캔버스에서 session_id를 읽어 사용
     } catch (err) {
       console.error("요청 실패:", err);
       alert("처리에 실패했어요 😢 다시 시도해 주세요.");

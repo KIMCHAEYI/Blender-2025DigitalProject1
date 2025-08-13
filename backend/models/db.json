@@ -5,6 +5,3323 @@
     "gender": "여자",
     "birth": "2011-01-19",
     "password": "$2b$10$Dgrd0x6yYCX3mzHTMqGbSu4SIVBPwtC25RVCrMUgNj3Uqr24P4UwO",
-    "createdAt": "2025-07-07T09:20:55.596Z"
+    "createdAt": "2025-07-07T09:20:55.596Z",
+    "drawings": [
+      {
+        "id": "1755067615379",
+        "type": "house",
+        "filename": "80d84aea5db278e084dbaa277ccd0a83",
+        "path": "/uploads/80d84aea5db278e084dbaa277ccd0a83",
+        "status": "error",
+        "result": {
+          "error": "Request failed with status code 422"
+        },
+        "createdAt": "2025-08-13T06:46:55.377Z",
+        "updatedAt": "2025-08-13T06:46:55.377Z"
+      }
+    ]
+  },
+  {
+    "id": "1755060557784",
+    "name": "오랜만",
+    "gender": "남자",
+    "birth": "2008-03-20",
+    "password": "$2b$10$7BtdvP6mxHP9yjTjQWuOX.gYeX2VLQeQ7U6IzMEO/enXsd8lw818m",
+    "createdAt": "2025-08-13T04:49:17.784Z"
+  },
+  {
+    "id": "1755060637121",
+    "name": "안수진",
+    "gender": "여자",
+    "birth": "1978-03-12",
+    "password": "$2b$10$oDTvk3DwEVEzOi8MmUqq7u8sjPraQMoVMrAKW0LIMJOnZW96GQSrS",
+    "createdAt": "2025-08-13T04:50:37.121Z"
+  },
+  {
+    "id": "1755060677112",
+    "name": "Iw",
+    "gender": "남자",
+    "birth": "2015-11-10",
+    "password": "$2b$10$BUMSDSaKLQMZZmET2KSe9O9SP1snf4qpPtxnzJ7XXNvTCSbmyRpSC",
+    "createdAt": "2025-08-13T04:51:17.112Z"
+  },
+  {
+    "id": "1755061885539",
+    "name": "sdf",
+    "gender": "남자",
+    "birth": "2008-05-20",
+    "password": "$2b$10$S/JJ7IzyGoxH9Jx5.Obwiea.HmbwuQc4OjW6vyGEuA599BEmGMJqi",
+    "createdAt": "2025-08-13T05:11:25.539Z"
+  },
+  {
+    "id": "1755065927409",
+    "name": "123",
+    "gender": "남자",
+    "birth": "2008-03-18",
+    "password": "$2b$10$rY.qRb/rSmOSzE5SxS8Vmua6fgyYfRqAkDDN0p5bm4qWVro.BOmqi",
+    "createdAt": "2025-08-13T06:18:47.409Z"
+  },
+  {
+    "id": "1755066171969",
+    "name": "s",
+    "gender": "여자",
+    "birth": "2013-12-12",
+    "password": "$2b$10$ABIBg33MESefhBZBosr.kuXeHvQ0qXiuNBtReFwoVrat61N7NM/9e",
+    "createdAt": "2025-08-13T06:22:51.969Z"
+  },
+  {
+    "id": "1755066210084",
+    "name": "123",
+    "gender": "남자",
+    "birth": "2008-01-18",
+    "password": "$2b$10$oTPtdi1Oamqjq3HU.6M6EeKgmf80epJUTjm0WwOI2vELyQi.NdOsS",
+    "createdAt": "2025-08-13T06:23:30.084Z"
+  },
+  {
+    "id": "1755066317842",
+    "name": "qwe",
+    "gender": "남자",
+    "birth": "2007-03-20",
+    "password": "$2b$10$PI/ryzYYUIEBV8XJESmqv.AOFAzfGoAMjt9rGwFu.VUeM36Zq0f7e",
+    "createdAt": "2025-08-13T06:25:17.842Z"
+  },
+  {
+    "id": "1755066555479",
+    "name": "ㅂㅈ",
+    "gender": "남자",
+    "birth": "2015-02-19",
+    "password": "$2b$10$eMIAAv0.C4H7cojdUjDvr.WIAusXxj3vHXOqFc26E2/F01sUQT406",
+    "createdAt": "2025-08-13T06:29:15.479Z"
+  },
+  {
+    "id": "1755066991250",
+    "name": "ㄴ",
+    "gender": "남자",
+    "birth": "2008-02-20",
+    "password": "$2b$10$A59E64Gm89EFIzsiHDlK1ODWtLx..wPQb1HtmZ3ACXqF6RYMuN6uy",
+    "createdAt": "2025-08-13T06:36:31.250Z"
+  },
+  {
+    "id": "1755067374303",
+    "name": "ff",
+    "gender": "남자",
+    "birth": "2015-08-09",
+    "password": "$2b$10$ayYbh4jYjHVLhT.0o/D/TeTWBmUjzaUX0z5v7x/Z4NHGf2Ov7a/ZS",
+    "createdAt": "2025-08-13T06:42:54.304Z"
+  },
+  {
+    "id": "1755067840032",
+    "name": "자체로로다",
+    "gender": "남자",
+    "birth": "2017-09-08",
+    "password": "$2b$10$nY.j9SdE4HIvwa0Yd1GO..kBg/Wj1.MtMV6jocCwdwV0L85SbuFeK",
+    "createdAt": "2025-08-13T06:50:40.032Z"
+  },
+  {
+    "id": "1755068102739",
+    "name": "12",
+    "gender": "남자",
+    "birth": "2011-01-20",
+    "password": "$2b$10$gxFrxN/xSE/68JWmYzFW.eE.QzapwPzL4f/0SOfqz1YdS42odV0Ni",
+    "createdAt": "2025-08-13T06:55:02.739Z"
+  },
+  {
+    "id": "1755068494662",
+    "name": "ㅇㅁㄴ",
+    "gender": "남자",
+    "birth": "2009-03-20",
+    "password": "$2b$10$pjWhT.YgpGLhyud0lKX1heeWRkHLNo.VnkEFRWmXIdiMBEcfWXVOC",
+    "createdAt": "2025-08-13T07:01:34.662Z"
+  },
+  {
+    "id": "1755069206249",
+    "name": "ㄹㄴ",
+    "gender": "남자",
+    "birth": "2009-02-18",
+    "password": "$2b$10$IKGPq47jRsMBnnV5tWMdSe5yqYlwfBhDKmNeAzck8jj4PTaY9e9tS",
+    "createdAt": "2025-08-13T07:13:26.249Z",
+    "drawings": [
+      {
+        "id": "1755069210708",
+        "type": "house",
+        "filename": "f248c41b6c76548b2a297b52f75c8360",
+        "path": "/uploads/f248c41b6c76548b2a297b52f75c8360",
+        "status": "error",
+        "result": {
+          "error": "Request failed with status code 422"
+        },
+        "createdAt": "2025-08-13T07:13:30.707Z",
+        "updatedAt": "2025-08-13T07:13:30.707Z"
+      },
+      {
+        "id": "1755069220914",
+        "type": "tree",
+        "filename": "de2713cb77a7b9e19f53caac5872e8ce",
+        "path": "/uploads/de2713cb77a7b9e19f53caac5872e8ce",
+        "status": "error",
+        "result": {
+          "error": "Request failed with status code 422"
+        },
+        "createdAt": "2025-08-13T07:13:40.912Z",
+        "updatedAt": "2025-08-13T07:13:40.912Z"
+      },
+      {
+        "id": "1755069223360",
+        "type": "person",
+        "filename": "556a67074b61440e54ae4de32c4a8a8e",
+        "path": "/uploads/556a67074b61440e54ae4de32c4a8a8e",
+        "status": "error",
+        "result": {
+          "error": "Request failed with status code 422"
+        },
+        "createdAt": "2025-08-13T07:13:43.358Z",
+        "updatedAt": "2025-08-13T07:13:43.358Z"
+      },
+      {
+        "id": "1755069225185",
+        "type": "person",
+        "filename": "5af5c1f3794cc24f21e9efb321afe510",
+        "path": "/uploads/5af5c1f3794cc24f21e9efb321afe510",
+        "status": "error",
+        "result": {
+          "error": "Request failed with status code 422"
+        },
+        "createdAt": "2025-08-13T07:13:45.182Z",
+        "updatedAt": "2025-08-13T07:13:45.182Z"
+      }
+    ]
+  },
+  {
+    "id": "1755069541247",
+    "name": "wq",
+    "gender": "남자",
+    "birth": "2009-04-19",
+    "password": "$2b$10$RthqI1MbEEtY.GtYsFKebuz1j7eyak/TIl8eSTXDEGF6Jgo//em/u",
+    "createdAt": "2025-08-13T07:19:01.247Z",
+    "drawings": [
+      {
+        "id": "1755069545138",
+        "type": "house",
+        "filename": "1755069545133-0e1u0o.png",
+        "path": "/uploads/1755069545133-0e1u0o.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755069545133-0e1u0o.png",
+        "status": "error",
+        "result": {
+          "error": "Request failed with status code 422"
+        },
+        "createdAt": "2025-08-13T07:19:05.137Z",
+        "updatedAt": "2025-08-13T07:19:05.192Z"
+      },
+      {
+        "id": "1755069549210",
+        "type": "tree",
+        "filename": "1755069549204-igrm7t.png",
+        "path": "/uploads/1755069549204-igrm7t.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755069549204-igrm7t.png",
+        "status": "error",
+        "result": {
+          "error": "Request failed with status code 422"
+        },
+        "createdAt": "2025-08-13T07:19:09.209Z",
+        "updatedAt": "2025-08-13T07:19:09.226Z"
+      },
+      {
+        "id": "1755069551330",
+        "type": "person",
+        "filename": "1755069551321-dp4qmy.png",
+        "path": "/uploads/1755069551321-dp4qmy.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755069551321-dp4qmy.png",
+        "status": "error",
+        "result": {
+          "error": "Request failed with status code 422"
+        },
+        "createdAt": "2025-08-13T07:19:11.328Z",
+        "updatedAt": "2025-08-13T07:19:11.359Z"
+      },
+      {
+        "id": "1755069552577",
+        "type": "person",
+        "filename": "1755069552540-3eicm4.png",
+        "path": "/uploads/1755069552540-3eicm4.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755069552540-3eicm4.png",
+        "status": "error",
+        "result": {
+          "error": "Request failed with status code 422"
+        },
+        "createdAt": "2025-08-13T07:19:12.572Z",
+        "updatedAt": "2025-08-13T07:19:12.669Z"
+      }
+    ]
+  },
+  {
+    "id": "1755070189640",
+    "name": "w",
+    "gender": "남자",
+    "birth": "2007-02-20",
+    "password": "$2b$10$O2gEnewThlO26dEDdXif1uY.jBaWWe43t8k1dq1gUjAHI6tEZSVRG",
+    "createdAt": "2025-08-13T07:29:49.640Z",
+    "drawings": [
+      {
+        "id": "1755070196726",
+        "type": "house",
+        "filename": "02321bbe2e4852cad6cb760b232866d0",
+        "path": "/uploads/02321bbe2e4852cad6cb760b232866d0",
+        "status": "error",
+        "result": {
+          "error": "timeout of 30000ms exceeded"
+        },
+        "createdAt": "2025-08-13T07:29:56.725Z",
+        "updatedAt": "2025-08-13T07:30:26.801Z"
+      },
+      {
+        "id": "1755070202108",
+        "type": "tree",
+        "filename": "36bd4d70ebec49b9b8b6c50f153beb9b",
+        "path": "/uploads/36bd4d70ebec49b9b8b6c50f153beb9b",
+        "status": "error",
+        "result": {
+          "error": "timeout of 30000ms exceeded"
+        },
+        "createdAt": "2025-08-13T07:30:02.106Z",
+        "updatedAt": "2025-08-13T07:30:32.132Z"
+      },
+      {
+        "id": "1755070204306",
+        "type": "person",
+        "filename": "5f3feb067e35f113f6cd3a1e1225273d",
+        "path": "/uploads/5f3feb067e35f113f6cd3a1e1225273d",
+        "status": "error",
+        "result": {
+          "error": "timeout of 30000ms exceeded"
+        },
+        "createdAt": "2025-08-13T07:30:04.305Z",
+        "updatedAt": "2025-08-13T07:30:34.331Z"
+      },
+      {
+        "id": "1755070205926",
+        "type": "person",
+        "filename": "a4f3cf6087dd82ba42f1236d452a9991",
+        "path": "/uploads/a4f3cf6087dd82ba42f1236d452a9991",
+        "status": "error",
+        "result": {
+          "error": "timeout of 30000ms exceeded"
+        },
+        "createdAt": "2025-08-13T07:30:05.923Z",
+        "updatedAt": "2025-08-13T07:30:35.942Z"
+      }
+    ]
+  },
+  {
+    "id": "1755070449433",
+    "name": "ㅈ",
+    "gender": "남자",
+    "birth": "2008-02-19",
+    "password": "$2b$10$MZXnXUbHzcwrQo9ypbnXhOI3pYfX1sghWFDUnROLhGQq7IQbCAy0C",
+    "createdAt": "2025-08-13T07:34:09.433Z",
+    "drawings": [
+      {
+        "id": "1755070457462",
+        "type": "house",
+        "filename": "d9fc5f05ddf50844a6821e71c8eea910",
+        "path": "/uploads/d9fc5f05ddf50844a6821e71c8eea910",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\d9fc5f05ddf50844a6821e71c8eea910",
+        "status": "error",
+        "result": {
+          "error": "analyzeDrawing is not a function"
+        },
+        "createdAt": "2025-08-13T07:34:17.461Z",
+        "updatedAt": "2025-08-13T07:34:32.028Z"
+      },
+      {
+        "id": "1755070462891",
+        "type": "tree",
+        "filename": "5ec4b870a3dba8948bc747fcd967dfac",
+        "path": "/uploads/5ec4b870a3dba8948bc747fcd967dfac",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\5ec4b870a3dba8948bc747fcd967dfac",
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-08-13T07:34:22.889Z",
+        "updatedAt": "2025-08-13T07:34:53.216Z"
+      },
+      {
+        "id": "1755070465138",
+        "type": "person",
+        "filename": "3ea6a7b69ab3f66e4bc474a29c4457cc",
+        "path": "/uploads/3ea6a7b69ab3f66e4bc474a29c4457cc",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\3ea6a7b69ab3f66e4bc474a29c4457cc",
+        "status": "error",
+        "result": {
+          "error": "analyzeDrawing is not a function"
+        },
+        "createdAt": "2025-08-13T07:34:25.136Z",
+        "updatedAt": "2025-08-13T07:34:47.512Z"
+      },
+      {
+        "id": "1755070466879",
+        "type": "person",
+        "filename": "bcfb0360a3b58ba79ed17ecc1f047622",
+        "path": "/uploads/bcfb0360a3b58ba79ed17ecc1f047622",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\bcfb0360a3b58ba79ed17ecc1f047622",
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-08-13T07:34:26.877Z",
+        "updatedAt": "2025-08-13T07:34:56.906Z"
+      }
+    ]
+  },
+  {
+    "id": "1755070877661",
+    "name": "ㅇㄹㄴ",
+    "gender": "남자",
+    "birth": "2006-04-19",
+    "password": "$2b$10$JTd4WabkC9K4I1CoQFaNwOuSjqK2r..uX31h3DRoY3tROKYAKicnq",
+    "createdAt": "2025-08-13T07:41:17.661Z",
+    "drawings": [
+      {
+        "id": "1755070881786",
+        "type": "house",
+        "filename": "1755070881780-x1qflu.png",
+        "path": "/uploads/1755070881780-x1qflu.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755070881780-x1qflu.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "house",
+            "objects": [
+              {
+                "label": "태양",
+                "confidence": 0.6677412986755371,
+                "x": 570,
+                "y": 317,
+                "w": 258,
+                "h": 414
+              },
+              {
+                "label": "연못",
+                "confidence": 0.4358631670475006,
+                "x": 570,
+                "y": 316,
+                "w": 258,
+                "h": 415
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "태양",
+              "areaRatio": 0.0652,
+              "position": "middle-center",
+              "w": 258,
+              "h": 414,
+              "cx": 699,
+              "cy": 524,
+              "meaning": "- 강한 애정욕구와 의존성, 혹은 이에 대한 좌절감을 의미합니다."
+            },
+            {
+              "label": "연못",
+              "areaRatio": 0.0654,
+              "position": "middle-center",
+              "w": 258,
+              "h": 415,
+              "cx": 699,
+              "cy": 523.5,
+              "meaning": "- 연못에 대한 심리적 해석은 추후 내용으로 보완될 예정입니다."
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T07:41:21.785Z",
+        "updatedAt": "2025-08-13T07:41:35.327Z"
+      },
+      {
+        "id": "1755070886441",
+        "type": "tree",
+        "filename": "1755070886426-c1in0x.png",
+        "path": "/uploads/1755070886426-c1in0x.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755070886426-c1in0x.png",
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-08-13T07:41:26.438Z",
+        "updatedAt": "2025-08-13T07:41:56.511Z"
+      },
+      {
+        "id": "1755070890830",
+        "type": "person",
+        "filename": "1755070890821-lx5hp4.png",
+        "path": "/uploads/1755070890821-lx5hp4.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755070890821-lx5hp4.png",
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-08-13T07:41:30.827Z",
+        "updatedAt": "2025-08-13T07:42:00.867Z"
+      },
+      {
+        "id": "1755070893038",
+        "type": "person",
+        "filename": "1755070893029-8dewns.png",
+        "path": "/uploads/1755070893029-8dewns.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755070893029-8dewns.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "남자구두",
+                "confidence": 0.8172438144683838,
+                "x": 170,
+                "y": 501,
+                "w": 673,
+                "h": 244
+              },
+              {
+                "label": "운동화",
+                "confidence": 0.3835713565349579,
+                "x": 181,
+                "y": 502,
+                "w": 667,
+                "h": 245
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "남자구두",
+              "areaRatio": 0.1002,
+              "position": "middle-center",
+              "w": 673,
+              "h": 244,
+              "cx": 506.5,
+              "cy": 623,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "운동화",
+              "areaRatio": 0.0997,
+              "position": "middle-center",
+              "w": 667,
+              "h": 245,
+              "cx": 514.5,
+              "cy": 624.5,
+              "meaning": "해석 기준 없음"
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T07:41:33.036Z",
+        "updatedAt": "2025-08-13T07:41:49.149Z"
+      }
+    ]
+  },
+  {
+    "id": "1755071461696",
+    "name": "ㅂㅈㄷ",
+    "gender": "남자",
+    "birth": "2010-04-19",
+    "password": "$2b$10$WRgKciCtGZhSA9.DF/FO1O9mLrScoDjSBKg.tTMpbcPdf6a/qIpMG",
+    "createdAt": "2025-08-13T07:51:01.696Z",
+    "drawings": [
+      {
+        "id": "1755071467680",
+        "type": "house",
+        "filename": "1755071467674-uql66y.png",
+        "path": "/uploads/1755071467674-uql66y.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755071467674-uql66y.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "house",
+            "objects": []
+          },
+          "analysis": []
+        },
+        "createdAt": "2025-08-13T07:51:07.679Z",
+        "updatedAt": "2025-08-13T07:51:21.155Z"
+      },
+      {
+        "id": "1755071470415",
+        "type": "tree",
+        "filename": "1755071470408-0kgd0j.png",
+        "path": "/uploads/1755071470408-0kgd0j.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755071470408-0kgd0j.png",
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-08-13T07:51:10.413Z",
+        "updatedAt": "2025-08-13T07:51:40.660Z"
+      },
+      {
+        "id": "1755071473493",
+        "type": "person",
+        "filename": "1755071473478-ui6dcl.png",
+        "path": "/uploads/1755071473478-ui6dcl.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755071473478-ui6dcl.png",
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-08-13T07:51:13.487Z",
+        "updatedAt": "2025-08-13T07:51:43.591Z"
+      },
+      {
+        "id": "1755071475182",
+        "type": "person",
+        "filename": "1755071475165-07vk9l.png",
+        "path": "/uploads/1755071475165-07vk9l.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755071475165-07vk9l.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "운동화",
+                "confidence": 0.8897373676300049,
+                "x": 414,
+                "y": 534,
+                "w": 266,
+                "h": 579
+              },
+              {
+                "label": "남자구두",
+                "confidence": 0.6231755614280701,
+                "x": 417,
+                "y": 537,
+                "w": 260,
+                "h": 579
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "운동화",
+              "areaRatio": 0.094,
+              "position": "middle-center",
+              "w": 266,
+              "h": 579,
+              "cx": 547,
+              "cy": 823.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "남자구두",
+              "areaRatio": 0.0919,
+              "position": "middle-center",
+              "w": 260,
+              "h": 579,
+              "cx": 547,
+              "cy": 826.5,
+              "meaning": "해석 기준 없음"
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T07:51:15.181Z",
+        "updatedAt": "2025-08-13T07:51:44.980Z"
+      }
+    ]
+  },
+  {
+    "id": "1755071515225",
+    "name": "qwr",
+    "gender": "남자",
+    "birth": "2006-02-19",
+    "password": "$2b$10$w7KpXwB6NJDlwYUy1.Own.rtZVe86k2noPShiKAmuqh837kCuVg6G",
+    "createdAt": "2025-08-13T07:51:55.225Z",
+    "drawings": [
+      {
+        "id": "1755071530828",
+        "type": "house",
+        "filename": "1755071530821-dfwknm.png",
+        "path": "/uploads/1755071530821-dfwknm.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755071530821-dfwknm.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "house",
+            "objects": [
+              {
+                "label": "집전체",
+                "confidence": 0.9854611754417419,
+                "x": 431,
+                "y": 156,
+                "w": 768,
+                "h": 560
+              },
+              {
+                "label": "나무",
+                "confidence": 0.9836661219596863,
+                "x": 17,
+                "y": 577,
+                "w": 302,
+                "h": 336
+              },
+              {
+                "label": "태양",
+                "confidence": 0.980269193649292,
+                "x": 1169,
+                "y": 39,
+                "w": 302,
+                "h": 225
+              },
+              {
+                "label": "문",
+                "confidence": 0.9745131731033325,
+                "x": 677,
+                "y": 497,
+                "w": 261,
+                "h": 217
+              },
+              {
+                "label": "지붕",
+                "confidence": 0.9684125185012817,
+                "x": 458,
+                "y": 153,
+                "w": 737,
+                "h": 301
+              },
+              {
+                "label": "집벽",
+                "confidence": 0.8515924215316772,
+                "x": 432,
+                "y": 449,
+                "w": 761,
+                "h": 261
+              },
+              {
+                "label": "문",
+                "confidence": 0.538999617099762,
+                "x": 517,
+                "y": 479,
+                "w": 593,
+                "h": 238
+              },
+              {
+                "label": "집벽",
+                "confidence": 0.3399052619934082,
+                "x": 615,
+                "y": 479,
+                "w": 385,
+                "h": 237
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "집전체",
+              "areaRatio": 0.2625,
+              "position": "middle-center",
+              "w": 768,
+              "h": 560,
+              "cx": 815,
+              "cy": 436,
+              "meaning": "- 보통 크기의 그림은 평균적이고 안정된 자아 구조를 반영할 수 있습니다."
+            },
+            {
+              "label": "나무",
+              "areaRatio": 0.0619,
+              "position": "middle-left",
+              "w": 302,
+              "h": 336,
+              "cx": 168,
+              "cy": 745,
+              "meaning": "- 나무는 내적 생동감과 에너지, 인간 또는 자기 자신을 상징합니다."
+            },
+            {
+              "label": "태양",
+              "areaRatio": 0.0415,
+              "position": "top-right",
+              "w": 302,
+              "h": 225,
+              "cx": 1320,
+              "cy": 151.5,
+              "meaning": "- 강한 애정욕구와 의존성, 혹은 이에 대한 좌절감을 의미합니다."
+            },
+            {
+              "label": "문",
+              "areaRatio": 0.0346,
+              "position": "middle-center",
+              "w": 261,
+              "h": 217,
+              "cx": 807.5,
+              "cy": 605.5,
+              "meaning": "- 환경과의 접촉을 꺼리고 우유부단함에 비대되고 있습니다. 현실도피, 사회성의 결핍과 무력감을 뜻합니다."
+            },
+            {
+              "label": "지붕",
+              "areaRatio": 0.1354,
+              "position": "top-center",
+              "w": 737,
+              "h": 301,
+              "cx": 826.5,
+              "cy": 303.5,
+              "meaning": "- 지붕의 형태가 비정상적인 경우 자기통제력이 약할 수 있습니다."
+            },
+            {
+              "label": "집벽",
+              "areaRatio": 0.1212,
+              "position": "middle-center",
+              "w": 761,
+              "h": 261,
+              "cx": 812.5,
+              "cy": 579.5,
+              "meaning": "- 만족을 공상에서 구하며 현실과의 접촉이 적습니다."
+            },
+            {
+              "label": "문",
+              "areaRatio": 0.0861,
+              "position": "middle-center",
+              "w": 593,
+              "h": 238,
+              "cx": 813.5,
+              "cy": 598,
+              "meaning": "- 환경과의 접촉을 꺼리고 우유부단함에 비대되고 있습니다. 현실도피, 사회성의 결핍과 무력감을 뜻합니다."
+            },
+            {
+              "label": "집벽",
+              "areaRatio": 0.0557,
+              "position": "middle-center",
+              "w": 385,
+              "h": 237,
+              "cx": 807.5,
+              "cy": 597.5,
+              "meaning": "- 만족을 공상에서 구하며 현실과의 접촉이 적습니다."
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T07:52:10.826Z",
+        "updatedAt": "2025-08-13T07:52:20.916Z"
+      },
+      {
+        "id": "1755071538494",
+        "type": "tree",
+        "filename": "1755071538484-9zq1l8.png",
+        "path": "/uploads/1755071538484-9zq1l8.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755071538484-9zq1l8.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "tree",
+            "objects": [
+              {
+                "label": "수관",
+                "confidence": 0.9821645617485046,
+                "x": 122,
+                "y": 108,
+                "w": 752,
+                "h": 590
+              },
+              {
+                "label": "나무전체",
+                "confidence": 0.967573344707489,
+                "x": 119,
+                "y": 108,
+                "w": 768,
+                "h": 1231
+              },
+              {
+                "label": "열매",
+                "confidence": 0.9317383766174316,
+                "x": 301,
+                "y": 455,
+                "w": 97,
+                "h": 112
+              },
+              {
+                "label": "기둥",
+                "confidence": 0.9129309058189392,
+                "x": 162,
+                "y": 574,
+                "w": 679,
+                "h": 741
+              },
+              {
+                "label": "나뭇잎",
+                "confidence": 0.7142088413238525,
+                "x": 569,
+                "y": 360,
+                "w": 135,
+                "h": 140
+              },
+              {
+                "label": "열매",
+                "confidence": 0.5075139999389648,
+                "x": 569,
+                "y": 358,
+                "w": 134,
+                "h": 143
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "수관",
+              "areaRatio": 0.2708,
+              "position": "top-center",
+              "w": 752,
+              "h": 590,
+              "cx": 498,
+              "cy": 403,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "나무전체",
+              "areaRatio": 0.577,
+              "position": "middle-center",
+              "w": 768,
+              "h": 1231,
+              "cx": 503,
+              "cy": 723.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "열매",
+              "areaRatio": 0.0066,
+              "position": "middle-left",
+              "w": 97,
+              "h": 112,
+              "cx": 349.5,
+              "cy": 511,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "기둥",
+              "areaRatio": 0.3071,
+              "position": "bottom-center",
+              "w": 679,
+              "h": 741,
+              "cx": 501.5,
+              "cy": 944.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "나뭇잎",
+              "areaRatio": 0.0115,
+              "position": "middle-center",
+              "w": 135,
+              "h": 140,
+              "cx": 636.5,
+              "cy": 430,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "열매",
+              "areaRatio": 0.0117,
+              "position": "middle-center",
+              "w": 134,
+              "h": 143,
+              "cx": 636,
+              "cy": 429.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T07:52:18.492Z",
+        "updatedAt": "2025-08-13T07:52:30.920Z"
+      },
+      {
+        "id": "1755071540940",
+        "type": "person",
+        "filename": "1755071540932-z48ch0.png",
+        "path": "/uploads/1755071540932-z48ch0.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755071540932-z48ch0.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "남자구두",
+                "confidence": 0.4048084616661072,
+                "x": 351,
+                "y": 451,
+                "w": 223,
+                "h": 621
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "남자구두",
+              "areaRatio": 0.0845,
+              "position": "middle-center",
+              "w": 223,
+              "h": 621,
+              "cx": 462.5,
+              "cy": 761.5,
+              "meaning": "해석 기준 없음"
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T07:52:20.937Z",
+        "updatedAt": "2025-08-13T07:52:38.584Z"
+      },
+      {
+        "id": "1755071542396",
+        "type": "person",
+        "filename": "1755071542386-27y4ov.png",
+        "path": "/uploads/1755071542386-27y4ov.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755071542386-27y4ov.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": []
+          },
+          "analysis": []
+        },
+        "createdAt": "2025-08-13T07:52:22.392Z",
+        "updatedAt": "2025-08-13T07:52:50.257Z"
+      }
+    ]
+  },
+  {
+    "id": "1755071883731",
+    "name": "테슽흐",
+    "gender": "남자",
+    "birth": "2010-05-19",
+    "password": "$2b$10$WIsqKKeJa1EHlczsf77kKOOhAI.6WILobCxTuNQvyw.V.kJ10rkcC",
+    "createdAt": "2025-08-13T07:58:03.731Z",
+    "drawings": [
+      {
+        "id": "1755071902620",
+        "type": "house",
+        "filename": "1755071902615-j8oaqu.png",
+        "path": "/uploads/1755071902615-j8oaqu.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755071902615-j8oaqu.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "house",
+            "objects": [
+              {
+                "label": "집전체",
+                "confidence": 0.9829234480857849,
+                "x": 623,
+                "y": 369,
+                "w": 659,
+                "h": 710
+              },
+              {
+                "label": "나무",
+                "confidence": 0.9813057780265808,
+                "x": 94,
+                "y": 771,
+                "w": 404,
+                "h": 575
+              },
+              {
+                "label": "굴뚝",
+                "confidence": 0.9807829260826111,
+                "x": 1055,
+                "y": 167,
+                "w": 449,
+                "h": 438
+              },
+              {
+                "label": "꽃",
+                "confidence": 0.9783049821853638,
+                "x": 1589,
+                "y": 887,
+                "w": 273,
+                "h": 372
+              },
+              {
+                "label": "집벽",
+                "confidence": 0.9775863885879517,
+                "x": 620,
+                "y": 737,
+                "w": 634,
+                "h": 335
+              },
+              {
+                "label": "지붕",
+                "confidence": 0.9739987254142761,
+                "x": 631,
+                "y": 390,
+                "w": 587,
+                "h": 360
+              },
+              {
+                "label": "연기",
+                "confidence": 0.9723283052444458,
+                "x": 1235,
+                "y": 168,
+                "w": 264,
+                "h": 219
+              },
+              {
+                "label": "문",
+                "confidence": 0.9713204503059387,
+                "x": 826,
+                "y": 904,
+                "w": 180,
+                "h": 162
+              },
+              {
+                "label": "태양",
+                "confidence": 0.9422791004180908,
+                "x": 1642,
+                "y": 11,
+                "w": 377,
+                "h": 302
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "집전체",
+              "areaRatio": 0.2856,
+              "position": "middle-right",
+              "w": 659,
+              "h": 710,
+              "cx": 952.5,
+              "cy": 724,
+              "meaning": "- 보통 크기의 그림은 평균적이고 안정된 자아 구조를 반영할 수 있습니다."
+            },
+            {
+              "label": "나무",
+              "areaRatio": 0.1418,
+              "position": "bottom-left",
+              "w": 404,
+              "h": 575,
+              "cx": 296,
+              "cy": 1058.5,
+              "meaning": "- 나무는 내적 생동감과 에너지, 인간 또는 자기 자신을 상징합니다."
+            },
+            {
+              "label": "굴뚝",
+              "areaRatio": 0.12,
+              "position": "top-right",
+              "w": 449,
+              "h": 438,
+              "cx": 1279.5,
+              "cy": 386,
+              "meaning": "- 가족 간의 애정과 교류, 분위기를 나타냅니다. 따듯한 굴뚝의 이미지는 일반적입니다."
+            },
+            {
+              "label": "꽃",
+              "areaRatio": 0.062,
+              "position": "bottom-right",
+              "w": 273,
+              "h": 372,
+              "cx": 1725.5,
+              "cy": 1073,
+              "meaning": "- 사람 또는 자기 표현에 대한 욕구를 반영합니다."
+            },
+            {
+              "label": "집벽",
+              "areaRatio": 0.1296,
+              "position": "bottom-right",
+              "w": 634,
+              "h": 335,
+              "cx": 937,
+              "cy": 904.5,
+              "meaning": "- 만족을 공상에서 구하며 현실과의 접촉이 적습니다."
+            },
+            {
+              "label": "지붕",
+              "areaRatio": 0.129,
+              "position": "middle-right",
+              "w": 587,
+              "h": 360,
+              "cx": 924.5,
+              "cy": 570,
+              "meaning": "- 지붕의 형태가 비정상적인 경우 자기통제력이 약할 수 있습니다."
+            },
+            {
+              "label": "연기",
+              "areaRatio": 0.0353,
+              "position": "top-right",
+              "w": 264,
+              "h": 219,
+              "cx": 1367,
+              "cy": 277.5,
+              "meaning": "- 한 줄의 연기는 가정 생활에서의 내적 긴장과 불안을 나타낼 수 있습니다. 정서적 긴장감에 대한 해소가 필요합니다."
+            },
+            {
+              "label": "문",
+              "areaRatio": 0.0178,
+              "position": "bottom-right",
+              "w": 180,
+              "h": 162,
+              "cx": 916,
+              "cy": 985,
+              "meaning": "- 환경과의 접촉을 꺼리고 우유부단함에 비대되고 있습니다. 현실도피, 사회성의 결핍과 무력감을 뜻합니다."
+            },
+            {
+              "label": "태양",
+              "areaRatio": 0.0695,
+              "position": "top-right",
+              "w": 377,
+              "h": 302,
+              "cx": 1830.5,
+              "cy": 162,
+              "meaning": "- 강한 애정욕구와 의존성, 혹은 이에 대한 좌절감을 의미합니다."
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T07:58:22.619Z",
+        "updatedAt": "2025-08-13T07:58:35.134Z"
+      },
+      {
+        "id": "1755071908491",
+        "type": "tree",
+        "filename": "1755071908478-r6wc6s.png",
+        "path": "/uploads/1755071908478-r6wc6s.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755071908478-r6wc6s.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "tree",
+            "objects": [
+              {
+                "label": "수관",
+                "confidence": 0.9676507711410522,
+                "x": 185,
+                "y": 197,
+                "w": 786,
+                "h": 546
+              },
+              {
+                "label": "기둥",
+                "confidence": 0.9515401124954224,
+                "x": 246,
+                "y": 524,
+                "w": 771,
+                "h": 949
+              },
+              {
+                "label": "나무전체",
+                "confidence": 0.2701394557952881,
+                "x": 157,
+                "y": 184,
+                "w": 867,
+                "h": 1299
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "수관",
+              "areaRatio": 0.2619,
+              "position": "middle-center",
+              "w": 786,
+              "h": 546,
+              "cx": 578,
+              "cy": 470,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "기둥",
+              "areaRatio": 0.4466,
+              "position": "bottom-center",
+              "w": 771,
+              "h": 949,
+              "cx": 631.5,
+              "cy": 998.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "나무전체",
+              "areaRatio": 0.6874,
+              "position": "middle-center",
+              "w": 867,
+              "h": 1299,
+              "cx": 590.5,
+              "cy": 833.5,
+              "meaning": "해석 기준 없음"
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T07:58:28.485Z",
+        "updatedAt": "2025-08-13T07:58:45.758Z"
+      },
+      {
+        "id": "1755071934752",
+        "type": "person",
+        "filename": "1755071934744-4rqfco.png",
+        "path": "/uploads/1755071934744-4rqfco.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755071934744-4rqfco.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "머리",
+                "confidence": 0.9729951024055481,
+                "x": 266,
+                "y": 371,
+                "w": 454,
+                "h": 329
+              },
+              {
+                "label": "귀",
+                "confidence": 0.9505743384361267,
+                "x": 602,
+                "y": 513,
+                "w": 118,
+                "h": 82
+              },
+              {
+                "label": "눈",
+                "confidence": 0.9495525360107422,
+                "x": 466,
+                "y": 485,
+                "w": 111,
+                "h": 51
+              },
+              {
+                "label": "귀",
+                "confidence": 0.949285089969635,
+                "x": 268,
+                "y": 554,
+                "w": 72,
+                "h": 71
+              },
+              {
+                "label": "얼굴",
+                "confidence": 0.945064127445221,
+                "x": 265,
+                "y": 471,
+                "w": 454,
+                "h": 227
+              },
+              {
+                "label": "사람전체",
+                "confidence": 0.9450051784515381,
+                "x": 139,
+                "y": 366,
+                "w": 664,
+                "h": 1098
+              },
+              {
+                "label": "눈",
+                "confidence": 0.9424355030059814,
+                "x": 329,
+                "y": 468,
+                "w": 99,
+                "h": 58
+              },
+              {
+                "label": "머리카락",
+                "confidence": 0.94185870885849,
+                "x": 311,
+                "y": 366,
+                "w": 266,
+                "h": 120
+              },
+              {
+                "label": "입",
+                "confidence": 0.9402247071266174,
+                "x": 399,
+                "y": 596,
+                "w": 112,
+                "h": 61
+              },
+              {
+                "label": "목",
+                "confidence": 0.9351906776428223,
+                "x": 427,
+                "y": 686,
+                "w": 87,
+                "h": 88
+              },
+              {
+                "label": "코",
+                "confidence": 0.8963887095451355,
+                "x": 398,
+                "y": 595,
+                "w": 113,
+                "h": 61
+              },
+              {
+                "label": "코",
+                "confidence": 0.882388174533844,
+                "x": 413,
+                "y": 537,
+                "w": 19,
+                "h": 51
+              },
+              {
+                "label": "상체",
+                "confidence": 0.8210064172744751,
+                "x": 278,
+                "y": 954,
+                "w": 473,
+                "h": 247
+              },
+              {
+                "label": "상체",
+                "confidence": 0.747634768486023,
+                "x": 197,
+                "y": 764,
+                "w": 568,
+                "h": 242
+              },
+              {
+                "label": "팔",
+                "confidence": 0.7163125276565552,
+                "x": 150,
+                "y": 921,
+                "w": 156,
+                "h": 228
+              },
+              {
+                "label": "발",
+                "confidence": 0.7026483416557312,
+                "x": 231,
+                "y": 1391,
+                "w": 201,
+                "h": 69
+              },
+              {
+                "label": "발",
+                "confidence": 0.6408419013023376,
+                "x": 642,
+                "y": 1378,
+                "w": 139,
+                "h": 54
+              },
+              {
+                "label": "다리",
+                "confidence": 0.6195653676986694,
+                "x": 642,
+                "y": 1259,
+                "w": 140,
+                "h": 174
+              },
+              {
+                "label": "운동화",
+                "confidence": 0.5826433897018433,
+                "x": 641,
+                "y": 1259,
+                "w": 140,
+                "h": 173
+              },
+              {
+                "label": "다리",
+                "confidence": 0.4130147397518158,
+                "x": 230,
+                "y": 1317,
+                "w": 203,
+                "h": 141
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "머리",
+              "areaRatio": 0.0912,
+              "position": "middle-center",
+              "w": 454,
+              "h": 329,
+              "cx": 493,
+              "cy": 535.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "귀",
+              "areaRatio": 0.0059,
+              "position": "middle-center",
+              "w": 118,
+              "h": 82,
+              "cx": 661,
+              "cy": 554,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "눈",
+              "areaRatio": 0.0035,
+              "position": "middle-center",
+              "w": 111,
+              "h": 51,
+              "cx": 521.5,
+              "cy": 510.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "귀",
+              "areaRatio": 0.0031,
+              "position": "middle-left",
+              "w": 72,
+              "h": 71,
+              "cx": 304,
+              "cy": 589.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "얼굴",
+              "areaRatio": 0.0629,
+              "position": "middle-center",
+              "w": 454,
+              "h": 227,
+              "cx": 492,
+              "cy": 584.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "사람전체",
+              "areaRatio": 0.445,
+              "position": "bottom-center",
+              "w": 664,
+              "h": 1098,
+              "cx": 471,
+              "cy": 915,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "눈",
+              "areaRatio": 0.0035,
+              "position": "middle-left",
+              "w": 99,
+              "h": 58,
+              "cx": 378.5,
+              "cy": 497,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "머리카락",
+              "areaRatio": 0.0195,
+              "position": "middle-center",
+              "w": 266,
+              "h": 120,
+              "cx": 444,
+              "cy": 426,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "입",
+              "areaRatio": 0.0042,
+              "position": "middle-center",
+              "w": 112,
+              "h": 61,
+              "cx": 455,
+              "cy": 626.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "목",
+              "areaRatio": 0.0047,
+              "position": "middle-center",
+              "w": 87,
+              "h": 88,
+              "cx": 470.5,
+              "cy": 730,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "코",
+              "areaRatio": 0.0042,
+              "position": "middle-center",
+              "w": 113,
+              "h": 61,
+              "cx": 454.5,
+              "cy": 625.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "코",
+              "areaRatio": 0.0006,
+              "position": "middle-center",
+              "w": 19,
+              "h": 51,
+              "cx": 422.5,
+              "cy": 562.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "상체",
+              "areaRatio": 0.0713,
+              "position": "bottom-center",
+              "w": 473,
+              "h": 247,
+              "cx": 514.5,
+              "cy": 1077.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "상체",
+              "areaRatio": 0.0839,
+              "position": "bottom-center",
+              "w": 568,
+              "h": 242,
+              "cx": 481,
+              "cy": 885,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "팔",
+              "areaRatio": 0.0217,
+              "position": "bottom-left",
+              "w": 156,
+              "h": 228,
+              "cx": 228,
+              "cy": 1035,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "발",
+              "areaRatio": 0.0085,
+              "position": "bottom-left",
+              "w": 201,
+              "h": 69,
+              "cx": 331.5,
+              "cy": 1425.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "발",
+              "areaRatio": 0.0046,
+              "position": "bottom-center",
+              "w": 139,
+              "h": 54,
+              "cx": 711.5,
+              "cy": 1405,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "다리",
+              "areaRatio": 0.0149,
+              "position": "bottom-center",
+              "w": 140,
+              "h": 174,
+              "cx": 712,
+              "cy": 1346,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "운동화",
+              "areaRatio": 0.0148,
+              "position": "bottom-center",
+              "w": 140,
+              "h": 173,
+              "cx": 711,
+              "cy": 1345.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "다리",
+              "areaRatio": 0.0175,
+              "position": "bottom-left",
+              "w": 203,
+              "h": 141,
+              "cx": 331.5,
+              "cy": 1387.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T07:58:54.750Z",
+        "updatedAt": "2025-08-13T07:59:06.603Z"
+      },
+      {
+        "id": "1755071937445",
+        "type": "person",
+        "filename": "1755071937432-mqik4q.png",
+        "path": "/uploads/1755071937432-mqik4q.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755071937432-mqik4q.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "운동화",
+                "confidence": 0.9451578855514526,
+                "x": 289,
+                "y": 635,
+                "w": 589,
+                "h": 538
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "운동화",
+              "areaRatio": 0.1934,
+              "position": "bottom-center",
+              "w": 589,
+              "h": 538,
+              "cx": 583.5,
+              "cy": 904,
+              "meaning": "해석 기준 없음"
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T07:58:57.438Z",
+        "updatedAt": "2025-08-13T07:59:19.213Z"
+      },
+      {
+        "id": "1755071961654",
+        "type": "person",
+        "filename": "1755071961649-1siy88.png",
+        "path": "/uploads/1755071961649-1siy88.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755071961649-1siy88.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "남자구두",
+                "confidence": 0.967645525932312,
+                "x": 296,
+                "y": 354,
+                "w": 313,
+                "h": 743
+              },
+              {
+                "label": "남자구두",
+                "confidence": 0.8948529362678528,
+                "x": 316,
+                "y": 924,
+                "w": 185,
+                "h": 171
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "남자구두",
+              "areaRatio": 0.1419,
+              "position": "middle-center",
+              "w": 313,
+              "h": 743,
+              "cx": 452.5,
+              "cy": 725.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "남자구두",
+              "areaRatio": 0.0193,
+              "position": "bottom-left",
+              "w": 185,
+              "h": 171,
+              "cx": 408.5,
+              "cy": 1009.5,
+              "meaning": "해석 기준 없음"
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T07:59:21.652Z",
+        "updatedAt": "2025-08-13T07:59:29.786Z"
+      }
+    ]
+  },
+  {
+    "id": "1755071940935",
+    "name": "ㄴ",
+    "gender": "여자",
+    "birth": "2023-02-02",
+    "password": "$2b$10$TJ/6sU9b2xq8Ze1/vPuTW.U2CTIBdeBGutHLZjkb4vpDcGF/X42PS",
+    "createdAt": "2025-08-13T07:59:00.935Z"
+  },
+  {
+    "id": "1755072493183",
+    "name": "qw",
+    "gender": "남자",
+    "birth": "2007-03-18",
+    "password": "$2b$10$D6dZXzgqIpib5O2Thfoub.QFdd89lHYPh7k3zOgOm02Bvi0I3nxv2",
+    "createdAt": "2025-08-13T08:08:13.183Z",
+    "drawings": [
+      {
+        "id": "1755072511109",
+        "type": "house",
+        "filename": "1755072511098-r0u7m8.png",
+        "path": "/uploads/1755072511098-r0u7m8.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755072511098-r0u7m8.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "house",
+            "objects": [
+              {
+                "label": "나무",
+                "confidence": 0.9863600134849548,
+                "x": 1555,
+                "y": 632,
+                "w": 443,
+                "h": 639
+              },
+              {
+                "label": "꽃",
+                "confidence": 0.9855949282646179,
+                "x": 134,
+                "y": 769,
+                "w": 353,
+                "h": 558
+              },
+              {
+                "label": "집전체",
+                "confidence": 0.9839078783988953,
+                "x": 577,
+                "y": 338,
+                "w": 903,
+                "h": 726
+              },
+              {
+                "label": "지붕",
+                "confidence": 0.9813459515571594,
+                "x": 629,
+                "y": 338,
+                "w": 752,
+                "h": 425
+              },
+              {
+                "label": "길",
+                "confidence": 0.9780296683311462,
+                "x": 681,
+                "y": 1048,
+                "w": 396,
+                "h": 426
+              },
+              {
+                "label": "집벽",
+                "confidence": 0.9777699708938599,
+                "x": 582,
+                "y": 735,
+                "w": 904,
+                "h": 325
+              },
+              {
+                "label": "문",
+                "confidence": 0.9733262658119202,
+                "x": 867,
+                "y": 873,
+                "w": 232,
+                "h": 180
+              },
+              {
+                "label": "태양",
+                "confidence": 0.9697673916816711,
+                "x": 1617,
+                "y": 36,
+                "w": 438,
+                "h": 256
+              },
+              {
+                "label": "굴뚝",
+                "confidence": 0.6471604108810425,
+                "x": 1166,
+                "y": 355,
+                "w": 113,
+                "h": 207
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "나무",
+              "areaRatio": 0.1728,
+              "position": "bottom-right",
+              "w": 443,
+              "h": 639,
+              "cx": 1776.5,
+              "cy": 951.5,
+              "meaning": "- 나무는 내적 생동감과 에너지, 인간 또는 자기 자신을 상징합니다."
+            },
+            {
+              "label": "꽃",
+              "areaRatio": 0.1202,
+              "position": "bottom-left",
+              "w": 353,
+              "h": 558,
+              "cx": 310.5,
+              "cy": 1048,
+              "meaning": "- 사람 또는 자기 표현에 대한 욕구를 반영합니다."
+            },
+            {
+              "label": "집전체",
+              "areaRatio": 0.4001,
+              "position": "middle-right",
+              "w": 903,
+              "h": 726,
+              "cx": 1028.5,
+              "cy": 701,
+              "meaning": "- 보통 크기의 그림은 평균적이고 안정된 자아 구조를 반영할 수 있습니다."
+            },
+            {
+              "label": "지붕",
+              "areaRatio": 0.1951,
+              "position": "middle-right",
+              "w": 752,
+              "h": 425,
+              "cx": 1005,
+              "cy": 550.5,
+              "meaning": "- 지붕의 형태가 비정상적인 경우 자기통제력이 약할 수 있습니다."
+            },
+            {
+              "label": "길",
+              "areaRatio": 0.103,
+              "position": "bottom-right",
+              "w": 396,
+              "h": 426,
+              "cx": 879,
+              "cy": 1261,
+              "meaning": "- 타인과의 접촉에 있어서 균형 잡힌 통제력을 나타냅니다."
+            },
+            {
+              "label": "집벽",
+              "areaRatio": 0.1793,
+              "position": "bottom-right",
+              "w": 904,
+              "h": 325,
+              "cx": 1034,
+              "cy": 897.5,
+              "meaning": "- 만족을 공상에서 구하며 현실과의 접촉이 적습니다."
+            },
+            {
+              "label": "문",
+              "areaRatio": 0.0255,
+              "position": "bottom-right",
+              "w": 232,
+              "h": 180,
+              "cx": 983,
+              "cy": 963,
+              "meaning": "- 환경과의 접촉을 꺼리고 우유부단함에 비대되고 있습니다. 현실도피, 사회성의 결핍과 무력감을 뜻합니다."
+            },
+            {
+              "label": "태양",
+              "areaRatio": 0.0684,
+              "position": "top-right",
+              "w": 438,
+              "h": 256,
+              "cx": 1836,
+              "cy": 164,
+              "meaning": "- 강한 애정욕구와 의존성, 혹은 이에 대한 좌절감을 의미합니다."
+            },
+            {
+              "label": "굴뚝",
+              "areaRatio": 0.0143,
+              "position": "middle-right",
+              "w": 113,
+              "h": 207,
+              "cx": 1222.5,
+              "cy": 458.5,
+              "meaning": "- 가족 간의 애정과 교류, 분위기를 나타냅니다. 따듯한 굴뚝의 이미지는 일반적입니다."
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T08:08:31.104Z",
+        "updatedAt": "2025-08-13T08:08:44.169Z"
+      },
+      {
+        "id": "1755072520956",
+        "type": "tree",
+        "filename": "1755072520948-32g3mg.png",
+        "path": "/uploads/1755072520948-32g3mg.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755072520948-32g3mg.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "tree",
+            "objects": [
+              {
+                "label": "수관",
+                "confidence": 0.9694072604179382,
+                "x": 63,
+                "y": 73,
+                "w": 867,
+                "h": 780
+              },
+              {
+                "label": "나무전체",
+                "confidence": 0.9668593406677246,
+                "x": 41,
+                "y": 83,
+                "w": 1011,
+                "h": 1390
+              },
+              {
+                "label": "열매",
+                "confidence": 0.9556324481964111,
+                "x": 258,
+                "y": 443,
+                "w": 182,
+                "h": 175
+              },
+              {
+                "label": "열매",
+                "confidence": 0.9279532432556152,
+                "x": 628,
+                "y": 307,
+                "w": 114,
+                "h": 147
+              },
+              {
+                "label": "기둥",
+                "confidence": 0.8914250135421753,
+                "x": 148,
+                "y": 601,
+                "w": 889,
+                "h": 869
+              },
+              {
+                "label": "뿌리",
+                "confidence": 0.6755959391593933,
+                "x": 649,
+                "y": 1307,
+                "w": 401,
+                "h": 154
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "수관",
+              "areaRatio": 0.4128,
+              "position": "middle-center",
+              "w": 867,
+              "h": 780,
+              "cx": 496.5,
+              "cy": 463,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "나무전체",
+              "areaRatio": 0.8577,
+              "position": "middle-center",
+              "w": 1011,
+              "h": 1390,
+              "cx": 546.5,
+              "cy": 778,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "열매",
+              "areaRatio": 0.0194,
+              "position": "middle-left",
+              "w": 182,
+              "h": 175,
+              "cx": 349,
+              "cy": 530.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "열매",
+              "areaRatio": 0.0102,
+              "position": "top-center",
+              "w": 114,
+              "h": 147,
+              "cx": 685,
+              "cy": 380.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "기둥",
+              "areaRatio": 0.4715,
+              "position": "bottom-center",
+              "w": 889,
+              "h": 869,
+              "cx": 592.5,
+              "cy": 1035.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "뿌리",
+              "areaRatio": 0.0377,
+              "position": "bottom-right",
+              "w": 401,
+              "h": 154,
+              "cx": 849.5,
+              "cy": 1384,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T08:08:40.953Z",
+        "updatedAt": "2025-08-13T08:08:53.729Z"
+      },
+      {
+        "id": "1755072539343",
+        "type": "person",
+        "filename": "1755072539335-qhs5q1.png",
+        "path": "/uploads/1755072539335-qhs5q1.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755072539335-qhs5q1.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "운동화",
+                "confidence": 0.9717737436294556,
+                "x": 449,
+                "y": 954,
+                "w": 223,
+                "h": 249
+              },
+              {
+                "label": "사람전체",
+                "confidence": 0.9695465564727783,
+                "x": 182,
+                "y": 323,
+                "w": 500,
+                "h": 893
+              },
+              {
+                "label": "발",
+                "confidence": 0.9689338803291321,
+                "x": 182,
+                "y": 1121,
+                "w": 119,
+                "h": 95
+              },
+              {
+                "label": "상체",
+                "confidence": 0.9655294418334961,
+                "x": 325,
+                "y": 557,
+                "w": 207,
+                "h": 304
+              },
+              {
+                "label": "다리",
+                "confidence": 0.9507977366447449,
+                "x": 180,
+                "y": 941,
+                "w": 152,
+                "h": 275
+              },
+              {
+                "label": "팔",
+                "confidence": 0.9493069648742676,
+                "x": 200,
+                "y": 599,
+                "w": 135,
+                "h": 250
+              },
+              {
+                "label": "머리카락",
+                "confidence": 0.9301086664199829,
+                "x": 302,
+                "y": 323,
+                "w": 229,
+                "h": 112
+              },
+              {
+                "label": "머리",
+                "confidence": 0.9276567101478577,
+                "x": 301,
+                "y": 327,
+                "w": 245,
+                "h": 223
+              },
+              {
+                "label": "손",
+                "confidence": 0.9241208434104919,
+                "x": 204,
+                "y": 746,
+                "w": 100,
+                "h": 101
+              },
+              {
+                "label": "얼굴",
+                "confidence": 0.8986157774925232,
+                "x": 302,
+                "y": 367,
+                "w": 242,
+                "h": 181
+              },
+              {
+                "label": "팔",
+                "confidence": 0.8949522376060486,
+                "x": 526,
+                "y": 562,
+                "w": 153,
+                "h": 257
+              },
+              {
+                "label": "목",
+                "confidence": 0.87450110912323,
+                "x": 417,
+                "y": 537,
+                "w": 50,
+                "h": 35
+              },
+              {
+                "label": "다리",
+                "confidence": 0.8181572556495667,
+                "x": 451,
+                "y": 956,
+                "w": 221,
+                "h": 248
+              },
+              {
+                "label": "손",
+                "confidence": 0.7248150706291199,
+                "x": 613,
+                "y": 744,
+                "w": 62,
+                "h": 71
+              },
+              {
+                "label": "눈",
+                "confidence": 0.49694710969924927,
+                "x": 408,
+                "y": 397,
+                "w": 93,
+                "h": 22
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "운동화",
+              "areaRatio": 0.0339,
+              "position": "bottom-center",
+              "w": 223,
+              "h": 249,
+              "cx": 560.5,
+              "cy": 1078.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "사람전체",
+              "areaRatio": 0.2725,
+              "position": "middle-center",
+              "w": 500,
+              "h": 893,
+              "cx": 432,
+              "cy": 769.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "발",
+              "areaRatio": 0.0069,
+              "position": "bottom-left",
+              "w": 119,
+              "h": 95,
+              "cx": 241.5,
+              "cy": 1168.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "상체",
+              "areaRatio": 0.0384,
+              "position": "middle-center",
+              "w": 207,
+              "h": 304,
+              "cx": 428.5,
+              "cy": 709,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "다리",
+              "areaRatio": 0.0255,
+              "position": "bottom-left",
+              "w": 152,
+              "h": 275,
+              "cx": 256,
+              "cy": 1078.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "팔",
+              "areaRatio": 0.0206,
+              "position": "middle-left",
+              "w": 135,
+              "h": 250,
+              "cx": 267.5,
+              "cy": 724,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "머리카락",
+              "areaRatio": 0.0157,
+              "position": "top-left",
+              "w": 229,
+              "h": 112,
+              "cx": 416.5,
+              "cy": 379,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "머리",
+              "areaRatio": 0.0333,
+              "position": "middle-center",
+              "w": 245,
+              "h": 223,
+              "cx": 423.5,
+              "cy": 438.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "손",
+              "areaRatio": 0.0062,
+              "position": "middle-left",
+              "w": 100,
+              "h": 101,
+              "cx": 254,
+              "cy": 796.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "얼굴",
+              "areaRatio": 0.0267,
+              "position": "middle-center",
+              "w": 242,
+              "h": 181,
+              "cx": 423,
+              "cy": 457.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "팔",
+              "areaRatio": 0.024,
+              "position": "middle-center",
+              "w": 153,
+              "h": 257,
+              "cx": 602.5,
+              "cy": 690.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "목",
+              "areaRatio": 0.0011,
+              "position": "middle-center",
+              "w": 50,
+              "h": 35,
+              "cx": 442,
+              "cy": 554.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "다리",
+              "areaRatio": 0.0335,
+              "position": "bottom-center",
+              "w": 221,
+              "h": 248,
+              "cx": 561.5,
+              "cy": 1080,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "손",
+              "areaRatio": 0.0027,
+              "position": "middle-center",
+              "w": 62,
+              "h": 71,
+              "cx": 644,
+              "cy": 779.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "눈",
+              "areaRatio": 0.0012,
+              "position": "top-center",
+              "w": 93,
+              "h": 22,
+              "cx": 454.5,
+              "cy": 408,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T08:08:59.340Z",
+        "updatedAt": "2025-08-13T08:09:13.647Z"
+      },
+      {
+        "id": "1755072555744",
+        "type": "person",
+        "filename": "1755072555738-up4ezk.png",
+        "path": "/uploads/1755072555738-up4ezk.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755072555738-up4ezk.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "머리",
+                "confidence": 0.982140064239502,
+                "x": 186,
+                "y": 413,
+                "w": 720,
+                "h": 614
+              },
+              {
+                "label": "눈",
+                "confidence": 0.9684914946556091,
+                "x": 590,
+                "y": 662,
+                "w": 163,
+                "h": 92
+              },
+              {
+                "label": "눈",
+                "confidence": 0.9638680815696716,
+                "x": 352,
+                "y": 635,
+                "w": 228,
+                "h": 130
+              },
+              {
+                "label": "귀",
+                "confidence": 0.9632605314254761,
+                "x": 793,
+                "y": 677,
+                "w": 110,
+                "h": 175
+              },
+              {
+                "label": "얼굴",
+                "confidence": 0.963090717792511,
+                "x": 185,
+                "y": 646,
+                "w": 719,
+                "h": 377
+              },
+              {
+                "label": "머리카락",
+                "confidence": 0.95884108543396,
+                "x": 290,
+                "y": 413,
+                "w": 487,
+                "h": 257
+              },
+              {
+                "label": "입",
+                "confidence": 0.9586133360862732,
+                "x": 466,
+                "y": 882,
+                "w": 249,
+                "h": 72
+              },
+              {
+                "label": "귀",
+                "confidence": 0.9585298299789429,
+                "x": 187,
+                "y": 758,
+                "w": 129,
+                "h": 146
+              },
+              {
+                "label": "사람전체",
+                "confidence": 0.9506866335868835,
+                "x": 27,
+                "y": 389,
+                "w": 1028,
+                "h": 1103
+              },
+              {
+                "label": "상체",
+                "confidence": 0.8984566330909729,
+                "x": 42,
+                "y": 1016,
+                "w": 1013,
+                "h": 476
+              },
+              {
+                "label": "코",
+                "confidence": 0.8911341428756714,
+                "x": 557,
+                "y": 806,
+                "w": 27,
+                "h": 37
+              },
+              {
+                "label": "목",
+                "confidence": 0.8756324052810669,
+                "x": 484,
+                "y": 995,
+                "w": 261,
+                "h": 57
+              },
+              {
+                "label": "사람전체",
+                "confidence": 0.29602566361427307,
+                "x": 183,
+                "y": 418,
+                "w": 722,
+                "h": 614
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "머리",
+              "areaRatio": 0.2698,
+              "position": "middle-center",
+              "w": 720,
+              "h": 614,
+              "cx": 546,
+              "cy": 720,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "눈",
+              "areaRatio": 0.0092,
+              "position": "middle-center",
+              "w": 163,
+              "h": 92,
+              "cx": 671.5,
+              "cy": 708,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "눈",
+              "areaRatio": 0.0181,
+              "position": "middle-center",
+              "w": 228,
+              "h": 130,
+              "cx": 466,
+              "cy": 700,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "귀",
+              "areaRatio": 0.0117,
+              "position": "middle-right",
+              "w": 110,
+              "h": 175,
+              "cx": 848,
+              "cy": 764.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "얼굴",
+              "areaRatio": 0.1654,
+              "position": "middle-center",
+              "w": 719,
+              "h": 377,
+              "cx": 544.5,
+              "cy": 834.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "머리카락",
+              "areaRatio": 0.0764,
+              "position": "middle-center",
+              "w": 487,
+              "h": 257,
+              "cx": 533.5,
+              "cy": 541.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "입",
+              "areaRatio": 0.0109,
+              "position": "bottom-center",
+              "w": 249,
+              "h": 72,
+              "cx": 590.5,
+              "cy": 918,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "귀",
+              "areaRatio": 0.0115,
+              "position": "middle-left",
+              "w": 129,
+              "h": 146,
+              "cx": 251.5,
+              "cy": 831,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "사람전체",
+              "areaRatio": 0.6921,
+              "position": "bottom-center",
+              "w": 1028,
+              "h": 1103,
+              "cx": 541,
+              "cy": 940.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "상체",
+              "areaRatio": 0.2943,
+              "position": "bottom-center",
+              "w": 1013,
+              "h": 476,
+              "cx": 548.5,
+              "cy": 1254,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "코",
+              "areaRatio": 0.0006,
+              "position": "middle-center",
+              "w": 27,
+              "h": 37,
+              "cx": 570.5,
+              "cy": 824.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "목",
+              "areaRatio": 0.0091,
+              "position": "bottom-center",
+              "w": 261,
+              "h": 57,
+              "cx": 614.5,
+              "cy": 1023.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            },
+            {
+              "label": "사람전체",
+              "areaRatio": 0.2706,
+              "position": "middle-center",
+              "w": 722,
+              "h": 614,
+              "cx": 544,
+              "cy": 725,
+              "meaning": "해석 기준 없음"
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T08:09:15.742Z",
+        "updatedAt": "2025-08-13T08:09:24.375Z"
+      }
+    ]
+  },
+  {
+    "id": "1755072653546",
+    "name": "21",
+    "gender": "남자",
+    "birth": "2007-01-20",
+    "password": "$2b$10$fLe6tScRBEIPCaoZZ.VJe.7RdR1jfgN4M1KH7Kjb3YVK7IKZxyrXK",
+    "createdAt": "2025-08-13T08:10:53.546Z",
+    "drawings": [
+      {
+        "id": "1755072657225",
+        "type": "house",
+        "filename": "1755072657220-ldyebp.png",
+        "path": "/uploads/1755072657220-ldyebp.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755072657220-ldyebp.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "house",
+            "objects": []
+          },
+          "analysis": []
+        },
+        "createdAt": "2025-08-13T08:10:57.223Z",
+        "updatedAt": "2025-08-13T08:11:08.543Z"
+      },
+      {
+        "id": "1755072716776",
+        "type": "tree",
+        "filename": "1755072716766-sci5gu.png",
+        "path": "/uploads/1755072716766-sci5gu.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755072716766-sci5gu.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "tree",
+            "objects": [
+              {
+                "label": "수관",
+                "confidence": 0.9863730072975159,
+                "x": 104,
+                "y": 103,
+                "w": 771,
+                "h": 721
+              },
+              {
+                "label": "나무전체",
+                "confidence": 0.9826985597610474,
+                "x": 108,
+                "y": 101,
+                "w": 764,
+                "h": 1391
+              },
+              {
+                "label": "그네",
+                "confidence": 0.97191321849823,
+                "x": 681,
+                "y": 677,
+                "w": 227,
+                "h": 442
+              },
+              {
+                "label": "꽃",
+                "confidence": 0.9684489369392395,
+                "x": 382,
+                "y": 187,
+                "w": 166,
+                "h": 171
+              },
+              {
+                "label": "기둥",
+                "confidence": 0.9652088284492493,
+                "x": 340,
+                "y": 617,
+                "w": 455,
+                "h": 735
+              },
+              {
+                "label": "가지",
+                "confidence": 0.9628782272338867,
+                "x": 220,
+                "y": 436,
+                "w": 536,
+                "h": 298
+              },
+              {
+                "label": "열매",
+                "confidence": 0.960625946521759,
+                "x": 655,
+                "y": 265,
+                "w": 103,
+                "h": 146
+              },
+              {
+                "label": "구름",
+                "confidence": 0.9563809633255005,
+                "x": 44,
+                "y": 102,
+                "w": 174,
+                "h": 101
+              },
+              {
+                "label": "새",
+                "confidence": 0.9545756578445435,
+                "x": 827,
+                "y": 330,
+                "w": 200,
+                "h": 147
+              },
+              {
+                "label": "나뭇잎",
+                "confidence": 0.9484838247299194,
+                "x": 125,
+                "y": 861,
+                "w": 135,
+                "h": 225
+              },
+              {
+                "label": "새",
+                "confidence": 0.9382803440093994,
+                "x": 822,
+                "y": 13,
+                "w": 233,
+                "h": 222
+              },
+              {
+                "label": "나뭇잎",
+                "confidence": 0.9346907138824463,
+                "x": 887,
+                "y": 1251,
+                "w": 122,
+                "h": 161
+              },
+              {
+                "label": "뿌리",
+                "confidence": 0.9239112734794617,
+                "x": 270,
+                "y": 1353,
+                "w": 581,
+                "h": 139
+              },
+              {
+                "label": "열매",
+                "confidence": 0.921949565410614,
+                "x": 207,
+                "y": 453,
+                "w": 113,
+                "h": 133
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "수관",
+              "areaRatio": 0.3393,
+              "position": "middle-center",
+              "w": 771,
+              "h": 721,
+              "cx": 489.5,
+              "cy": 463.5,
+              "meaning": "- 커다란 크기의 수관은 자신감과 야망이 있으며 정열적으로 몰두함을 의미합니다."
+            },
+            {
+              "label": "나무전체",
+              "areaRatio": 0.6486,
+              "position": "middle-center",
+              "w": 764,
+              "h": 1391,
+              "cx": 490,
+              "cy": 796.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "그네",
+              "areaRatio": 0.0612,
+              "position": "bottom-center",
+              "w": 227,
+              "h": 442,
+              "cx": 794.5,
+              "cy": 898,
+              "meaning": "- 그네를 그린 경우 생활의 일부분을 타인의 희생에 초점을 두는 것에 대한 과한 긴장이 있음을 나타낸다."
+            },
+            {
+              "label": "꽃",
+              "areaRatio": 0.0173,
+              "position": "top-center",
+              "w": 166,
+              "h": 171,
+              "cx": 465,
+              "cy": 272.5,
+              "meaning": "- 꽃은 외면적인 체면을 중시하거나 겉치레에 과한 집중을 하는 경우를 의미한다."
+            },
+            {
+              "label": "기둥",
+              "areaRatio": 0.2041,
+              "position": "bottom-center",
+              "w": 455,
+              "h": 735,
+              "cx": 567.5,
+              "cy": 984.5,
+              "meaning": "- 기둥은 생활환경의 지속성과 안정감을 의미합니다. 작은 크기의 기둥은 불안정하고 불안한 생활을 의미합니다."
+            },
+            {
+              "label": "가지",
+              "areaRatio": 0.0975,
+              "position": "middle-center",
+              "w": 536,
+              "h": 298,
+              "cx": 488,
+              "cy": 585,
+              "meaning": "- 가지의 모양과 크기가 보통인 경우, 외부 환경으로부터 자신이 원하는 바를 성취할 능력이 있음을 시사함.\n- 가지가 적은 것은 환경에 만족하지 못하여 좌절하고 있음을 시사함. 가지의 모양과 크기가 보통인 경우, 외부 환경으로부터 자신이 원하는 바를 성취할 능력이 있음을 시사함.\n- 가지가 적은 것은 환경에 만족하지 못하여 좌절하고 있음을 시사함. 이로 인해 말이 과하게 빠를 수 있다. 가지의 모양과 크기가 보통인 경우, 외부 환경으로부터 자신이 원하는 바를 성취할 능력이 있음을 시사함."
+            },
+            {
+              "label": "열매",
+              "areaRatio": 0.0092,
+              "position": "top-center",
+              "w": 103,
+              "h": 146,
+              "cx": 706.5,
+              "cy": 338,
+              "meaning": "- 열매는 아동의 경우 흔히 그리는 소재이다. 나무에 온전히 붙은 경우 의존욕구로 부모의 애정 혹은 주변에 의존하고 싶다는 표현이거나, 수가 많은 경우 자신의 노력과 결실을 표현한다. 떨어진 열매의 경우 자신이 거부되고 있다는 감정과, 무언가에 대한 체념과 포기, 거리감을 나타낸다."
+            },
+            {
+              "label": "구름",
+              "areaRatio": 0.0107,
+              "position": "top-left",
+              "w": 174,
+              "h": 101,
+              "cx": 131,
+              "cy": 152.5,
+              "meaning": "- 나무와 태양 사이의 구름은 어떤 특정한 인물에게 불만을 가지고 있음을 나타낸다. 일반적인 구름의 경우 아동들에게서 많이 그려지는 보통의 특성일 수 있다."
+            },
+            {
+              "label": "새",
+              "areaRatio": 0.0179,
+              "position": "top-right",
+              "w": 200,
+              "h": 147,
+              "cx": 927,
+              "cy": 403.5,
+              "meaning": "- 동물은 따듯한 곳에서 보호 받고자 하는 욕구를 나타낸다. 새가 둥지 속에 있는 경우 대개 의존적인 경향을 가지며, 가지 위에 앉은 경우는 자유에 대한 열망과 관련이 있다."
+            },
+            {
+              "label": "나뭇잎",
+              "areaRatio": 0.0185,
+              "position": "bottom-left",
+              "w": 135,
+              "h": 225,
+              "cx": 192.5,
+              "cy": 973.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "새",
+              "areaRatio": 0.0316,
+              "position": "top-right",
+              "w": 233,
+              "h": 222,
+              "cx": 938.5,
+              "cy": 124,
+              "meaning": "- 동물은 따듯한 곳에서 보호 받고자 하는 욕구를 나타낸다. 새가 둥지 속에 있는 경우 대개 의존적인 경향을 가지며, 가지 위에 앉은 경우는 자유에 대한 열망과 관련이 있다."
+            },
+            {
+              "label": "나뭇잎",
+              "areaRatio": 0.012,
+              "position": "bottom-right",
+              "w": 122,
+              "h": 161,
+              "cx": 948,
+              "cy": 1331.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "뿌리",
+              "areaRatio": 0.0493,
+              "position": "bottom-center",
+              "w": 581,
+              "h": 139,
+              "cx": 560.5,
+              "cy": 1422.5,
+              "meaning": "- 뿌리가 매우 작거나 말라죽은 뿌리를 그리는 경우, 아동이 자신의 생활력과 충동을 상실하고 현실을 다루는 일이 잘 되지 않는다고 느끼는 경우가 많다. 유아기부터의 경험과 관련짓는 우울한 감정일 수 있어 주의가 필요하다."
+            },
+            {
+              "label": "열매",
+              "areaRatio": 0.0092,
+              "position": "middle-left",
+              "w": 113,
+              "h": 133,
+              "cx": 263.5,
+              "cy": 519.5,
+              "meaning": "- 열매는 아동의 경우 흔히 그리는 소재이다. 나무에 온전히 붙은 경우 의존욕구로 부모의 애정 혹은 주변에 의존하고 싶다는 표현이거나, 수가 많은 경우 자신의 노력과 결실을 표현한다. 떨어진 열매의 경우 자신이 거부되고 있다는 감정과, 무언가에 대한 체념과 포기, 거리감을 나타낸다."
+            }
+          ]
+        },
+        "createdAt": "2025-08-13T08:11:56.774Z",
+        "updatedAt": "2025-08-13T08:12:08.270Z"
+      },
+      {
+        "id": "1755072719131",
+        "type": "person",
+        "filename": "1755072719122-amw1qu.png",
+        "path": "/uploads/1755072719122-amw1qu.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755072719122-amw1qu.png",
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-08-13T08:11:59.126Z",
+        "updatedAt": "2025-08-13T08:12:29.216Z"
+      },
+      {
+        "id": "1755072722561",
+        "type": "person",
+        "filename": "1755072722545-38laop.png",
+        "path": "/uploads/1755072722545-38laop.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755072722545-38laop.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": []
+          },
+          "analysis": []
+        },
+        "createdAt": "2025-08-13T08:12:02.551Z",
+        "updatedAt": "2025-08-13T08:12:26.124Z"
+      }
+    ]
+  },
+  {
+    "id": "1755074077665",
+    "name": "ㄴㄷㄱ",
+    "gender": "남자",
+    "birth": "2018-03-19",
+    "password": "$2b$10$quA2cxh.6FDQwzmO6lqSdekiMjQQMgwPkkwNyqNEHilu4WFjLBnBK",
+    "createdAt": "2025-08-13T08:34:37.665Z",
+    "drawings": [
+      {
+        "id": "1755074094611",
+        "type": "house",
+        "filename": "1755074094600-6hynol.png",
+        "path": "/uploads/1755074094600-6hynol.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755074094600-6hynol.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "house",
+            "objects": [
+              {
+                "label": "집벽",
+                "confidence": 0.9833303689956665,
+                "x": 674,
+                "y": 792,
+                "w": 606,
+                "h": 364
+              },
+              {
+                "label": "집전체",
+                "confidence": 0.9823601841926575,
+                "x": 669,
+                "y": 358,
+                "w": 640,
+                "h": 800
+              },
+              {
+                "label": "꽃",
+                "confidence": 0.9808018803596497,
+                "x": 231,
+                "y": 880,
+                "w": 211,
+                "h": 459
+              },
+              {
+                "label": "지붕",
+                "confidence": 0.980147659778595,
+                "x": 674,
+                "y": 432,
+                "w": 633,
+                "h": 400
+              },
+              {
+                "label": "문",
+                "confidence": 0.9762625098228455,
+                "x": 858,
+                "y": 957,
+                "w": 172,
+                "h": 197
+              },
+              {
+                "label": "창문",
+                "confidence": 0.9711156487464905,
+                "x": 1032,
+                "y": 817,
+                "w": 157,
+                "h": 147
+              },
+              {
+                "label": "꽃",
+                "confidence": 0.9670212268829346,
+                "x": 1614,
+                "y": 617,
+                "w": 247,
+                "h": 581
+              },
+              {
+                "label": "굴뚝",
+                "confidence": 0.41561782360076904,
+                "x": 1086,
+                "y": 1,
+                "w": 995,
+                "h": 610
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "집벽",
+              "areaRatio": 0.1346,
+              "position": "bottom-right",
+              "w": 606,
+              "h": 364,
+              "cx": 977,
+              "cy": 974,
+              "meaning": "- 만족을 공상에서 구하며 현실과의 접촉이 적습니다."
+            },
+            {
+              "label": "집전체",
+              "areaRatio": 0.3125,
+              "position": "middle-right",
+              "w": 640,
+              "h": 800,
+              "cx": 989,
+              "cy": 758,
+              "meaning": "- 보통 크기의 그림은 평균적이고 안정된 자아 구조를 반영할 수 있습니다."
+            },
+            {
+              "label": "꽃",
+              "areaRatio": 0.0591,
+              "position": "bottom-left",
+              "w": 211,
+              "h": 459,
+              "cx": 336.5,
+              "cy": 1109.5,
+              "meaning": "- 사람 또는 자기 표현에 대한 욕구를 반영합니다."
+            },
+            {
+              "label": "지붕",
+              "areaRatio": 0.1545,
+              "position": "middle-right",
+              "w": 633,
+              "h": 400,
+              "cx": 990.5,
+              "cy": 632,
+              "meaning": "- 지붕의 형태가 비정상적인 경우 자기통제력이 약할 수 있습니다."
+            },
+            {
+              "label": "문",
+              "areaRatio": 0.0207,
+              "position": "bottom-right",
+              "w": 172,
+              "h": 197,
+              "cx": 944,
+              "cy": 1055.5,
+              "meaning": "- 환경과의 접촉을 꺼리고 우유부단함에 비대되고 있습니다. 현실도피, 사회성의 결핍과 무력감을 뜻합니다."
+            },
+            {
+              "label": "창문",
+              "areaRatio": 0.0141,
+              "position": "bottom-right",
+              "w": 157,
+              "h": 147,
+              "cx": 1110.5,
+              "cy": 890.5,
+              "meaning": "- 창문의 크기가 작은 경우 외부 세계에 대한 심리적인 거리감과 수줍음을 나타냅니다."
+            },
+            {
+              "label": "꽃",
+              "areaRatio": 0.0876,
+              "position": "bottom-right",
+              "w": 247,
+              "h": 581,
+              "cx": 1737.5,
+              "cy": 907.5,
+              "meaning": "- 사람 또는 자기 표현에 대한 욕구를 반영합니다."
+            },
+            {
+              "label": "굴뚝",
+              "areaRatio": 0.3705,
+              "position": "top-right",
+              "w": 995,
+              "h": 610,
+              "cx": 1583.5,
+              "cy": 306,
+              "meaning": "- 가족 간의 애정과 교류, 분위기를 나타냅니다. 따듯한 굴뚝의 이미지는 일반적입니다."
+            }
+          ],
+          "subtype": "house"
+        },
+        "createdAt": "2025-08-13T08:34:54.609Z",
+        "updatedAt": "2025-08-13T08:35:08.298Z"
+      },
+      {
+        "id": "1755074111259",
+        "type": "tree",
+        "filename": "1755074111251-jeczdt.png",
+        "path": "/uploads/1755074111251-jeczdt.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755074111251-jeczdt.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "tree",
+            "objects": [
+              {
+                "label": "수관",
+                "confidence": 0.9794498085975647,
+                "x": 117,
+                "y": 226,
+                "w": 861,
+                "h": 564
+              },
+              {
+                "label": "나무전체",
+                "confidence": 0.9703388214111328,
+                "x": 118,
+                "y": 223,
+                "w": 867,
+                "h": 1143
+              },
+              {
+                "label": "새",
+                "confidence": 0.9645233154296875,
+                "x": 708,
+                "y": 860,
+                "w": 246,
+                "h": 177
+              },
+              {
+                "label": "열매",
+                "confidence": 0.9569141268730164,
+                "x": 315,
+                "y": 425,
+                "w": 100,
+                "h": 90
+              },
+              {
+                "label": "뿌리",
+                "confidence": 0.9451459050178528,
+                "x": 236,
+                "y": 1127,
+                "w": 532,
+                "h": 248
+              },
+              {
+                "label": "기둥",
+                "confidence": 0.9421029090881348,
+                "x": 322,
+                "y": 591,
+                "w": 366,
+                "h": 529
+              },
+              {
+                "label": "열매",
+                "confidence": 0.913619339466095,
+                "x": 624,
+                "y": 359,
+                "w": 113,
+                "h": 102
+              },
+              {
+                "label": "기둥",
+                "confidence": 0.510041356086731,
+                "x": 115,
+                "y": 229,
+                "w": 866,
+                "h": 1137
+              },
+              {
+                "label": "나무전체",
+                "confidence": 0.297787070274353,
+                "x": 317,
+                "y": 584,
+                "w": 380,
+                "h": 543
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "수관",
+              "areaRatio": 0.2964,
+              "position": "middle-center",
+              "w": 861,
+              "h": 564,
+              "cx": 547.5,
+              "cy": 508,
+              "meaning": "- 커다란 크기의 수관은 자신감과 야망이 있으며 정열적으로 몰두함을 의미합니다."
+            },
+            {
+              "label": "나무전체",
+              "areaRatio": 0.6048,
+              "position": "middle-center",
+              "w": 867,
+              "h": 1143,
+              "cx": 551.5,
+              "cy": 794.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "새",
+              "areaRatio": 0.0266,
+              "position": "bottom-center",
+              "w": 246,
+              "h": 177,
+              "cx": 831,
+              "cy": 948.5,
+              "meaning": "- 동물은 따듯한 곳에서 보호 받고자 하는 욕구를 나타낸다. 새가 둥지 속에 있는 경우 대개 의존적인 경향을 가지며, 가지 위에 앉은 경우는 자유에 대한 열망과 관련이 있다."
+            },
+            {
+              "label": "열매",
+              "areaRatio": 0.0055,
+              "position": "middle-left",
+              "w": 100,
+              "h": 90,
+              "cx": 365,
+              "cy": 470,
+              "meaning": "- 열매는 아동의 경우 흔히 그리는 소재이다. 나무에 온전히 붙은 경우 의존욕구로 부모의 애정 혹은 주변에 의존하고 싶다는 표현이거나, 수가 많은 경우 자신의 노력과 결실을 표현한다. 떨어진 열매의 경우 자신이 거부되고 있다는 감정과, 무언가에 대한 체념과 포기, 거리감을 나타낸다."
+            },
+            {
+              "label": "뿌리",
+              "areaRatio": 0.0805,
+              "position": "bottom-center",
+              "w": 532,
+              "h": 248,
+              "cx": 502,
+              "cy": 1251,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "기둥",
+              "areaRatio": 0.1182,
+              "position": "bottom-center",
+              "w": 366,
+              "h": 529,
+              "cx": 505,
+              "cy": 855.5,
+              "meaning": "- 기둥은 생활환경의 지속성과 안정감을 의미합니다. 작은 크기의 기둥은 불안정하고 불안한 생활을 의미합니다."
+            },
+            {
+              "label": "열매",
+              "areaRatio": 0.007,
+              "position": "top-center",
+              "w": 113,
+              "h": 102,
+              "cx": 680.5,
+              "cy": 410,
+              "meaning": "- 열매는 아동의 경우 흔히 그리는 소재이다. 나무에 온전히 붙은 경우 의존욕구로 부모의 애정 혹은 주변에 의존하고 싶다는 표현이거나, 수가 많은 경우 자신의 노력과 결실을 표현한다. 떨어진 열매의 경우 자신이 거부되고 있다는 감정과, 무언가에 대한 체념과 포기, 거리감을 나타낸다."
+            },
+            {
+              "label": "기둥",
+              "areaRatio": 0.601,
+              "position": "middle-center",
+              "w": 866,
+              "h": 1137,
+              "cx": 548,
+              "cy": 797.5,
+              "meaning": "해석 기준 없음"
+            },
+            {
+              "label": "나무전체",
+              "areaRatio": 0.1259,
+              "position": "bottom-center",
+              "w": 380,
+              "h": 543,
+              "cx": 507,
+              "cy": 855.5,
+              "meaning": "- 보통 크기의 그림은 평균적이고 안정된 자아 구조를 반영할 수 있습니다."
+            }
+          ],
+          "subtype": "tree"
+        },
+        "createdAt": "2025-08-13T08:35:11.257Z",
+        "updatedAt": "2025-08-13T08:35:21.318Z"
+      },
+      {
+        "id": "1755074114984",
+        "type": "person",
+        "filename": "1755074114972-90ovj7.png",
+        "path": "/uploads/1755074114972-90ovj7.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755074114972-90ovj7.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "운동화",
+                "confidence": 0.9328848719596863,
+                "x": 397,
+                "y": 212,
+                "w": 218,
+                "h": 177
+              }
+            ]
+          },
+          "analysis": [
+            {
+              "label": "운동화",
+              "areaRatio": 0.0236,
+              "position": "top-center",
+              "w": 218,
+              "h": 177,
+              "cx": 506,
+              "cy": 300.5,
+              "meaning": "- 그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
+            }
+          ],
+          "subtype": "person"
+        },
+        "createdAt": "2025-08-13T08:35:14.981Z",
+        "updatedAt": "2025-08-13T08:35:44.372Z"
+      },
+      {
+        "id": "1755074117909",
+        "type": "person",
+        "filename": "1755074117899-ocdw4u.png",
+        "path": "/uploads/1755074117899-ocdw4u.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1755074117899-ocdw4u.png",
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": []
+          },
+          "analysis": [],
+          "subtype": "person"
+        },
+        "createdAt": "2025-08-13T08:35:17.904Z",
+        "updatedAt": "2025-08-13T08:35:34.840Z"
+      }
+    ]
   }
 ]

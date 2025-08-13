@@ -119,61 +119,61 @@ router.post("/upload-drawing", upload.single("drawing"), (req, res) => {
   });
 });
 
-// -----------------------
-// 4. 그림 업로드 + YOLO 분석
-// -----------------------
-router.post("/analyze-drawing", upload.single("drawing"), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: "그림 파일이 없습니다." });
-    }
+// // -----------------------
+// // 4. 그림 업로드 + YOLO 분석
+// // -----------------------
+// router.post("/analyze-drawing", upload.single("drawing"), async (req, res) => {
+//   try {
+//     if (!req.file) {
+//       return res.status(400).json({ message: "그림 파일이 없습니다." });
+//     }
 
-    const drawingType = req.body.type || "house";
-    const absPath = path.join(__dirname, "../uploads", req.file.filename);
+//     const drawingType = req.body.type || "house";
+//     const absPath = path.join(__dirname, "../uploads", req.file.filename);
 
-    const form = new FormData();
-    form.append("image", fs.createReadStream(absPath));
+//     const form = new FormData();
+//     form.append("image", fs.createReadStream(absPath));
 
-    const yoloResponse = await axios.post(
-      `http://localhost:8000/analyze/${drawingType}`,
-      form,
-      { headers: form.getHeaders() }
-    );
+//     const yoloResponse = await axios.post(
+//       `http://localhost:8000/analyze/${drawingType}`,
+//       form,
+//       { headers: form.getHeaders() }
+//     );
 
-    //console.log("📥 YOLO 응답 원본:", yoloResponse);
-    console.log("📦 yoloResponse.data:", yoloResponse?.data);
+//     //console.log("📥 YOLO 응답 원본:", yoloResponse);
+//     console.log("📦 yoloResponse.data:", yoloResponse?.data);
 
-    const yoloResultRaw = yoloResponse.data;
+//     const yoloResultRaw = yoloResponse.data;
 
-    // YOLO 응답이 배열이면 objects 필드로 래핑
-    const yoloResult = Array.isArray(yoloResultRaw)
-      ? { type: drawingType, objects: yoloResultRaw }
-      : yoloResultRaw;
+//     // YOLO 응답이 배열이면 objects 필드로 래핑
+//     const yoloResult = Array.isArray(yoloResultRaw)
+//       ? { type: drawingType, objects: yoloResultRaw }
+//       : yoloResultRaw;
 
-    if (!yoloResult || !Array.isArray(yoloResult.objects)) {
-      console.log("🚨 yoloResult.objects 문제 있음:", yoloResult.objects);
-      throw new Error("YOLO 응답 구조가 예상과 다릅니다.");
-    }
+//     if (!yoloResult || !Array.isArray(yoloResult.objects)) {
+//       console.log("🚨 yoloResult.objects 문제 있음:", yoloResult.objects);
+//       throw new Error("YOLO 응답 구조가 예상과 다릅니다.");
+//     }
 
-    const interpreted = interpretYOLOResult(yoloResult, drawingType);
+//     const interpreted = interpretYOLOResult(yoloResult, drawingType);
 
-    res.status(200).json({
-      message: "그림 업로드 및 분석 완료",
-      filename: req.file.filename,
-      path: "/uploads/" + req.file.filename,
-      analysis: interpreted,
-    });
-  } catch (err) {
-    console.error("🚨 YOLO 분석 실패:");
-    console.error("에러 타입:", typeof err);
-    console.error("에러 전체:", err);
-    console.error("스택:", err.stack);
-    res.status(500).json({
-      message: "분석 실패",
-      error: err?.message || "서버 내부 오류",
-    });
-  }
-});
+//     res.status(200).json({
+//       message: "그림 업로드 및 분석 완료",
+//       filename: req.file.filename,
+//       path: "/uploads/" + req.file.filename,
+//       analysis: interpreted,
+//     });
+//   } catch (err) {
+//     console.error("🚨 YOLO 분석 실패:");
+//     console.error("에러 타입:", typeof err);
+//     console.error("에러 전체:", err);
+//     console.error("스택:", err.stack);
+//     res.status(500).json({
+//       message: "분석 실패",
+//       error: err?.message || "서버 내부 오류",
+//     });
+//   }
+// });
 
 // -----------------------
 // 5. GPT 프롬프트 해석
