@@ -6,9 +6,12 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-const { runYOLOAnalysis } = require("../logic/yoloRunner");
-const { interpretYOLOResult } = require("../logic/analyzeResult");
-const { interpretMultipleDrawings } = require("../logic/gptPrompt");
+const { runYOLOAnalysis } = require("../logic/yoloRunner"); // YOLO FastAPI 호출 (필드명 image)
+const { interpretYOLOResult } = require("../logic/analyzeResult"); // 룰 해석: 위치/면적→meaning 생성
+const {
+  summarizeDrawingForCounselor,
+  synthesizeOverallFromDrawingSummaries,
+} = require("../logic/gptPrompt");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DB 유틸
@@ -34,7 +37,7 @@ function writeDB(data) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 업로드: 원본 확장자 유지(가능하면) + uploads 폴더 저장
+// 업로드 저장
 // ─────────────────────────────────────────────────────────────────────────────
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -43,17 +46,15 @@ const storage = multer.diskStorage({
     cb(null, dest);
   },
   filename: (req, file, cb) => {
-    // 확장자 보존 시도
     let ext = path.extname(file.originalname || "") || "";
     if (!ext) {
-      // mime으로 추정
       if (file.mimetype === "image/png") ext = ".png";
       else if (file.mimetype === "image/jpeg") ext = ".jpg";
       else if (file.mimetype === "image/webp") ext = ".webp";
     }
-    const name = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${
-      ext || ""
-    }`;
+    const name = `${Date.now()}-${Math.random()
+      .toString(36)
+      .slice(2, 8)}${ext}`;
     cb(null, name);
   },
 });
@@ -61,8 +62,7 @@ const upload = multer({ storage });
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1) 업로드 + 백그라운드 YOLO 분석
-//    POST /api/drawings/upload
-//    form-data: drawing(file), type(text), session_id(text)
+//    POST /api/drawings/upload  (form-data: drawing(file), type(text), session_id(text))
 // ─────────────────────────────────────────────────────────────────────────────
 router.post("/upload", upload.single("drawing"), (req, res) => {
   const { session_id, type } = req.body;
@@ -105,6 +105,7 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
   // ── 백그라운드 분석 시작 ───────────────────────────────────────────────
   process.nextTick(async () => {
     try {
+      // 상태: processing
       const db1 = readDB();
       const s1 = db1.find((s) => s.id === session_id);
       const d1 = s1?.drawings?.find((d) => d.id === drawingId);
@@ -113,25 +114,50 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
       d1.updatedAt = new Date().toISOString();
       writeDB(db1);
 
-      // ★ YOLO는 person으로 통일 (남/여 모델이 같으므로)
+      // YOLO 호출 (FastAPI는 업로드 필드명을 image로 받음)
       const typeForYolo =
         type === "person_male" || type === "person_female" ? "person" : type;
-
       const yolo = await runYOLOAnalysis(absPath, typeForYolo);
 
-      // 해석은 기본적으로 person 규칙(필요하면 성별 구분 규칙도 가능)
+      // 룰 해석 → 객체별 meaning 생성(라벨/위치/면적 기준)
       const analysis = interpretYOLOResult(yolo, typeForYolo);
 
+      // 결과 저장 (남/여는 subtype으로 보존)
       const db2 = readDB();
       const s2 = db2.find((s) => s.id === session_id);
       const d2 = s2?.drawings?.find((d) => d.id === drawingId);
       if (!d2) return;
       d2.status = "done";
-      d2.result = { yolo, analysis, subtype: type }; // ★ subtype으로 남/여 보존
+      d2.result = { yolo, analysis, subtype: type };
       d2.updatedAt = new Date().toISOString();
       writeDB(db2);
 
-      // GPT 종합 요약 콘솔 출력
+      // 🔹 (새) 그림별 상담자용 요약 생성 — 객체/라벨/수치 언급 금지
+      try {
+        const dbA = readDB();
+        const sA = dbA.find((s) => s.id === session_id);
+        const name = (sA?.name || "").trim();
+
+        const { summary } = await summarizeDrawingForCounselor(
+          { type, result: { analysis, subtype: type } },
+          { name }
+        );
+
+        const dA = sA?.drawings?.find((d) => d.id === drawingId);
+        if (dA) {
+          dA.result.counselor_summary = summary;
+          dA.updatedAt = new Date().toISOString();
+          writeDB(dbA);
+        }
+
+        // 콘솔 확인(선택)
+        console.log("\n[🖼 그림별 종합해석] type=", type);
+        console.log(summary || "(없음)");
+      } catch (e) {
+        console.error("summarizeDrawingForCounselor 실패:", e?.message || e);
+      }
+
+      // 🔹 (새) 네 장이 모두 끝나면 전체 종합 생성
       try {
         const dbAfter = readDB();
         const sessionAfter = dbAfter.find((s) => s.id === session_id);
@@ -140,34 +166,46 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
         );
 
         if (doneDrawings.length === 4) {
-          const name = sessionAfter?.name?.trim();
-          const gpt = await interpretMultipleDrawings(doneDrawings, { name });
+          const entries = doneDrawings.map((x) => ({
+            type: x.type,
+            summary: x.result?.counselor_summary || "",
+          }));
+          const name = (sessionAfter?.name || "").trim();
 
-          console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-          console.log("🧠 GPT 종합 결과 (개인화 포함)");
-          console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-          console.log(gpt.personalized_overall || "(종합 요약 없음)");
+          const overall = await synthesizeOverallFromDrawingSummaries(entries, {
+            name,
+          });
 
-          if (gpt.strengths?.length) {
-            console.log("\n✅ Strengths");
-            gpt.strengths.forEach((s) => console.log("- " + s));
-          }
-          if (gpt.cautions?.length) {
-            console.log("\n⚠️  Cautions");
-            gpt.cautions.forEach((c) => console.log("- " + c));
-          }
-          if (gpt.per_drawing) {
-            console.log("\n🖼  Per Drawing");
-            console.log(gpt.per_drawing);
-          }
-          console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-
-          // (선택) DB 저장
-          sessionAfter.summary = gpt;
+          sessionAfter.summary_overall = overall;
           writeDB(dbAfter);
+
+          // 콘솔 출력
+          console.log(
+            "\n================= 🧠 전체 종합(상담자용) ================="
+          );
+          console.log(overall.personalized_overall || "(없음)");
+          if (overall.strengths?.length) {
+            console.log("\n✅ Strengths");
+            overall.strengths.forEach((s) => console.log("- " + s));
+          }
+          if (overall.cautions?.length) {
+            console.log("\n⚠️  Cautions");
+            overall.cautions.forEach((c) => console.log("- " + c));
+          }
+          console.log("\n🖼 Per Drawing 요약 →", overall.per_drawing);
+          console.log(
+            "=========================================================\n"
+          );
+        } else {
+          console.log(
+            `[GPT 전체 종합 대기] 현재 완료 ${doneDrawings.length}/4`
+          );
         }
       } catch (e) {
-        console.error("GPT 요약 실패:", e?.message || e);
+        console.error(
+          "synthesizeOverallFromDrawingSummaries 실패:",
+          e?.message || e
+        );
       }
     } catch (err) {
       const db3 = readDB();
@@ -186,9 +224,6 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 2) 상태 확인
-//    GET /api/drawings/:sessionId/:drawingId/status
-//    → { status: "uploaded|processing|done|error" }
-// ─────────────────────────────────────────────────────────────────────────────
 router.get("/:sessionId/:drawingId/status", (req, res) => {
   const db = readDB();
   const session = db.find((s) => s.id === req.params.sessionId);
@@ -200,11 +235,7 @@ router.get("/:sessionId/:drawingId/status", (req, res) => {
   res.json({ status: drawing.status });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
 // 3) 결과 확인
-//    GET /api/drawings/:sessionId/:drawingId/result
-//    → { status, result: { yolo, analysis } }
-// ─────────────────────────────────────────────────────────────────────────────
 router.get("/:sessionId/:drawingId/result", (req, res) => {
   const db = readDB();
   const session = db.find((s) => s.id === req.params.sessionId);
@@ -216,10 +247,7 @@ router.get("/:sessionId/:drawingId/result", (req, res) => {
   res.json({ status: drawing.status, result: drawing.result });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 4) (옵션) 해당 세션의 모든 그림 보기 – 디버그 편의용
-//    GET /api/drawings/:sessionId
-// ─────────────────────────────────────────────────────────────────────────────
+// 4) 세션의 모든 그림(디버그)
 router.get("/:sessionId", (req, res) => {
   const db = readDB();
   const session = db.find((s) => s.id === req.params.sessionId);
@@ -227,10 +255,7 @@ router.get("/:sessionId", (req, res) => {
   res.json({ drawings: session.drawings || [] });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 5) (옵션) 특정 그림의 전체 레코드(디버그)
-//    GET /api/drawings/:sessionId/:drawingId/debug
-// ─────────────────────────────────────────────────────────────────────────────
+// 5) 특정 그림 전체 레코드(디버그)
 router.get("/:sessionId/:drawingId/debug", (req, res) => {
   const db = readDB();
   const session = db.find((s) => s.id === req.params.sessionId);

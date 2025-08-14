@@ -10,7 +10,9 @@ const puppeteer = require("puppeteer");
 const axios = require("axios");
 const FormData = require("form-data");
 
+// GPT 종합 API(기존): 임의로 4개 그림 분석을 모아 클라이언트가 요약 받고 싶을 때 사용
 const { interpretMultipleDrawings } = require("../logic/gptPrompt");
+// 룰 해석(객체별 meaning 생성)
 const { interpretYOLOResult } = require("../logic/analyzeResult");
 
 const DB_FILE = path.join(__dirname, "../models/db.json");
@@ -37,6 +39,7 @@ router.post("/start", async (req, res) => {
       birth,
       password: hashedPassword,
       createdAt: new Date().toISOString(),
+      drawings: [], // 초기화
     };
 
     const db = fs.existsSync(DB_FILE)
@@ -94,7 +97,7 @@ router.post("/find", async (req, res) => {
 });
 
 // -----------------------
-// 3. 그림 업로드
+// 3. 그림 업로드 (파일만 저장)
 // -----------------------
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -104,7 +107,6 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-
 const upload = multer({ storage });
 
 router.post("/upload-drawing", upload.single("drawing"), (req, res) => {
@@ -119,64 +121,51 @@ router.post("/upload-drawing", upload.single("drawing"), (req, res) => {
   });
 });
 
-// // -----------------------
-// // 4. 그림 업로드 + YOLO 분석
-// // -----------------------
-// router.post("/analyze-drawing", upload.single("drawing"), async (req, res) => {
-//   try {
-//     if (!req.file) {
-//       return res.status(400).json({ message: "그림 파일이 없습니다." });
-//     }
+// -----------------------
+// 4. (샘플) 저장된 이미지 한 장을 YOLO+룰 해석해보기
+// -----------------------
+router.post("/analyze-saved-drawing", async (req, res) => {
+  try {
+    const { imagePath, type } = req.body;
+    if (!imagePath) {
+      return res.status(400).json({ message: "imagePath가 필요합니다." });
+    }
 
-//     const drawingType = req.body.type || "house";
-//     const absPath = path.join(__dirname, "../uploads", req.file.filename);
+    const drawingType = type || "house";
+    const absPath = path.join(__dirname, "..", imagePath);
 
-//     const form = new FormData();
-//     form.append("image", fs.createReadStream(absPath));
+    const form = new FormData();
+    form.append("image", fs.createReadStream(absPath));
 
-//     const yoloResponse = await axios.post(
-//       `http://localhost:8000/analyze/${drawingType}`,
-//       form,
-//       { headers: form.getHeaders() }
-//     );
+    const yoloResponse = await axios.post(
+      `http://localhost:8000/analyze/${drawingType}`,
+      form,
+      { headers: form.getHeaders() }
+    );
 
-//     //console.log("📥 YOLO 응답 원본:", yoloResponse);
-//     console.log("📦 yoloResponse.data:", yoloResponse?.data);
+    const yoloResultRaw = yoloResponse.data;
+    const yoloResult = Array.isArray(yoloResultRaw)
+      ? { type: drawingType, objects: yoloResultRaw }
+      : yoloResultRaw;
 
-//     const yoloResultRaw = yoloResponse.data;
+    if (!yoloResult || !Array.isArray(yoloResult.objects)) {
+      throw new Error("YOLO 응답 구조가 예상과 다릅니다.");
+    }
 
-//     // YOLO 응답이 배열이면 objects 필드로 래핑
-//     const yoloResult = Array.isArray(yoloResultRaw)
-//       ? { type: drawingType, objects: yoloResultRaw }
-//       : yoloResultRaw;
+    const interpreted = interpretYOLOResult(yoloResult, drawingType);
 
-//     if (!yoloResult || !Array.isArray(yoloResult.objects)) {
-//       console.log("🚨 yoloResult.objects 문제 있음:", yoloResult.objects);
-//       throw new Error("YOLO 응답 구조가 예상과 다릅니다.");
-//     }
-
-//     const interpreted = interpretYOLOResult(yoloResult, drawingType);
-
-//     res.status(200).json({
-//       message: "그림 업로드 및 분석 완료",
-//       filename: req.file.filename,
-//       path: "/uploads/" + req.file.filename,
-//       analysis: interpreted,
-//     });
-//   } catch (err) {
-//     console.error("🚨 YOLO 분석 실패:");
-//     console.error("에러 타입:", typeof err);
-//     console.error("에러 전체:", err);
-//     console.error("스택:", err.stack);
-//     res.status(500).json({
-//       message: "분석 실패",
-//       error: err?.message || "서버 내부 오류",
-//     });
-//   }
-// });
+    res.status(200).json({
+      message: "기존 이미지 분석 완료",
+      analysis: interpreted,
+    });
+  } catch (err) {
+    console.error("🚨 저장된 그림 분석 실패:", err);
+    res.status(500).json({ message: "분석 실패", error: err.message });
+  }
+});
 
 // -----------------------
-// 5. GPT 프롬프트 해석
+// 5. GPT 종합 API (기존 유지)
 // -----------------------
 router.post("/interpret", async (req, res) => {
   try {
@@ -221,51 +210,6 @@ router.post("/generate-pdf", async (req, res) => {
   } catch (err) {
     console.error("PDF 생성 오류:", err);
     res.status(500).json({ message: "PDF 생성 실패" });
-  }
-});
-
-// -----------------------
-// ✅ 새로 저장된 그림 분석 API
-// -----------------------
-router.post("/analyze-saved-drawing", async (req, res) => {
-  try {
-    const { imagePath, type } = req.body;
-
-    if (!imagePath) {
-      return res.status(400).json({ message: "imagePath가 필요합니다." });
-    }
-
-    const drawingType = type || "house";
-    const absPath = path.join(__dirname, "..", imagePath); // 이미지 경로
-
-    const form = new FormData();
-    form.append("image", fs.createReadStream(absPath));
-
-    const yoloResponse = await axios.post(
-      `http://localhost:8000/analyze/${drawingType}`,
-      form,
-      { headers: form.getHeaders() }
-    );
-
-    const yoloResultRaw = yoloResponse.data;
-    const yoloResult = Array.isArray(yoloResultRaw)
-      ? { type: drawingType, objects: yoloResultRaw }
-      : yoloResultRaw;
-
-    if (!yoloResult || !Array.isArray(yoloResult.objects)) {
-      console.log("🚨 yoloResult.objects 문제 있음:", yoloResult.objects);
-      throw new Error("YOLO 응답 구조가 예상과 다릅니다.");
-    }
-
-    const interpreted = interpretYOLOResult(yoloResult, drawingType);
-
-    res.status(200).json({
-      message: "기존 이미지 분석 완료",
-      analysis: interpreted,
-    });
-  } catch (err) {
-    console.error("🚨 저장된 그림 분석 실패:", err);
-    res.status(500).json({ message: "분석 실패", error: err.message });
   }
 });
 
