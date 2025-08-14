@@ -7,16 +7,26 @@ const router = express.Router();
 
 router.get("/analyze", async (req, res) => {
   const fileName = req.query.file;
-  const type = req.query.type;
-  if (!fileName || !type) {
+  const rawType = req.query.type;
+  if (!fileName || !rawType) {
     return res.status(400).json({ error: "file과 type 쿼리값이 필요합니다" });
   }
 
   const imagePath = path.join(__dirname, "../uploads", fileName); // 절대경로
   try {
-    const yoloResult = await runYOLOAnalysis(imagePath, type); // { objects: [...] }
-    const analysis = interpretYOLOResult(yoloResult, type); // ✅ 변경
-    res.json({ objects: yoloResult.objects, analysis });
+    // 남/여 → YOLO용 타입 정규화
+    const typeForYolo =
+      rawType === "person_male" || rawType === "person_female"
+        ? "person"
+        : rawType;
+    const yoloResult = await runYOLOAnalysis(imagePath, typeForYolo); // { objects: [...] }
+    const analysis = interpretYOLOResult(yoloResult, typeForYolo);
+    // 응답에 subtype(원래 요청 타입) 보존
+    res.json({
+      objects: yoloResult.objects,
+      analysis,
+      subtype: rawType,
+    });
   } catch (err) {
     console.error("분석 실패:", err);
     res.status(500).json({ error: "YOLO 분석 실패", detail: err.message });

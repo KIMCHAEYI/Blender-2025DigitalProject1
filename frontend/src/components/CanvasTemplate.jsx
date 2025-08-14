@@ -142,7 +142,7 @@ export default function CanvasTemplate({
 
       // ★ 서버 업로드 주소: server.js 와 일치해야 함 → /api/drawings/upload
       const uploadRes = await axios.post(
-        "http://172.20.8.138:5000/api/drawings/upload",
+        "http://172.20.10.168:5000/api/drawings/upload",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

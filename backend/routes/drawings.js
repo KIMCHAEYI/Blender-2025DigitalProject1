@@ -8,6 +8,7 @@ const fs = require("fs");
 
 const { runYOLOAnalysis } = require("../logic/yoloRunner");
 const { interpretYOLOResult } = require("../logic/analyzeResult");
+const { interpretMultipleDrawings } = require("../logic/gptPrompt");
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DB 유틸
@@ -129,6 +130,45 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
       d2.result = { yolo, analysis, subtype: type }; // ★ subtype으로 남/여 보존
       d2.updatedAt = new Date().toISOString();
       writeDB(db2);
+
+      // GPT 종합 요약 콘솔 출력
+      try {
+        const dbAfter = readDB();
+        const sessionAfter = dbAfter.find((s) => s.id === session_id);
+        const doneDrawings = (sessionAfter?.drawings || []).filter(
+          (d) => d.status === "done"
+        );
+
+        if (doneDrawings.length === 4) {
+          const name = sessionAfter?.name?.trim();
+          const gpt = await interpretMultipleDrawings(doneDrawings, { name });
+
+          console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+          console.log("🧠 GPT 종합 결과 (개인화 포함)");
+          console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+          console.log(gpt.personalized_overall || "(종합 요약 없음)");
+
+          if (gpt.strengths?.length) {
+            console.log("\n✅ Strengths");
+            gpt.strengths.forEach((s) => console.log("- " + s));
+          }
+          if (gpt.cautions?.length) {
+            console.log("\n⚠️  Cautions");
+            gpt.cautions.forEach((c) => console.log("- " + c));
+          }
+          if (gpt.per_drawing) {
+            console.log("\n🖼  Per Drawing");
+            console.log(gpt.per_drawing);
+          }
+          console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+
+          // (선택) DB 저장
+          sessionAfter.summary = gpt;
+          writeDB(dbAfter);
+        }
+      } catch (e) {
+        console.error("GPT 요약 실패:", e?.message || e);
+      }
     } catch (err) {
       const db3 = readDB();
       const s3 = db3.find((s) => s.id === session_id);

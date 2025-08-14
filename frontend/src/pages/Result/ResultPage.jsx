@@ -6,7 +6,7 @@ import axios from "axios";
 import { waitForAnalysis } from "../../utils/pollDrawing";
 import "./ResultPage.css";
 
-const BASE = "http://172.20.8.138:5000";
+const BASE = "http://172.20.10.168:5000";
 const TYPES = ["house", "tree", "person"];
 
 export default function ResultPage() {

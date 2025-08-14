@@ -1,7 +1,7 @@
 // src/utils/pollDrawing.js
 import axios from "axios";
 
-const BASE = "http://172.20.8.138:5000";
+const BASE = "http://172.20.10.168:5000";
 
 /**
  * YOLO 해석 완료될 때까지 상태 폴링하고, 완료되면 result({ yolo, analysis }) 반환
