@@ -152,6 +152,7 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
 
         // 콘솔 확인(선택)
         console.log("\n[🖼 그림별 종합해석] type=", type);
+        console.log("[🔍 객체별 해석]", analysis);
         console.log(summary || "(없음)");
       } catch (e) {
         console.error("summarizeDrawingForCounselor 실패:", e?.message || e);

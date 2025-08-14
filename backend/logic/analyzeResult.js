@@ -105,15 +105,15 @@ function interpretYOLOResult(yoloResult, drawingType) {
       allMeanings.length > 0 ? allMeanings.join("\n") : "해석 기준 없음";
 
     // 🔎 콘솔 로그
-    console.log(`\n🧩 [${label}] 감지됨`);
-    console.log(`  - 위치(position): ${position}`);
-    console.log(`  - 면적 비율(areaRatio): ${areaRatio}`);
-    console.log(`  - 개수(count): ${count}`);
-    if (matchedRules.length > 0) {
-      console.log(`  - ✅ ${matchedRules.length}개의 룰과 매칭됨`);
-    } else {
-      console.log(`  - ⚠ 매칭되는 해석 룰 없음`);
-    }
+    // console.log(`\n🧩 [${label}] 감지됨`);
+    // console.log(`  - 위치(position): ${position}`);
+    // console.log(`  - 면적 비율(areaRatio): ${areaRatio}`);
+    // console.log(`  - 개수(count): ${count}`);
+    // if (matchedRules.length > 0) {
+    //   console.log(`  - ✅ ${matchedRules.length}개의 룰과 매칭됨`);
+    // } else {
+    //   console.log(`  - ⚠ 매칭되는 해석 룰 없음`);
+    // }
 
     return {
       ...obj,
