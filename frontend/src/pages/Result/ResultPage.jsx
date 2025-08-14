@@ -13,6 +13,10 @@ export default function ResultPage() {
   const navigate = useNavigate();
   const { userData, setUserData } = useUserContext();
 
+  // 절대 URL로 보정 (BASE + 경로)
+  const toAbsUrl = (path, base) =>
+    path ? `${base}${path.startsWith("/") ? "" : "/"}${path}` : "";
+
   // UI 표시용
   const [loadingMap, setLoadingMap] = useState({}); // {house:true/false,...}
   const [errorMap, setErrorMap] = useState({}); // {house:"에러"...}
@@ -167,7 +171,7 @@ export default function ResultPage() {
 
   return (
     <div className="result-page page-scroll">
-      <h1>HTP 검사 결과지</h1>
+      <h1>종합 결과</h1>
       <hr className="divider" />
 
       {TYPES.map((type, index) => {
@@ -195,37 +199,59 @@ export default function ResultPage() {
               )}
             </h2>
 
-            {sec.image ? (
-              <img
-                src={`${BASE}${sec.image.startsWith("/") ? "" : "/"}${
-                  sec.image
-                }`}
-                alt={type}
-                style={{
-                  width: "100%",
-                  maxHeight: 300,
-                  objectFit: "contain",
-                  margin: "10px 0",
-                }}
-              />
-            ) : (
-              <p>(그림 이미지 없음)</p>
-            )}
+            {(() => {
+              const origUrl = toAbsUrl(sec.image, BASE);
+              const yoloUrl = toAbsUrl(sec?.yolo?.image, BASE);
+              const hasOrig = !!origUrl;
+              const hasYolo = !!yoloUrl;
+
+              if (!hasOrig && !hasYolo) {
+                return <p>(그림 이미지 없음)</p>;
+              }
+
+              return (
+                <div
+                  className={`image-row ${hasOrig && hasYolo ? "" : "single"}`}
+                >
+                  {hasOrig && (
+                    <figure className="img-figure">
+                      <img
+                        src={origUrl}
+                        alt={`${type} 원본`}
+                        className="drawing-img"
+                        loading="lazy"
+                      />
+                      <figcaption className="img-caption">원본</figcaption>
+                    </figure>
+                  )}
+
+                  {hasYolo && (
+                    <figure className="img-figure">
+                      <img
+                        src={yoloUrl}
+                        alt={`${type} 분석(바운딩박스)`}
+                        className="drawing-img"
+                        loading="lazy"
+                      />
+                      <figcaption className="img-caption">
+                        분석(바운딩박스)
+                      </figcaption>
+                    </figure>
+                  )}
+                </div>
+              );
+            })()}
 
             {errText && <p style={{ color: "#c00" }}>에러: {errText}</p>}
 
             {unique.length > 0 ? (
               <div>
                 <h4>객체 인식 결과</h4>
-                <ul>
+                <ul className="object-list">
                   {unique.map(([label, meaning], idx) => (
                     <li key={idx}>
                       ✅ <b>{label}</b>
-                      {meaning && (
-                        <div className="meaning-line">
-                          <b>의미:</b> {meaning}
-                        </div>
-                      )}
+                      {meaning && <div className="meaning-line">{meaning}</div>}
                     </li>
                   ))}
                 </ul>
