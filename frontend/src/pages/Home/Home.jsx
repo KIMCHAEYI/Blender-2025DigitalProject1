@@ -84,7 +84,7 @@ export default function Home() {
           <li>
             <span className="step-num">STEP 1</span>
             <h3>그림 그리기</h3>
-            <img src="/images/YUSHI.png" alt="step1" className="step1" />
+            <img src="/images/step1.jpg" alt="step1" className="step1" />
             <div className="pill-list">
               <div className="pill">✍️ 그림 시작</div>
               <div className="pill">🏡 집, 나무, 사람</div>
@@ -103,7 +103,7 @@ export default function Home() {
           <li>
             <span className="step-num">STEP 2</span>
             <h3>추가로 그림 그리기</h3>
-            <img src="/images/YUSHI.png" alt="step1" className="step1" />
+            <img src="/images/step2.jpg" alt="step1" className="step1" />
             <div className="pill-list">
               <div className="pill">✍️ 추가 그리기</div>
               <div className="pill">🎯 심층 탐색</div>
@@ -123,7 +123,11 @@ export default function Home() {
           <li>
             <span className="step-num">STEP 3</span>
             <h3>AI 마음 리포트 확인하기</h3>
-            <img src="/images/YUSHI.png" alt="step1" className="step1" />
+            <img
+              src="/images/iPad Pro 11_ - 2.png"
+              alt="step1"
+              className="step1"
+            />
             <div className="pill-list">
               <div className="pill">📄 리포트 제공</div>
               <div className="pill">🧠 AI 해석</div>

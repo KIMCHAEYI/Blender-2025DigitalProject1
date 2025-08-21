@@ -137,7 +137,6 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
         const dbA = readDB();
         const sA = dbA.find((s) => s.id === session_id);
         const name = (sA?.name || "").trim();
-
         const { summary } = await summarizeDrawingForCounselor(
           { type, result: { analysis, subtype: type } },
           { name }
