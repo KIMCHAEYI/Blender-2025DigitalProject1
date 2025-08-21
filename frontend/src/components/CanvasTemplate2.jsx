@@ -160,54 +160,39 @@ export default function CanvasTemplate({
       // 업로드 폼
       const formData = new FormData();
       formData.append("drawing", file);
-      formData.append("type", typeForServer);
-      if (subtypeForServer) formData.append("subtype", subtypeForServer);
-      formData.append("session_id", sid);
+      formData.append("type", drawingType);
+      const duration = Math.floor((Date.now() - startTime) / 1000);
 
-      // ★ 업로드 엔드포인트(분석은 백엔드가 비동기 처리, ResultPage에서 폴링)
-      const uploadRes = await axios.post(
-        `${API_BASE || ""}/api/drawings/upload`,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      const data = uploadRes?.data || {};
-      const imagePath =
-        data.path ||
-        data.image ||
-        data.file_path ||
-        data.result?.image ||
-        data.result?.path ||
-        "";
-
-      const drawingId =
-        data.drawing_id ||
-        data.id ||
-        data.result?.drawing_id ||
-        data.result?.id ||
-        null;
-
-      // 업로드 성공 → 결과 기다리지 말고 바로 다음 화면으로 이동
-      setUserData((prev) => ({
-        ...(prev || {}),
-        session_id: sid || prev?.session_id,
-        drawings: {
-          ...(prev?.drawings || {}),
-          [outKey]: {
-            image: imagePath,
-            eraseCount,
-            resetCount,
-            duration: Math.floor((Date.now() - startTime) / 1000),
-            drawing_id: drawingId, // ResultPage 폴링용
-          },
-        },
-      }));
-
-      navigate(nextRoute);
-    } catch (err) {
-      console.error("업로드 실패:", err?.response?.data || err.message);
-      alert("그림 업로드에 실패했습니다.");
-    }
+      axios
+        .post(
+          "http://192.168.0.250:5000/api/sessions/analyze-drawing",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        )
+        .then((res) => {
+          const { path, analysis } = res.data;
+          setUserData((prev) => ({
+            ...prev,
+            drawings: {
+              ...prev.drawings,
+              [drawingType]: {
+                image: path,
+                eraseCount,
+                resetCount,
+                duration,
+                analysis,
+              },
+            },
+          }));
+          navigate(nextRoute);
+        })
+        .catch(() => {
+          alert("그림은 저장됐지만 분석에 실패했어요 😢");
+          navigate(nextRoute);
+        });
+    });
   };
 
   // 그리기 핸들러

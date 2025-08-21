@@ -22,7 +22,7 @@ export default function Complete() {
       stopHint();
       console.log("보내는 데이터:", userData);
       const sessionRes = await axios.post(
-        "http://172.20.31.108:5000/api/sessions/start",
+        "http://192.168.0.250:5000/api/sessions/start",
         userData
       );
       console.log("세션 저장 응답:", sessionRes.data);
