@@ -8,6 +8,20 @@ import { generateSafePngFileName } from "../utils/generateFileName.js";
 import { dataURLtoFile } from "../utils/dataURLtoFile";
 import "./CanvasTemplate.css";
 
+// ===== API BASE (ENV 없으면 same-origin → Vite 프록시 경유) =====
+const resolveApiBase = () => {
+  let raw = (import.meta?.env?.VITE_API_BASE ?? "").trim();
+  if (!raw || raw === "undefined" || raw === "null") return "";
+  if (!/^https?:\/\//i.test(raw)) raw = `http://${raw}`;
+  try {
+    const u = new URL(raw);
+    return `${u.protocol}//${u.host}`; // origin만 사용
+  } catch {
+    return "";
+  }
+};
+const API_BASE = resolveApiBase();
+
 export default function CanvasTemplate({
   drawingType,
   nextRoute,
@@ -44,7 +58,7 @@ export default function CanvasTemplate({
   const getSessionId = () =>
     (userData && userData.session_id) ||
     sessionStorage.getItem("session_id") ||
-    sessionStorage.getItem("user_id"); // 과거 키도 대비
+    sessionStorage.getItem("user_id");
 
   // 처음 방문 시 한 번만 안내 모달
   useEffect(() => {
@@ -106,19 +120,12 @@ export default function CanvasTemplate({
     };
   }, [BASE_WIDTH, BASE_HEIGHT]);
 
-  // ✅ 세션ID 자동 복구(없으면 세션스토리지에서 끌어와 컨텍스트에 넣기)
-  useEffect(() => {
-    const sid = getSessionId();
-    if (sid && !userData?.session_id) {
-      setUserData((prev) => ({ ...prev, session_id: sid }));
-    }
-  }, []); // 최초 1회
-
+  // 버튼 핸들러
   const handleCancelClick = () => setShowCancelModal(true);
   const handleCancelConfirm = () => navigate("/");
   const handleNextClick = () => setShowSubmitModal(true);
 
-  // ✅ 업로드 후 바로 다음 화면으로
+  // ✅ 업로드 후 바로 다음 화면으로 (upload만; 분석은 ResultPage에서 폴링)
   const handleNext = async () => {
     if (!stageRef.current) return;
 
@@ -129,38 +136,69 @@ export default function CanvasTemplate({
     }
 
     try {
-      // 캔버스 → 파일로 변환
+      // 캔버스 → 파일
       const dataURL = stageRef.current.toDataURL({ pixelRatio: 2 });
-      const fileName = generateSafePngFileName(userData, drawingType);
+      const fileName = generateSafePngFileName(userData || {}, drawingType);
       const file = dataURLtoFile(dataURL, fileName);
 
-      // 업로드 폼 구성
+      // 사람(남/여) → 서버는 type=person + subtype
+      const isPM = drawingType === "person_male";
+      const isPF = drawingType === "person_female";
+      const typeForServer = isPM || isPF ? "person" : drawingType;
+      const subtypeForServer = isPM ? "male" : isPF ? "female" : "";
+
+      // 저장 키(카드에서 쓰는 키): person → person_male/female 로 강제 분기
+      let outKey = drawingType;
+      if (drawingType === "person") {
+        if (subtypeForServer) outKey = `person_${subtypeForServer}`;
+        else if ((userData?.gender || "").includes("남"))
+          outKey = "person_male";
+        else if ((userData?.gender || "").includes("여"))
+          outKey = "person_female";
+      }
+
+      // 업로드 폼
       const formData = new FormData();
-      formData.append("drawing", file); // 서버에서 기대하는 키: drawing
-      formData.append("type", drawingType); // 예: 'house' | 'tree' ...
+      formData.append("drawing", file);
+      formData.append("type", typeForServer);
+      if (subtypeForServer) formData.append("subtype", subtypeForServer);
       formData.append("session_id", sid);
 
-      // ★ 서버 업로드 주소: server.js 와 일치해야 함 → /api/drawings/upload
+      // ★ 업로드 엔드포인트(분석은 백엔드가 비동기 처리, ResultPage에서 폴링)
       const uploadRes = await axios.post(
-        "http://192.168.0.250:5000/api/drawings/upload",
+        `${API_BASE || ""}/api/drawings/upload`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      const { drawing_id, path } = uploadRes.data;
+      const data = uploadRes?.data || {};
+      const imagePath =
+        data.path ||
+        data.image ||
+        data.file_path ||
+        data.result?.image ||
+        data.result?.path ||
+        "";
+
+      const drawingId =
+        data.drawing_id ||
+        data.id ||
+        data.result?.drawing_id ||
+        data.result?.id ||
+        null;
 
       // 업로드 성공 → 결과 기다리지 말고 바로 다음 화면으로 이동
       setUserData((prev) => ({
-        ...prev,
-        session_id: sid, // 컨텍스트에도 보존
+        ...(prev || {}),
+        session_id: sid || prev?.session_id,
         drawings: {
-          ...prev.drawings,
-          [drawingType]: {
-            image: path,
+          ...(prev?.drawings || {}),
+          [outKey]: {
+            image: imagePath,
             eraseCount,
             resetCount,
             duration: Math.floor((Date.now() - startTime) / 1000),
-            drawing_id, // 나중에 상태/결과 조회 때 사용
+            drawing_id: drawingId, // ResultPage 폴링용
           },
         },
       }));

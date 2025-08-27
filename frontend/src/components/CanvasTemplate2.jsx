@@ -1,4 +1,4 @@
-// src/components/CanvasTemplate2.jsx
+// src/components/CanvasTemplate.jsx
 import React, { useRef, useState, useEffect } from "react";
 import { Stage, Layer, Line, Rect } from "react-konva";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,21 @@ import axios from "axios";
 import { useUserContext } from "../contexts/UserContext.jsx";
 import { generateSafePngFileName } from "../utils/generateFileName.js";
 import { dataURLtoFile } from "../utils/dataURLtoFile";
-import "./CanvasTemplate2.css";
+import "./CanvasTemplate.css";
+
+// ===== API BASE (ENV 없으면 same-origin → Vite 프록시 경유) =====
+const resolveApiBase = () => {
+  let raw = (import.meta?.env?.VITE_API_BASE ?? "").trim();
+  if (!raw || raw === "undefined" || raw === "null") return "";
+  if (!/^https?:\/\//i.test(raw)) raw = `http://${raw}`;
+  try {
+    const u = new URL(raw);
+    return `${u.protocol}//${u.host}`; // origin만 사용
+  } catch {
+    return "";
+  }
+};
+const API_BASE = resolveApiBase();
 
 export default function CanvasTemplate({
   drawingType,
@@ -40,6 +54,12 @@ export default function CanvasTemplate({
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
 
+  // ✅ 세션ID 가져오기(컨텍스트 → 세션스토리지 순서)
+  const getSessionId = () =>
+    (userData && userData.session_id) ||
+    sessionStorage.getItem("session_id") ||
+    sessionStorage.getItem("user_id");
+
   // 처음 방문 시 한 번만 안내 모달
   useEffect(() => {
     const seen = localStorage.getItem("seenToolbarGuideV2");
@@ -49,7 +69,7 @@ export default function CanvasTemplate({
     }
   }, []);
 
-  // 캔버스 크기 계산
+  // ✅ 캔버스 크기 계산
   useEffect(() => {
     const aspect = BASE_WIDTH / BASE_HEIGHT;
 
@@ -100,51 +120,94 @@ export default function CanvasTemplate({
     };
   }, [BASE_WIDTH, BASE_HEIGHT]);
 
+  // 버튼 핸들러
   const handleCancelClick = () => setShowCancelModal(true);
   const handleCancelConfirm = () => navigate("/");
   const handleNextClick = () => setShowSubmitModal(true);
 
+  // ✅ 업로드 후 바로 다음 화면으로 (upload만; 분석은 ResultPage에서 폴링)
   const handleNext = async () => {
-    if (!stageRef.current || !userData) return;
-    requestAnimationFrame(() => {
+    if (!stageRef.current) return;
+
+    const sid = getSessionId();
+    if (!sid) {
+      alert("세션이 없습니다. 검사 시작(로그인/정보 입력)부터 해주세요.");
+      return;
+    }
+
+    try {
+      // 캔버스 → 파일
       const dataURL = stageRef.current.toDataURL({ pixelRatio: 2 });
-      const fileName = generateSafePngFileName(userData, drawingType);
+      const fileName = generateSafePngFileName(userData || {}, drawingType);
       const file = dataURLtoFile(dataURL, fileName);
+
+      // 사람(남/여) → 서버는 type=person + subtype
+      const isPM = drawingType === "person_male";
+      const isPF = drawingType === "person_female";
+      const typeForServer = isPM || isPF ? "person" : drawingType;
+      const subtypeForServer = isPM ? "male" : isPF ? "female" : "";
+
+      // 저장 키(카드에서 쓰는 키): person → person_male/female 로 강제 분기
+      let outKey = drawingType;
+      if (drawingType === "person") {
+        if (subtypeForServer) outKey = `person_${subtypeForServer}`;
+        else if ((userData?.gender || "").includes("남"))
+          outKey = "person_male";
+        else if ((userData?.gender || "").includes("여"))
+          outKey = "person_female";
+      }
+
+      // 업로드 폼
       const formData = new FormData();
       formData.append("drawing", file);
-      formData.append("type", drawingType);
-      const duration = Math.floor((Date.now() - startTime) / 1000);
+      formData.append("type", typeForServer);
+      if (subtypeForServer) formData.append("subtype", subtypeForServer);
+      formData.append("session_id", sid);
 
-      axios
-        .post(
-          "http://192.168.0.250:5000/api/sessions/analyze-drawing",
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        )
-        .then((res) => {
-          const { path, analysis } = res.data;
-          setUserData((prev) => ({
-            ...prev,
-            drawings: {
-              ...prev.drawings,
-              [drawingType]: {
-                image: path,
-                eraseCount,
-                resetCount,
-                duration,
-                analysis,
-              },
-            },
-          }));
-          navigate(nextRoute);
-        })
-        .catch(() => {
-          alert("그림은 저장됐지만 분석에 실패했어요 😢");
-          navigate(nextRoute);
-        });
-    });
+      // ★ 업로드 엔드포인트(분석은 백엔드가 비동기 처리, ResultPage에서 폴링)
+      const uploadRes = await axios.post(
+        `${API_BASE || ""}/api/drawings/upload`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      const data = uploadRes?.data || {};
+      const imagePath =
+        data.path ||
+        data.image ||
+        data.file_path ||
+        data.result?.image ||
+        data.result?.path ||
+        "";
+
+      const drawingId =
+        data.drawing_id ||
+        data.id ||
+        data.result?.drawing_id ||
+        data.result?.id ||
+        null;
+
+      // 업로드 성공 → 결과 기다리지 말고 바로 다음 화면으로 이동
+      setUserData((prev) => ({
+        ...(prev || {}),
+        session_id: sid || prev?.session_id,
+        drawings: {
+          ...(prev?.drawings || {}),
+          [outKey]: {
+            image: imagePath,
+            eraseCount,
+            resetCount,
+            duration: Math.floor((Date.now() - startTime) / 1000),
+            drawing_id: drawingId, // ResultPage 폴링용
+          },
+        },
+      }));
+
+      navigate(nextRoute);
+    } catch (err) {
+      console.error("업로드 실패:", err?.response?.data || err.message);
+      alert("그림 업로드에 실패했습니다.");
+    }
   };
 
   // 그리기 핸들러

@@ -12,10 +12,12 @@ export const UserProvider = ({ children }) => {
     password: "",
     //character: "",
     drawings: {
-      house: null,
-      tree: null,
-      person: null,
+      house: {},
+      tree: {},
+      person_male: {},
+      person_female: {},
     },
+    overall_summary: "",
   });
 
   return (

@@ -11,7 +11,7 @@ export default function PersonCanvasFemale() {
 
   return (
     <CanvasTemplate
-      drawingType="person"
+      drawingType="person_female"
       title="사람 (여자)"
       nextRoute={nextRoute}
       currentStep={currentStep}
