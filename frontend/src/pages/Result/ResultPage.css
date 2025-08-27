@@ -1,125 +1,368 @@
-.result-page {
-  min-height: 100vh;
-  padding: 40px 40px 120px;
+/* =============================
+   ResultPage.css
+   - Mobile horizontal snap cards + Desktop grid (2×2)
+   - Safe colors, dark mode, focus ring, smooth layout
+   ============================= */
+:root {
+  --bg: #fafafa;
+  --text: #1c1c1e;
+  --muted: #666;
+  --card: #ffffff;
+  --border: #e9ecef;
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  --radius: 16px;
+  --gap: 14px;
+
+  --chip-text: #111;
+  --chip-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+
+  --accent: #4c6ef5;
+  --danger: #ff6b6b;
+  --warn: #ffd43b;
+  --ok: #69db7c;
 }
 
-.page-scroll {
-  min-height: 100vh;
-  overflow-y: auto;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1115;
+    --text: #e6e7ea;
+    --muted: #a6a7ac;
+    --card: #151820;
+    --border: #222733;
+    --shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+
+    --chip-text: #eef;
+  }
 }
 
-.result-page h1 {
-  color: var(--, #1c1c1e);
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 700;
-  margin-bottom: 49px;
+* {
+  box-sizing: border-box;
 }
-.result-page li {
-  margin-bottom: 12px; /* ✅ 항목 간 간격 */
+html,
+body,
+#root {
+  height: 100%;
 }
-
-/* 객체 인식 결과 리스트 스타일 */
-.object-list {
-  list-style: none; /* 기본 • 제거 */
-  padding-left: 0;
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
 }
 
-.object-list li {
+.result-mobile {
+  inline-size: min(960px, 100%);
+  margin-inline: auto;
+  padding: 16px;
+}
+
+.summary-bar {
+  position: sticky;
+  top: 0;
+  padding-block: 8px 12px;
+  z-index: 5;
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border);
+}
+
+.summary-bar h1 {
+  font-size: 25px;
+  margin: 0 0 8px;
+  letter-spacing: 0.2px;
+}
+
+.chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scroll-snap-type: x mandatory;
+}
+.chips::-webkit-scrollbar {
+  height: 6px;
+}
+.chips::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+
+.chip {
+  flex: 0 0 auto;
+  color: var(--chip-text);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1;
+  border: 1px solid var(--border);
+  box-shadow: var(--chip-shadow);
+  scroll-snap-align: start;
+  white-space: nowrap;
+}
+
+/* ===== Overall summary card ===== */
+.overall-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  margin-block: 14px;
+}
+.overall-card h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+.overall-card p {
+  margin: 0;
+  color: var(--text);
+}
+
+/* ===== Cards: mobile -> horizontal snap; >=640px -> grid ===== */
+.cards-grid {
+  margin-top: 8px;
+}
+
+/* Mobile-first: horizontal snap row */
+.cards-grid-inner {
+  display: flex;
+  gap: var(--gap);
+  overflow-x: auto;
+  padding-block: 6px 2px;
+  scroll-snap-type: x proximity;
+}
+.cards-grid-inner > .card {
+  scroll-snap-align: start;
+  flex: 0 0 86%;
+  max-inline-size: 520px;
+}
+
+@media (min-width: 640px) {
+  .cards-grid-inner {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap);
+    overflow: visible;
+  }
+  .cards-grid-inner > .card {
+    flex: initial;
+  }
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 8px;
 }
 
-.meaning-line {
-  margin-left: 24px; /* 체크아이콘 아래로 들여쓰기 */
-  font-style: italic;
-  color: #555;
-}
-
-.short-result {
-  text-align: center;
-}
-
-.result-page section {
-  margin-top: 60px;
-  margin-bottom: 20px;
-}
-
-.result-buttons {
+.title {
   display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 40px;
+  gap: 10px;
+  align-items: center;
+}
+.title .icon {
+  font-size: 20px;
+  display: inline-grid;
+  place-items: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--card) 60%, var(--border));
+}
+.title .label {
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+.title .sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
 }
 
-.result-buttons button {
-  font-family: Pretendard;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 25.2px;
-  min-width: 130px;
-  height: 52px;
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 82px;
-}
-.btn-black {
-  background: #42413f;
-  color: white;
-}
-.btn-white {
-  border: 2px solid var(--, #42413f);
-  background: none;
-  color: #42413f;
-  background-color: white;
-}
-
-/* 이미지 2단 배치 + 단독일 때 왼쪽 정렬 */
-.image-row {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-  flex-wrap: wrap; /* 화면 좁아지면 세로로 떨어짐 */
-  margin: 10px 0 8px;
-}
-
-.image-row.single {
-  /* 한 장만 있을 때 영역을 자연스럽게 왼쪽에 */
-  justify-content: flex-start;
-}
-
-.img-figure {
-  flex: 1 1 360px;
-  max-width: 520px;
-  margin: 0; /* 기본 figure margin 제거 */
-}
-
-.drawing-img {
-  width: 100%;
-  max-height: 320px;
-  object-fit: contain;
-  background: #fff;
-  border: 2px solid #e5e5e5;
-  border-radius: 8px;
-  display: block;
-}
-
-.img-caption {
+/* ===== Image row ===== */
+.card-img-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
   margin-top: 6px;
-  font-size: 13px;
-  color: #666;
-  text-align: center;
 }
 
-/* 반응형: iPad 세로/좁은 화면에서 세로 스택 */
-@media (max-width: 900px) {
-  .image-row {
-    flex-direction: column;
+.img-cell {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+  background: color-mix(in oklab, var(--card) 85%, transparent);
+  display: flex;
+  flex-direction: column;
+  min-height: 180px;
+}
+
+.img-cell img {
+  width: 100%;
+  aspect-ratio: 4 / 3; /* 안전한 비율 */
+  object-fit: contain;
+  border-radius: 8px;
+  background: #fff1; /* 투명/밝은 배경에서 테두리 느낌 */
+}
+
+.img-empty {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 13px;
+  background: repeating-linear-gradient(
+    45deg,
+    color-mix(in oklab, var(--border) 50%, transparent),
+    color-mix(in oklab, var(--border) 50%, transparent) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  border-radius: 8px;
+  min-height: 120px;
+}
+
+.img-cap {
+  text-align: center;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ===== Details (accordion) ===== */
+.card-details {
+  margin-top: 10px;
+}
+.card-details > summary {
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  font-weight: 600;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--card) 85%, transparent);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.card-details > summary::marker {
+  display: none;
+}
+.card-details[open] > summary {
+  background: color-mix(in oklab, var(--card) 70%, var(--border));
+}
+.card-details > summary:focus-visible {
+  outline: 3px solid color-mix(in oklab, var(--accent) 40%, transparent);
+  outline-offset: 2px;
+}
+
+.object-list {
+  margin: 10px 0 0;
+  padding: 0 0 0 14px;
+}
+.object-list li {
+  margin: 6px 0;
+  line-height: 1.35;
+}
+.object-list .tick {
+  margin-right: 6px;
+}
+.meaning {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.muted {
+  color: var(--muted);
+}
+
+/* ===== FAB ===== */
+.fab {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  display: grid;
+  gap: 10px;
+  z-index: 10;
+}
+.fab-btn {
+  inline-size: auto;
+  block-size: 52px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  box-shadow: var(--shadow);
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.08s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.fab-btn:hover {
+  transform: translateY(-1px);
+}
+.fab-btn:active {
+  transform: translateY(0);
+}
+.fab-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.fab-btn:focus-visible {
+  outline: 3px solid color-mix(in oklab, var(--accent) 40%, transparent);
+  outline-offset: 3px;
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .fab-btn {
+    transition: none;
   }
-  .img-figure {
-    max-width: 100%;
+  .card-details > summary {
+    transition: none;
+  }
+}
+
+/* ===== Small tweaks for very narrow devices ===== */
+@media (max-width: 360px) {
+  .summary-bar h1 {
+    font-size: 18px;
+  }
+  .fab-btn {
+    inline-size: 48px;
+    block-size: 48px;
+    font-size: 20px;
+  }
+}
+
+/* Optional: print-friendly (PDF 미리보기에서 깔끔하게) */
+@media print {
+  .summary-bar,
+  .fab {
+    display: none !important;
+  }
+  .result-mobile {
+    padding: 0;
+  }
+  .cards-grid-inner {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    overflow: visible !important;
+  }
+  .card {
+    break-inside: avoid;
+    border-color: #ddd;
+    box-shadow: none;
   }
 }

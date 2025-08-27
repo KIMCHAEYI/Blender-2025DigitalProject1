@@ -142,7 +142,7 @@ export default function CanvasTemplate({
 
       // ★ 서버 업로드 주소: server.js 와 일치해야 함 → /api/drawings/upload
       const uploadRes = await axios.post(
-        "http://172.20.10.168:5000/api/drawings/upload",
+        "http://192.168.0.250:5000/api/drawings/upload",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -395,8 +395,8 @@ export default function CanvasTemplate({
           onClick={() => setShowSubmitModal(false)}
         >
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>제출하시겠습니까?</h3>
-            <p>제출 후에는 그림을 수정할 수 없습니다.</p>
+            <h3>제출할까요?</h3>
+            <p>제출 후에는 그림을 수정할 수 없어요</p>
             <div className="modal-buttons">
               <button
                 className="modal-button confirm"
