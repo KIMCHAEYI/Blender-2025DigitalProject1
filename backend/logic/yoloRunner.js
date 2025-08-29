@@ -5,7 +5,6 @@ const fs = require("fs");
 const path = require("path");
 
 const YOLO_BASE_URL = process.env.YOLO_BASE_URL || "http://127.0.0.1:8000";
-// FastAPI에서 UploadFile=File(...) 파라미터 이름을 image로 받습니다.
 const YOLO_FIELD_NAME = process.env.YOLO_FIELD_NAME || "image";
 
 async function runYOLOAnalysis(imagePath, type = "house") {
@@ -17,7 +16,7 @@ async function runYOLOAnalysis(imagePath, type = "house") {
   }
 
   const form = new FormData();
-  form.append(YOLO_FIELD_NAME, fs.createReadStream(absPath)); // ✅ image로 보냄
+  form.append(YOLO_FIELD_NAME, fs.createReadStream(absPath));
 
   const url = `${YOLO_BASE_URL}/analyze/${type}`;
   console.log(`[YOLO] POST ${url} field=${YOLO_FIELD_NAME}`);
@@ -35,7 +34,7 @@ async function runYOLOAnalysis(imagePath, type = "house") {
     if (!data || !Array.isArray(data.objects)) {
       throw new Error("[YOLO] invalid response: no objects");
     }
-    return data; // { type, objects: [...] }
+    return data;
   } catch (err) {
     const code = err.response?.status;
     const body = err.response?.data;

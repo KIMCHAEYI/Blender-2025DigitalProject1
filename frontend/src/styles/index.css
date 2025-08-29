@@ -25,6 +25,11 @@ body {
   text-align: center;
 }
 
+.highlight {
+  color: #3e70c7;
+  font-weight: bold;
+}
+
 .page-center {
   display: flex;
   flex-direction: column;
