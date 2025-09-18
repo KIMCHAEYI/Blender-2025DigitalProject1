@@ -84,13 +84,19 @@ function interpretYOLOResult(yoloResult, drawingType) {
     const count = labelCounts[label];
 
     // 조건을 만족하는 룰 필터링
-    const matchedRules = rules.filter(
-      (r) =>
-        r.label === label &&
-        positionMatch(r.position, position) &&
-        areaMatch(areaRatio, r.area_min, r.area_max) &&
-        (!r.min_count || count >= r.min_count)
-    );
+      const matchedRules = rules.filter((r) => {
+      const posOk = positionMatch(r.position, position);
+      const areaOk = areaMatch(areaRatio, r.area_min, r.area_max);
+      const countOk = !r.min_count || count >= r.min_count;
+
+      if (!(posOk && areaOk && countOk)) {
+        console.log(
+          `⚠ [${label}] 매칭 실패 - posOk:${posOk}, areaOk:${areaOk}, countOk:${countOk}`,
+          `\n   obj.areaRatio=${areaRatio}, rule=[${r.area_min}, ${r.area_max}], obj.position=${position}, rule.position=${r.position}, count=${count}, rule.min_count=${r.min_count || "없음"}`
+        );
+      }
+      return r.label === label && posOk && areaOk && countOk;
+    });
 
     // 우선순위 룰 선택
     const bestMatch =
@@ -105,15 +111,15 @@ function interpretYOLOResult(yoloResult, drawingType) {
       allMeanings.length > 0 ? allMeanings.join("\n") : "해석 기준 없음";
 
     // 🔎 콘솔 로그
-    // console.log(`\n🧩 [${label}] 감지됨`);
-    // console.log(`  - 위치(position): ${position}`);
-    // console.log(`  - 면적 비율(areaRatio): ${areaRatio}`);
-    // console.log(`  - 개수(count): ${count}`);
-    // if (matchedRules.length > 0) {
-    //   console.log(`  - ✅ ${matchedRules.length}개의 룰과 매칭됨`);
-    // } else {
-    //   console.log(`  - ⚠ 매칭되는 해석 룰 없음`);
-    // }
+      if (matchedRules.length > 0) {
+      console.log(
+        `✅ [${label}] areaRatio=${areaRatio}, position=${position}, count=${count} → ${matchedRules.length}개 룰 매칭됨`
+      );
+    } else {
+      console.log(
+        `❌ [${label}] areaRatio=${areaRatio}, position=${position}, count=${count} → 매칭된 룰 없음`
+      );
+    }
 
     return {
       ...obj,
