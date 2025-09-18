@@ -5,7 +5,7 @@ const { interpretYOLOResult } = require("../logic/analyzeResult"); // ✅ 변경
 
 const router = express.Router();
 
-router.get("/analyze", async (req, res) => {
+router.get("/", async (req, res) => {
   const fileName = req.query.file;
   const rawType = req.query.type;
   if (!fileName || !rawType) {

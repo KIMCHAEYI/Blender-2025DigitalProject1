@@ -1,21 +1,53 @@
 {
+  "behavior": [
+    {
+      "field": "erase_count",
+      "range": [0, 0],
+      "meaning": "지우기 없이 완성 → 안정적이고 자신감 있는 태도."
+    },
+    {
+      "field": "erase_count",
+      "range": [1, 5],
+      "meaning": "지우기를 몇 차례 사용 → 가소성과 순응성이 있음, 세밀함이나 자기 점검 성향."
+    },
+    {
+      "field": "erase_count",
+      "range": [6, 999],
+      "meaning": "지우기를 많이 사용 → 우유부단함, 불안감, 불확실성과 자신에 대한 불만을 나타냄."
+    },
+    {
+      "field": "reset_count",
+      "range": [0, 0],
+      "meaning": "리셋 없이 진행 → 계획성과 자기 확신."
+    },
+    {
+      "field": "reset_count",
+      "range": [1, 1],
+      "meaning": "한 리셋 → 방향을 새로 잡으려는 시도."
+    },
+    {
+      "field": "reset_count",
+      "range": [2, 999],
+      "meaning": "여러 번 리셋 → 표현 과정에서 갈등, 반복적 재시도 성향."
+    }
+  ],
   "house": [
     {
-      "label": "집 전체",
+      "label": "집전체",
       "position": "any",
       "area_min": 0.0,
       "area_max": 0.29,
       "meaning": "그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
     },
     {
-      "label": "집 전체",
+      "label": "집전체",
       "position": "any",
       "area_min": 0.3,
       "area_max": 0.59,
       "meaning": "보통 크기의 그림은 평균적이고 안정된 자아 구조를 반영할 수 있습니다."
     },
     {
-      "label": "집 전체",
+      "label": "집전체",
       "position": "any",
       "area_min": 0.6,
       "area_max": 1.0,
@@ -202,14 +234,14 @@
   ],
   "tree": [
     {
-      "label": "나무 전체",
+      "label": "나무전체",
       "position": "any",
       "area_min": 0.01,
       "area_max": 0.09,
       "meaning": "그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
     },
     {
-      "label": "나무 전체",
+      "label": "나무전체",
       "position": "any",
       "area_min": 0.1,
       "area_max": 0.59,
@@ -381,21 +413,21 @@
   ],
   "person": [
     {
-      "label": "사람 전체",
+      "label": "사람전체",
       "position": "any",
       "area_min": 0.01,
       "area_max": 0.05,
       "meaning": "그림이 매우 작을 경우, 수축된 자아, 낮은 에너지, 억압감, 불안정성, 우울 등의 정서적 위축을 시사할 수 있습니다."
     },
     {
-      "label": "사람 전체",
+      "label": "사람전체",
       "position": "any",
       "area_min": 0.06,
       "area_max": 0.6,
       "meaning": "사람 전체의 크기로는 특별한 해석이 없습니다."
     },
     {
-      "label": "사람 전체",
+      "label": "사람전체",
       "position": "any",
       "area_min": 0.59,
       "area_max": 1.0,

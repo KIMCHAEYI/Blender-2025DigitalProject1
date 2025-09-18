@@ -29,7 +29,7 @@ app.use("/api/sessions", sessionRoutes);
 // 분석 라우트
 app.use("/api/analyze", analyzeRoute);
 
-// 그림 업로드 라우트 (여기 중요!)
+// 그림 업로드 라우트 
 app.use("/api/drawings", drawingsRouter);
 
 app.listen(PORT, "0.0.0.0", () => {

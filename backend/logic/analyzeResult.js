@@ -1,6 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 
+const RULES_FILE = path.join(__dirname, "../rules/object-evaluation-rules.json");
+const rules = JSON.parse(fs.readFileSync(RULES_FILE, "utf-8"));
+
+const STEP2_FILE = path.join(__dirname, "../rules/step2-questions.json");
+const step2Questions = JSON.parse(fs.readFileSync(STEP2_FILE, "utf-8"));
+
+
 // 위치 비교: 정확 일치 또는 "any" 허용
 function positionMatch(rulePos, objPos) {
   return rulePos === "any" || rulePos === objPos;
@@ -53,15 +60,10 @@ function analyzeYOLOResult(bboxes) {
 }
 
 // YOLO 결과 해석 적용
-function interpretYOLOResult(yoloResult, drawingType) {
-  const rulePath = path.join(
-    __dirname,
-    "../rules/object-evaluation-rules.json"
-  );
-
+function interpretYOLOResult(yoloResult, drawingType, eraseCount = 0, resetCount = 0) {
   let ruleData;
   try {
-    ruleData = JSON.parse(fs.readFileSync(rulePath, "utf-8"));
+    ruleData = JSON.parse(fs.readFileSync(RULES_FILE, "utf-8"));
   } catch (err) {
     console.error("❌ JSON 파싱 오류:", err.message);
     return yoloResult.objects.map((obj) => ({
@@ -73,59 +75,86 @@ function interpretYOLOResult(yoloResult, drawingType) {
   const rules = ruleData[drawingType] || [];
   const detectedObjects = analyzeYOLOResult(yoloResult.objects);
 
-  // ✅ label별 개수 집계
+  // ✅ 객체 해석
   const labelCounts = {};
   for (const obj of detectedObjects) {
     labelCounts[obj.label] = (labelCounts[obj.label] || 0) + 1;
   }
 
-  return detectedObjects.map((obj) => {
+  const objectAnalyses = detectedObjects.map((obj) => {
     const { label, areaRatio, position } = obj;
     const count = labelCounts[label];
 
-    // 조건을 만족하는 룰 필터링
-      const matchedRules = rules.filter((r) => {
+    const matchedRules = rules.filter((r) => {
       const posOk = positionMatch(r.position, position);
       const areaOk = areaMatch(areaRatio, r.area_min, r.area_max);
       const countOk = !r.min_count || count >= r.min_count;
-
-      if (!(posOk && areaOk && countOk)) {
-        console.log(
-          `⚠ [${label}] 매칭 실패 - posOk:${posOk}, areaOk:${areaOk}, countOk:${countOk}`,
-          `\n   obj.areaRatio=${areaRatio}, rule=[${r.area_min}, ${r.area_max}], obj.position=${position}, rule.position=${r.position}, count=${count}, rule.min_count=${r.min_count || "없음"}`
-        );
-      }
       return r.label === label && posOk && areaOk && countOk;
     });
 
-    // 우선순위 룰 선택
-    const bestMatch =
-      matchedRules.find((r) => r.position !== "any" && r.min_count) ||
-      matchedRules.find((r) => r.position !== "any") ||
-      matchedRules.find((r) => r.min_count) ||
-      matchedRules[0];
-
-    // 의미 병합: 모든 매칭된 룰 기반
     const allMeanings = matchedRules.map((r) => `- ${r.meaning}`);
     const meaningText =
       allMeanings.length > 0 ? allMeanings.join("\n") : "해석 기준 없음";
-
-    // 🔎 콘솔 로그
-      if (matchedRules.length > 0) {
-      console.log(
-        `✅ [${label}] areaRatio=${areaRatio}, position=${position}, count=${count} → ${matchedRules.length}개 룰 매칭됨`
-      );
-    } else {
-      console.log(
-        `❌ [${label}] areaRatio=${areaRatio}, position=${position}, count=${count} → 매칭된 룰 없음`
-      );
-    }
 
     return {
       ...obj,
       meaning: meaningText,
     };
   });
+
+  // ✅ 행동 해석 (behavior rules)
+  const behaviorRules = ruleData.behavior || [];
+  const behaviorAnalyses = [];
+
+  for (const rule of behaviorRules) {
+    const val = rule.field === "erase_count" ? eraseCount : resetCount;
+    if (val >= rule.range[0] && val <= rule.range[1]) {
+      behaviorAnalyses.push({
+        label: rule.field === "erase_count" ? "지우기 사용" : "리셋 사용",
+        meaning: rule.meaning,
+      });
+    }
+  }
+
+    // ✅ Step2 분기 조건
+  let step = 1;
+  let extraQuestion = null;
+
+  // 집 조건
+  if (drawingType === "house") {
+    if (detectedObjects.length <= 5) {
+      step = 2;
+      const pool = step2Questions.house.low_objects;
+      extraQuestion = pool[Math.floor(Math.random() * pool.length)];
+    }
+  }
+
+  // 나무 조건
+  if (drawingType === "tree") {
+    if (detectedObjects.length <= 5) {
+      step = 2;
+      const pool = step2Questions.tree.low_objects;
+      extraQuestion = pool[Math.floor(Math.random() * pool.length)];
+    }
+  }
+
+  // 사람 조건 (남/여 하나라도 5 이하이면 두 그림 모두 step2)
+  if (drawingType === "person_man" || drawingType === "person_woman") {
+    // partnerObjectsCount는 이후 필요 시 함수 인자로 추가 가능
+    if (detectedObjects.length <= 5) {
+      step = 2;
+      const pool = step2Questions[drawingType].low_objects;
+      extraQuestion = pool[Math.floor(Math.random() * pool.length)];
+    }
+  }
+
+  // ✅ 최종 반환: 객체 + 행동 + step
+  return {
+    step,
+    drawingType,
+    analysis: [...objectAnalyses, ...behaviorAnalyses],
+    ...(extraQuestion && { extraQuestion }),
+  };
 }
 
 module.exports = {

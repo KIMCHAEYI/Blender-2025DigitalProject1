@@ -65,7 +65,7 @@ const upload = multer({ storage });
 //    POST /api/drawings/upload  (form-data: drawing(file), type(text), session_id(text))
 // ─────────────────────────────────────────────────────────────────────────────
 router.post("/upload", upload.single("drawing"), (req, res) => {
-  const { session_id, type } = req.body;
+  const { session_id, type, eraseCount, resetCount } = req.body;
   if (!session_id || !type || !req.file) {
     return res.status(400).json({ message: "session_id, type, drawing 필수" });
   }
@@ -89,11 +89,13 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
     filename,
     path: relPath,
     absPath,
+    erase_count: Number(eraseCount) || 0,
+    reset_count: Number(resetCount) || 0,
     status: "uploaded",
     result: null,
     createdAt: now,
     updatedAt: now,
-  });
+});
   writeDB(db);
 
   res.status(200).json({
@@ -120,7 +122,12 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
       const yolo = await runYOLOAnalysis(absPath, typeForYolo);
 
       // 룰 해석 → 객체별 meaning 생성(라벨/위치/면적 기준)
-      const analysis = interpretYOLOResult(yolo, typeForYolo);
+      const analysis = interpretYOLOResult(
+        yolo,
+        typeForYolo,
+        d2.erase_count || 0,
+        d2.reset_count || 0
+      );
 
       // 결과 저장 (남/여는 subtype으로 보존)
       const db2 = readDB();
