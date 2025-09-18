@@ -72,7 +72,7 @@ HTP(집-나무-사람) 그림검사를 온라인에서 수행하고, AI가 자�
 
 ---
 ## **💡4. 작품 소개영상**
-[![한이음 드림업 프로젝트 소개](https://youtu.be/m84ukd1ASks?si=TOtC-FjMQNhcTLFJ)
+[[한이음 드림업 프로젝트 소개] https://youtu.be/m84ukd1ASks?si=TOtC-FjMQNhcTLFJ
 
 
 ---
@@ -104,3 +104,4 @@ HTP(집-나무-사람) 그림검사를 온라인에서 수행하고, AI가 자�
         }
     }
 ```
+
