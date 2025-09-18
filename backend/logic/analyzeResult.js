@@ -8,18 +8,18 @@ const STEP2_FILE = path.join(__dirname, "../rules/step2-questions.json");
 const step2Questions = JSON.parse(fs.readFileSync(STEP2_FILE, "utf-8"));
 
 
-// 위치 비교: 정확 일치 또는 "any" 허용
+// ✅ 위치 비교: 정확 일치 또는 "any" 허용
 function positionMatch(rulePos, objPos) {
   return rulePos === "any" || rulePos === objPos;
 }
 
-// 면적 비교: 약간의 오차 허용
+// ✅ 면적 비교: 약간의 오차 허용
 function areaMatch(areaRatio, min, max) {
   const buffer = 0.005;
   return areaRatio >= min - buffer && areaRatio <= max + buffer;
 }
 
-// YOLO bounding box 결과 해석 (위치 + 면적 기준)
+// ✅ YOLO bounding box 결과 해석 (위치 + 면적 기준)
 function analyzeYOLOResult(bboxes) {
   const imageWidth = 1280;
   const imageHeight = 1280;
@@ -45,7 +45,7 @@ function analyzeYOLOResult(bboxes) {
         ? "bottom"
         : "middle";
 
-    const position = `${yZone}-${xZone}`; // 예: top-left
+    const position = `${yZone}-${xZone}`; 
 
     return {
       label: obj.label,
@@ -59,7 +59,7 @@ function analyzeYOLOResult(bboxes) {
   });
 }
 
-// YOLO 결과 해석 적용
+// ✅ YOLO 결과 해석 적용
 function interpretYOLOResult(yoloResult, drawingType, eraseCount = 0, resetCount = 0) {
   let ruleData;
   try {
@@ -138,15 +138,19 @@ function interpretYOLOResult(yoloResult, drawingType, eraseCount = 0, resetCount
     }
   }
 
-  // 사람 조건 (남/여 하나라도 5 이하이면 두 그림 모두 step2)
-  if (drawingType === "person_man" || drawingType === "person_woman") {
-    // partnerObjectsCount는 이후 필요 시 함수 인자로 추가 가능
-    if (detectedObjects.length <= 5) {
-      step = 2;
-      const pool = step2Questions[drawingType].low_objects;
-      extraQuestion = pool[Math.floor(Math.random() * pool.length)];
-    }
+// 사람 조건 (남/여 둘 중 하나라도 부족하면 → person 질문)
+if (drawingType === "person_man" || drawingType === "person_woman") {
+  if (
+    detectedObjects.length <= 5 ||
+    (partnerObjectsCount !== null && partnerObjectsCount <= 5)
+  ) {
+    step = 2;
+    const pool = step2Questions.person.low_objects;  
+    extraQuestion = pool[Math.floor(Math.random() * pool.length)];
+  } else {
+    step = 1;
   }
+}
 
   // ✅ 최종 반환: 객체 + 행동 + step
   return {

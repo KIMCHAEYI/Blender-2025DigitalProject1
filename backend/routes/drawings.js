@@ -231,6 +231,7 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 2) 상태 확인
+// ─────────────────────────────────────────────────────────────────────────────
 router.get("/:sessionId/:drawingId/status", (req, res) => {
   const db = readDB();
   const session = db.find((s) => s.id === req.params.sessionId);
