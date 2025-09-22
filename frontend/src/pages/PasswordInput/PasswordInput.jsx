@@ -40,6 +40,11 @@ export default function PasswordInput() {
         placeholder="비밀번호"
         className="password-input"
         type="password"
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && canNext) {
+            handleNext();
+          }
+        }}
       />
       <Button onClick={handleNext} disabled={!canNext}>
         입력했어요

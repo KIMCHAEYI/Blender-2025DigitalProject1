@@ -21,10 +21,19 @@ export default function Complete() {
     try {
       stopHint();
       console.log("보내는 데이터:", userData);
-      const sessionRes = await axios.post(
-        "http://172.20.31.108:5000/api/sessions/start",
-        userData
-      );
+
+      // userData 안에서 값 꺼내기
+      const { name, birth, gender, password, drawings } = userData;
+
+      // 프록시 활용: 절대 주소 대신 /api 사용
+      const sessionRes = await axios.post("/api/sessions/start", {
+        name,
+        birth,
+        gender,
+        password,
+        drawings,
+      });
+
       console.log("세션 저장 응답:", sessionRes.data);
       const sid = sessionRes.data?.session_id;
       if (sid) {

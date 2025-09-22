@@ -12,7 +12,7 @@ export default function NameInput() {
   const [name, setName] = useState("");
   const navigate = useNavigate();
   const { setUserData } = useUserContext();
-  const canNext = name.trim().length > 0; // ✅ 추가
+  const canNext = name.trim().length > 0;
 
   const handleNext = () => {
     if (name.trim()) {
@@ -32,7 +32,16 @@ export default function NameInput() {
       <h2 className="question">
         <span className="highlight">이름</span>을 입력해 주세요
       </h2>
-      <InputField value={name} onChange={setName} className="name-input" />
+      <InputField
+        value={name}
+        onChange={setName}
+        className="name-input"
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && canNext) {
+            handleNext();
+          }
+        }}
+      />
       <NextButton enabled={canNext} onClick={handleNext}>
         입력했어요
       </NextButton>

@@ -7,6 +7,7 @@ export default function InputField({
   placeholder = "",
   type = "text",
   className = "",
+  ...props
 }) {
   return (
     <input
@@ -15,6 +16,7 @@ export default function InputField({
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       className={`input-field ${className}`}
+      {...props}
     />
   );
 }
