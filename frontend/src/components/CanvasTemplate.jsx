@@ -37,7 +37,21 @@ export default function CanvasTemplate({
 
   const [lines, setLines] = useState([]);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [penSize, setPenSize] = useState(4);
+  // 원하는 단계 (3단계 고정)
+  const levels = [2, 4, 8]; // 얇게(2), 중간(4), 굵게(8)
+  const [penSize, setPenSize] = useState(levels[1]); // 기본값: 중간(4)
+
+  // 굵기 늘리기
+  const increasePen = () => {
+    const idx = levels.indexOf(penSize);
+    if (idx < levels.length - 1) setPenSize(levels[idx + 1]);
+  };
+
+  // 굵기 줄이기
+  const decreasePen = () => {
+    const idx = levels.indexOf(penSize);
+    if (idx > 0) setPenSize(levels[idx - 1]);
+  };
   const [canvasWidth, setCanvasWidth] = useState(1123);
 
   const [eraseCount, setEraseCount] = useState(0);
@@ -164,6 +178,13 @@ export default function CanvasTemplate({
       formData.append("type", typeForServer);
       if (subtypeForServer) formData.append("subtype", subtypeForServer);
       formData.append("session_id", sid);
+
+      formData.append("eraseCount", String(eraseCount));
+      formData.append("resetCount", String(resetCount));
+      formData.append(
+        "duration",
+        String(Math.floor((Date.now() - startTime) / 1000))
+      );
 
       // ★ 업로드 엔드포인트(분석은 백엔드가 비동기 처리, ResultPage에서 폴링)
       const uploadRes = await axios.post(
@@ -293,19 +314,19 @@ export default function CanvasTemplate({
             <button
               type="button"
               className="btn-toolbar"
-              onClick={() => setPenSize((s) => Math.min(8, s + 2))}
+              onClick={increasePen}
               title="굵기 늘리기"
             >
               <img
                 src="/assets/+.png"
                 alt="굵기 늘리기"
-                style={{ width: 30, height: 30 }}
+                style={{ width: 45, height: 45 }}
               />
             </button>
             <div
               style={{
-                width: 30,
-                height: 30,
+                width: 45,
+                height: 45,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -326,13 +347,13 @@ export default function CanvasTemplate({
             <button
               type="button"
               className="btn-toolbar"
-              onClick={() => setPenSize((s) => Math.max(2, s - 2))}
+              onClick={decreasePen}
               title="굵기 줄이기"
             >
               <img
                 src="/assets/-.png"
                 alt="굵기 줄이기"
-                style={{ width: 30, height: 30 }}
+                style={{ width: 45, height: 45 }}
               />
             </button>
           </div>
