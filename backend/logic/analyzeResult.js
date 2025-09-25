@@ -1,25 +1,32 @@
+// backend/logic/analyzeResult.js
 const fs = require("fs");
 const path = require("path");
 
 const RULES_FILE = path.join(__dirname, "../rules/object-evaluation-rules.json");
-const rules = JSON.parse(fs.readFileSync(RULES_FILE, "utf-8"));
-
 const STEP2_FILE = path.join(__dirname, "../rules/step2-questions.json");
-const step2Questions = JSON.parse(fs.readFileSync(STEP2_FILE, "utf-8"));
 
+// 규칙/질문 로드
+function loadJSON(p) {
+  return JSON.parse(fs.readFileSync(p, "utf-8"));
+}
+let ruleData = loadJSON(RULES_FILE);
+let step2Questions = loadJSON(STEP2_FILE);
 
-// ✅ 위치 비교: 정확 일치 또는 "any" 허용
+// 핫리로드(선택): 운영 중 파일이 바뀌면 반영하고 싶을 때 주석 해제
+// fs.watch(RULES_FILE, () => { try { ruleData = loadJSON(RULES_FILE); } catch {} });
+// fs.watch(STEP2_FILE, () => { try { step2Questions = loadJSON(STEP2_FILE); } catch {} });
+
+// 위치 비교: 정확 일치 또는 any 허용
 function positionMatch(rulePos, objPos) {
   return rulePos === "any" || rulePos === objPos;
 }
-
-// ✅ 면적 비교: 약간의 오차 허용
+// 면적 비교(버퍼)
 function areaMatch(areaRatio, min, max) {
   const buffer = 0.005;
-  return areaRatio >= min - buffer && areaRatio <= max + buffer;
+  return areaRatio >= (min ?? 0) - buffer && areaRatio <= (max ?? 1) + buffer;
 }
 
-// ✅ YOLO bounding box 결과 해석 (위치 + 면적 기준)
+// YOLO bbox → 위치/면적 특징
 function analyzeYOLOResult(bboxes) {
   const imageWidth = 1280;
   const imageHeight = 1280;
@@ -32,20 +39,9 @@ function analyzeYOLOResult(bboxes) {
     const cx = obj.x + obj.w / 2;
     const cy = obj.y + obj.h / 2;
 
-    const xZone =
-      cx < imageWidth * 0.33
-        ? "left"
-        : cx > imageWidth * 0.66
-        ? "right"
-        : "center";
-    const yZone =
-      cy < imageHeight * 0.33
-        ? "top"
-        : cy > imageHeight * 0.66
-        ? "bottom"
-        : "middle";
-
-    const position = `${yZone}-${xZone}`; 
+    const xZone = cx < imageWidth * 0.33 ? "left" : cx > imageWidth * 0.66 ? "right" : "center";
+    const yZone = cy < imageHeight * 0.33 ? "top" : cy > imageHeight * 0.66 ? "bottom" : "middle";
+    const position = `${yZone}-${xZone}`;
 
     return {
       label: obj.label,
@@ -59,109 +55,149 @@ function analyzeYOLOResult(bboxes) {
   });
 }
 
-// ✅ YOLO 결과 해석 적용
+// === 부재(미표현) 규칙 판단 유틸 ===
+// when_missing === true 이거나, 기존 JSON처럼 area_min/max가 모두 0.0인 경우를 "미표현 규칙"으로 간주
+function isMissingRule(rule) {
+  if (rule.when_missing === true) return true;
+  const zeroMin = typeof rule.area_min === "number" && rule.area_min === 0.0;
+  const zeroMax = typeof rule.area_max === "number" && rule.area_max === 0.0;
+  return zeroMin && zeroMax;
+}
+
+// === 조건부 질문 트리거 유틸 ===
+function pushIfMissing(labelCounts, label, arr, key) {
+  const count = labelCounts[label] || 0;
+  if (count === 0) arr.push(key); // *_missing
+}
+function pushIfLow(labelCounts, label, maxAllowed, arr, key) {
+  const count = labelCounts[label] || 0;
+  if (count <= maxAllowed) arr.push(key); // *_low
+}
+
+// 메인: YOLO 결과 해석 + step2 분기/질문
 function interpretYOLOResult(yoloResult, drawingType, eraseCount = 0, resetCount = 0) {
-  let ruleData;
-  try {
-    ruleData = JSON.parse(fs.readFileSync(RULES_FILE, "utf-8"));
-  } catch (err) {
-    console.error("❌ JSON 파싱 오류:", err.message);
-    return yoloResult.objects.map((obj) => ({
-      ...obj,
-      meaning: "❌ 룰 파일 파싱 실패로 해석할 수 없습니다.",
-    }));
-  }
+  // 방어
+  const objList = Array.isArray(yoloResult?.objects) ? yoloResult.objects : [];
+  const rulesForType = ruleData[drawingType] || [];
+  const detectedObjects = analyzeYOLOResult(objList);
 
-  const rules = ruleData[drawingType] || [];
-  const detectedObjects = analyzeYOLOResult(yoloResult.objects);
-
-  // ✅ 객체 해석
+  // 라벨별 개수
   const labelCounts = {};
-  for (const obj of detectedObjects) {
-    labelCounts[obj.label] = (labelCounts[obj.label] || 0) + 1;
+  for (const o of detectedObjects) {
+    labelCounts[o.label] = (labelCounts[o.label] || 0) + 1;
   }
 
-  const objectAnalyses = detectedObjects.map((obj) => {
-    const { label, areaRatio, position } = obj;
-    const count = labelCounts[label];
-
-    const matchedRules = rules.filter((r) => {
-      const posOk = positionMatch(r.position, position);
-      const areaOk = areaMatch(areaRatio, r.area_min, r.area_max);
-      const countOk = !r.min_count || count >= r.min_count;
-      return r.label === label && posOk && areaOk && countOk;
-    });
-
-    const allMeanings = matchedRules.map((r) => `- ${r.meaning}`);
-    const meaningText =
-      allMeanings.length > 0 ? allMeanings.join("\n") : "해석 기준 없음";
-
-    return {
-      ...obj,
-      meaning: meaningText,
-    };
+// 1) 존재 객체 해석(의미)
+const objectAnalyses = detectedObjects.map((obj) => {
+  const { label, areaRatio, position } = obj;
+  const count = labelCounts[label];
+  const matched = rulesForType.filter((r) => {
+    if (isMissingRule(r)) return false; // 미표현 규칙은 여기선 제외
+    const posOk = positionMatch(r.position, position);
+    const areaOk = areaMatch(areaRatio, r.area_min, r.area_max);
+    const countOk = !r.min_count || count >= r.min_count;
+    return r.label === label && posOk && areaOk && countOk;
   });
+  const meaning = matched.length
+    ? matched.map((r) => `- ${r.meaning}`).join("\n")
+    : "해석 기준 없음";
+  return { ...obj, meaning };
+});
 
-  // ✅ 행동 해석 (behavior rules)
+// 2) 미표현(부재) 규칙 해석
+const missingAnalyses = [];
+const seenMissing = new Set();
+for (const r of rulesForType) {
+  if (!isMissingRule(r)) continue;
+  if (seenMissing.has(r.label)) continue;
+  const count = labelCounts[r.label] || 0;
+  if (count === 0) {
+    missingAnalyses.push({
+      label: `${r.label} (미표현)`,
+      meaning: r.meaning,
+    });
+    seenMissing.add(r.label);
+  }
+}
+
+  // 3) 행동(지우개/리셋) 규칙
   const behaviorRules = ruleData.behavior || [];
   const behaviorAnalyses = [];
-
-  for (const rule of behaviorRules) {
-    const val = rule.field === "erase_count" ? eraseCount : resetCount;
-    if (val >= rule.range[0] && val <= rule.range[1]) {
+  for (const r of behaviorRules) {
+    const val = r.field === "erase_count" ? eraseCount : resetCount;
+    if (val >= r.range[0] && val <= r.range[1]) {
       behaviorAnalyses.push({
-        label: rule.field === "erase_count" ? "지우기 사용" : "리셋 사용",
-        meaning: rule.meaning,
+        label: r.field === "erase_count" ? "지우기 사용" : "리셋 사용",
+        meaning: r.meaning,
       });
     }
   }
 
-    // ✅ Step2 분기 조건
+  // 4) step2 분기 + 조건부 질문
   let step = 1;
   let extraQuestion = null;
 
-  // 집 조건
-  if (drawingType === "house") {
-    if (detectedObjects.length <= 5) {
-      step = 2;
-      const pool = step2Questions.house.low_objects;
-      extraQuestion = pool[Math.floor(Math.random() * pool.length)];
-    }
-  }
-
-  // 나무 조건
-  if (drawingType === "tree") {
-    if (detectedObjects.length <= 5) {
-      step = 2;
-      const pool = step2Questions.tree.low_objects;
-      extraQuestion = pool[Math.floor(Math.random() * pool.length)];
-    }
-  }
-
-// 사람 조건 (남/여 둘 중 하나라도 부족하면 → person 질문)
-if (drawingType === "person_man" || drawingType === "person_woman") {
   if (
-    detectedObjects.length <= 5 ||
-    (partnerObjectsCount !== null && partnerObjectsCount <= 5)
+    (drawingType === "house" && detectedObjects.length <= 30) ||
+    (drawingType === "tree" && detectedObjects.length <= 5) ||
+    (drawingType === "person" && detectedObjects.length <= 5)
   ) {
     step = 2;
-    const pool = step2Questions.person.low_objects;  
-    extraQuestion = pool[Math.floor(Math.random() * pool.length)];
-  } else {
-    step = 1;
+
+    const conditional = step2Questions[drawingType]?.conditional || {};
+    const triggers = [];
+
+    // 예시 트리거들 (자유롭게 확장 가능)
+    if (drawingType === "house") {
+      pushIfMissing(labelCounts, "울타리", triggers, "울타리_missing");
+      pushIfMissing(labelCounts, "굴뚝", triggers, "굴뚝_missing");
+      pushIfMissing(labelCounts, "창문", triggers, "창문_missing");
+      pushIfMissing(labelCounts, "문", triggers, "문_missing");
+      pushIfMissing(labelCounts, "길", triggers, "길_missing");
+    } else if (drawingType === "tree") {
+      pushIfLow(labelCounts, "열매", 1, triggers, "열매_low");
+      pushIfMissing(labelCounts, "뿌리", triggers, "뿌리_missing");
+      pushIfMissing(labelCounts, "가지", triggers, "가지_missing");
+      pushIfMissing(labelCounts, "나뭇잎", triggers, "나뭇잎_missing");
+    } else if (drawingType === "person") {
+      pushIfMissing(labelCounts, "머리", triggers, "머리_missing");
+      pushIfMissing(labelCounts, "눈", triggers, "눈_missing");
+      pushIfMissing(labelCounts, "코", triggers, "코_missing");
+      pushIfMissing(labelCounts, "입", triggers, "입_missing");
+      pushIfMissing(labelCounts, "손", triggers, "손_missing");
+      pushIfMissing(labelCounts, "다리", triggers, "다리_missing");
+      pushIfMissing(labelCounts, "발", triggers, "발_missing");
+    }
+
+    // 조건부 질문 모으기
+    let candidates = [];
+    for (const key of triggers) {
+      if (Array.isArray(conditional[key])) {
+        candidates = candidates.concat(conditional[key]);
+      }
+    }
+
+    // 조건부가 없으면 low_objects에서 랜덤
+    if (candidates.length === 0) {
+      const fallback = step2Questions[drawingType]?.low_objects || [];
+      if (fallback.length > 0) {
+        extraQuestion = fallback[Math.floor(Math.random() * fallback.length)];
+      }
+    } else {
+      extraQuestion = candidates[Math.floor(Math.random() * candidates.length)];
+    }
   }
-}
 
-  // ✅ 최종 반환: 객체 + 행동 + step
-  return {
-    step,
-    drawingType,
-    analysis: [...objectAnalyses, ...behaviorAnalyses],
-    ...(extraQuestion && { extraQuestion }),
-  };
-}
-
-module.exports = {
-  analyzeYOLOResult,
-  interpretYOLOResult,
+return {
+  step,
+  drawingType,
+  analysis: [
+    ...objectAnalyses,
+    ...missingAnalyses,   // ← 추가됨
+    ...behaviorAnalyses,
+  ],
+  ...(extraQuestion && { extraQuestion }),
 };
+}
+
+module.exports = { analyzeYOLOResult, interpretYOLOResult };

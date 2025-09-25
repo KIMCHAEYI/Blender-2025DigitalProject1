@@ -125,8 +125,8 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
       const analysis = interpretYOLOResult(
         yolo,
         typeForYolo,
-        d2.erase_count || 0,
-        d2.reset_count || 0
+        d1.erase_count || 0,
+        d1.reset_count || 0
       );
 
       // 결과 저장 (남/여는 subtype으로 보존)

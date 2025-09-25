@@ -33,4 +33,20 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  try {
+    const { drawingType, yoloResult, eraseCount = 0, resetCount = 0 } = req.body;
+
+    if (!drawingType || !yoloResult) {
+      return res.status(400).json({ error: "drawingType과 yoloResult가 필요합니다" });
+    }
+
+    const analysis = interpretYOLOResult(yoloResult, drawingType, eraseCount, resetCount);
+    res.json({ analysis });
+  } catch (err) {
+    console.error("POST 분석 실패:", err);
+    res.status(500).json({ error: "분석 실패", detail: err.message });
+  }
+});
+
 module.exports = router;

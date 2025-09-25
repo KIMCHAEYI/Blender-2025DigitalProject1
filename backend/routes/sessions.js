@@ -23,7 +23,7 @@ console.log("✅ sessions.js loaded");
 // 1. 검사 시작
 // -----------------------
 router.post("/start", async (req, res) => {
-  const { name, gender, birth, password } = req.body;
+  const { name, gender, birth, password, drawings = [] } = req.body;
 
   if (!name || !gender || !birth || !password) {
     return res.status(400).json({ message: "모든 값을 입력해주세요." });
@@ -39,7 +39,7 @@ router.post("/start", async (req, res) => {
       birth,
       password: hashedPassword,
       createdAt: new Date().toISOString(),
-      drawings: [], // 초기화
+      drawings, // 프론트에서 온 drawings도 저장
     };
 
     const db = fs.existsSync(DB_FILE)

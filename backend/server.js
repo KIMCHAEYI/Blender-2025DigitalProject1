@@ -6,6 +6,7 @@ const cors = require("cors");
 const sessionRoutes = require("./routes/sessions");
 const analyzeRoute = require("./routes/analyzeRoute");
 const drawingsRouter = require("./routes/drawings");
+const colorRoute = require("./routes/colorRoute");
 
 const app = express();
 const PORT = 5000;
@@ -37,4 +38,7 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(
     `✅ Upload endpoint: http://localhost:${PORT}/api/drawings/upload`
   );
+
+// 2단계 색상 분석
+app.use("/api/color-analyze", colorRoute);
 });
