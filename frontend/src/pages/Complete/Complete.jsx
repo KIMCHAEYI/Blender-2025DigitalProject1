@@ -20,28 +20,26 @@ export default function Complete() {
   const handleSubmit = async () => {
     try {
       stopHint();
-      console.log("보내는 데이터:", userData);
+      console.log("보내는 데이터 (원본 userData):", userData);
 
-      // userData 안에서 값 꺼내기
-      const { name, birth, gender, password, drawings } = userData;
-
-      // 프록시 활용: 절대 주소 대신 /api 사용
+      // ✅ 서버에는 절대 drawings 안 보내고 필요한 값만 전송
       const sessionRes = await axios.post("/api/sessions/start", {
-        name,
-        birth,
-        gender,
-        password,
-        drawings,
+        name: userData.name,
+        birth: userData.birth,
+        gender: userData.gender,
+        password: userData.password,
       });
 
       console.log("세션 저장 응답:", sessionRes.data);
+
       const sid = sessionRes.data?.session_id;
       if (sid) {
         setUserData((prev) => ({ ...prev, session_id: sid }));
         sessionStorage.setItem("session_id", sid);
       }
+
       alert("정보가 성공적으로 저장되었습니다!");
-      navigate("/test/house/intro"); // 이후 캔버스에서 session_id를 읽어 사용
+      navigate("/test/house/intro"); // 이후 캔버스에서 session_id를 사용
     } catch (err) {
       console.error("요청 실패:", err);
       alert("처리에 실패했어요 😢 다시 시도해 주세요.");

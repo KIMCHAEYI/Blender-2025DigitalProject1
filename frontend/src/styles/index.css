@@ -42,3 +42,13 @@ body {
 .highlight {
   color: #3e70c7;
 }
+
+@font-face {
+  font-family: "GowunDodum-Regular";
+  font-weight: normal;
+  src: url("./fonts/GowunDodum-Regular.ttf") format("truetype");
+}
+
+body {
+  font-family: "GowunDodum-Regular";
+}
