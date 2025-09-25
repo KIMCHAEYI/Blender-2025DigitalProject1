@@ -166,7 +166,7 @@ export default function CanvasTemplate({
 
       // ★ 업로드 엔드포인트(분석은 백엔드가 비동기 처리, ResultPage에서 폴링)
       const uploadRes = await axios.post(
-        "http://172.20.6.183:5000/api/drawings/upload",
+        "http://172.20.23.92:5000/api/drawings/upload",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

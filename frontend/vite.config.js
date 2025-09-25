@@ -6,8 +6,16 @@ export default defineConfig({
   server: {
     host: true,
     proxy: {
-      "/api": "http://localhost:5000",
-      "/uploads": "http://localhost:5000",
+      "/api": {
+        target: "http://172.20.23.92:5000",
+        changeOrigin: true,
+        secure: false,
+      },
+      "/uploads": {
+        target: "http://172.20.23.92:5000",
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 });
