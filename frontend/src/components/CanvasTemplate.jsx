@@ -60,7 +60,7 @@ export default function CanvasTemplate({
     sessionStorage.getItem("session_id") ||
     sessionStorage.getItem("user_id");
 
-  // 처음 방문 시 한 번만 안내 모달
+  // 모달 안내
   useEffect(() => {
     const seen = localStorage.getItem("seenToolbarGuideV2");
     if (!seen) {
@@ -69,7 +69,7 @@ export default function CanvasTemplate({
     }
   }, []);
 
-  // ✅ 캔버스 크기 계산
+  // 캔버스 크기
   useEffect(() => {
     const aspect = BASE_WIDTH / BASE_HEIGHT;
 
@@ -125,7 +125,7 @@ export default function CanvasTemplate({
   const handleCancelConfirm = () => navigate("/");
   const handleNextClick = () => setShowSubmitModal(true);
 
-  // ✅ 업로드 후 바로 다음 화면으로 (upload만; 분석은 ResultPage에서 폴링)
+  // 업로드 후 바로 다음 화면으로
   const handleNext = async () => {
     if (!stageRef.current) return;
 
@@ -264,30 +264,49 @@ export default function CanvasTemplate({
       <div className="canvas-body" ref={wrapperRef}>
         {/* 툴바 */}
         <div className="toolbar" ref={toolbarRef} aria-label="그림 도구">
-          <button
-            type="button"
-            className={`btn-toolbar ${penSize === 2 ? "selected" : ""}`}
-            onClick={() => setPenSize(2)}
-            title="펜 굵기: 얇게"
-          >
-            ✏️ 얇게
-          </button>
-          <button
-            type="button"
-            className={`btn-toolbar ${penSize === 4 ? "selected" : ""}`}
-            onClick={() => setPenSize(4)}
-            title="펜 굵기: 중간"
-          >
-            ✏️ ✏️ 중간
-          </button>
-          <button
-            type="button"
-            className={`btn-toolbar ${penSize === 8 ? "selected" : ""}`}
-            onClick={() => setPenSize(8)}
-            title="펜 굵기: 굵게"
-          >
-            ✏️✏️ ✏️ 굵게
-          </button>
+          {/* 펜 굵기 Stepper */}
+          <div className="pen-stepper">
+            {/* + 버튼 (항상 위) */}
+            <button
+              type="button"
+              className="btn-toolbar"
+              onClick={() => setPenSize((s) => Math.min(8, s + 2))}
+              title="굵기 늘리기"
+            >
+              ➕
+            </button>
+
+            {/* 현재 굵기 미리보기 (고정 박스 안에서 가운데 정렬) */}
+            <div
+              style={{
+                width: 30,
+                height: 30,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "8px 0",
+              }}
+            >
+              <div
+                style={{
+                  width: penSize * 1.5,
+                  height: penSize * 1.5,
+                  borderRadius: "50%",
+                  background: "#111",
+                }}
+              />
+            </div>
+
+            {/* - 버튼 (항상 아래) */}
+            <button
+              type="button"
+              className="btn-toolbar"
+              onClick={() => setPenSize((s) => Math.max(2, s - 2))}
+              title="굵기 줄이기"
+            >
+              ➖
+            </button>
+          </div>
 
           <button
             type="button"
@@ -312,19 +331,21 @@ export default function CanvasTemplate({
             aria-label="그림 도구 도움말 열기"
             title="도움말"
           >
-            ❓ 도움말
+            ❓
           </button>
         </div>
 
         <div className="canvas-wrapper">
-          <div className="progress-indicator static-overlay">
-            {Array.from({ length: totalSteps }).map((_, i) => (
-              <span
-                key={i}
-                className={`dot ${i < currentStep ? "active" : ""}`}
-              />
-            ))}
-          </div>
+          {
+            <div className="progress-indicator static-overlay">
+              {Array.from({ length: totalSteps }).map((_, i) => (
+                <span
+                  key={i}
+                  className={`dot ${i < currentStep ? "active" : ""}`}
+                />
+              ))}
+            </div>
+          }
 
           <Stage
             width={canvasWidth}
