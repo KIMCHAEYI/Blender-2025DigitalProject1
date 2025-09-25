@@ -38,7 +38,7 @@ export default function Complete() {
         sessionStorage.setItem("session_id", sid);
       }
 
-      alert("정보가 성공적으로 저장되었습니다!");
+      //alert("정보가 성공적으로 저장되었습니다!");
       navigate("/test/house/intro"); // 이후 캔버스에서 session_id를 사용
     } catch (err) {
       console.error("요청 실패:", err);

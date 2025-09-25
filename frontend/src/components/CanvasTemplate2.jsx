@@ -244,11 +244,20 @@ export default function CanvasTemplate({
   const handleClear = () => {
     setLines([]);
     setIsDrawing(false);
-    setResetCount((p) => p + 1);
+    setResetCount((p) => {
+      const newVal = p + 1;
+      console.log("🗑️ 처음부터 횟수:", newVal);
+      return newVal;
+    });
   };
   const handleUndo = () => {
+    console.log("↩️ 되돌리기 버튼 클릭됨"); // 버튼 클릭 순간 무조건 찍힘
     setLines((p) => p.slice(0, -1));
-    setEraseCount((c) => c + 1);
+    setEraseCount((c) => {
+      const newVal = c + 1;
+      console.log("🖊️ 되돌리기 횟수:", newVal); // 업데이트 예정 값도 찍힘
+      return newVal;
+    });
   };
 
   const scale = canvasWidth / BASE_WIDTH;

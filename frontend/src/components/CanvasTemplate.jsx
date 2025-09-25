@@ -39,6 +39,7 @@ export default function CanvasTemplate({
   const [isDrawing, setIsDrawing] = useState(false);
   const [penSize, setPenSize] = useState(4);
   const [canvasWidth, setCanvasWidth] = useState(1123);
+
   const [eraseCount, setEraseCount] = useState(0);
   const [resetCount, setResetCount] = useState(0);
 
@@ -241,15 +242,37 @@ export default function CanvasTemplate({
   };
 
   const handleMouseUp = () => setIsDrawing(false);
+
+  // ✅ 되돌리기 버튼
+  const handleUndo = () => {
+    setLines((p) => p.slice(0, -1));
+    setEraseCount((c) => {
+      const newVal = c + 1;
+      return newVal;
+    });
+  };
+
+  // ✅ 처음부터 버튼
   const handleClear = () => {
     setLines([]);
     setIsDrawing(false);
-    setResetCount((p) => p + 1);
+    setResetCount((p) => {
+      const newVal = p + 1;
+      return newVal;
+    });
   };
-  const handleUndo = () => {
-    setLines((p) => p.slice(0, -1));
-    setEraseCount((c) => c + 1);
-  };
+
+  useEffect(() => {
+    if (eraseCount > 0) {
+      console.log(`✅ ${drawingType} 되돌리기 총 횟수: ${eraseCount}`);
+    }
+  }, [eraseCount, drawingType]);
+
+  useEffect(() => {
+    if (resetCount > 0) {
+      console.log(`✅ ${drawingType} 처음부터 총 횟수: ${resetCount}`);
+    }
+  }, [resetCount, drawingType]);
 
   const scale = canvasWidth / BASE_WIDTH;
 
@@ -273,10 +296,12 @@ export default function CanvasTemplate({
               onClick={() => setPenSize((s) => Math.min(8, s + 2))}
               title="굵기 늘리기"
             >
-              ➕
+              <img
+                src="/assets/+.png"
+                alt="굵기 늘리기"
+                style={{ width: 30, height: 30 }}
+              />
             </button>
-
-            {/* 현재 굵기 미리보기 (고정 박스 안에서 가운데 정렬) */}
             <div
               style={{
                 width: 30,
@@ -304,7 +329,11 @@ export default function CanvasTemplate({
               onClick={() => setPenSize((s) => Math.max(2, s - 2))}
               title="굵기 줄이기"
             >
-              ➖
+              <img
+                src="/assets/-.png"
+                alt="굵기 줄이기"
+                style={{ width: 30, height: 30 }}
+              />
             </button>
           </div>
 
