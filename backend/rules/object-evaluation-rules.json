@@ -23,7 +23,7 @@
     {
       "field": "reset_count",
       "range": [1, 1],
-      "meaning": "한 리셋 → 방향을 새로 잡으려는 시도."
+      "meaning": "한 번 리셋 → 방향을 새로 잡으려는 시도."
     },
     {
       "field": "reset_count",

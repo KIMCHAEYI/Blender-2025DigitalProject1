@@ -110,16 +110,53 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post("/upload-drawing", upload.single("drawing"), (req, res) => {
+  console.log("📥 req.body =", req.body);
+  console.log("📂 req.file =", req.file?.filename);
+
+  console.log("📥 업로드 도착:", req.body);   
+  console.log("📂 파일:", req.file);
+
+  const { session_id, type, eraseCount, resetCount, duration } = req.body;
+
   if (!req.file) {
     return res.status(400).json({ message: "그림 파일이 없습니다." });
   }
 
-  res.status(200).json({
-    message: "그림이 성공적으로 업로드되었습니다.",
+  // DB 읽기
+  const db = fs.existsSync(DB_FILE) ? JSON.parse(fs.readFileSync(DB_FILE, "utf-8")) : [];
+  const session = db.find((s) => s.id === session_id);
+
+  if (!session) {
+    return res.status(404).json({ message: "세션을 찾을 수 없습니다." });
+  }
+
+  // 새로운 그림 데이터
+  const newDrawing = {
+    id: Date.now().toString(), // 고유 ID
+    type,
     filename: req.file.filename,
     path: "/uploads/" + req.file.filename,
+    absPath: req.file.path,
+    erase_count: Number(eraseCount) || 0,   // ← 지우개 사용 횟수
+    reset_count: Number(resetCount) || 0,   // ← 다시 그리기 횟수
+    duration: Number(duration) || 0,        // ← 걸린 시간(초)
+    status: "uploaded",
+    result: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  // 세션에 추가
+  if (!session.drawings) session.drawings = [];
+  session.drawings.push(newDrawing);
+  fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+
+  res.status(200).json({
+    message: "그림이 성공적으로 업로드되었습니다.",
+    drawing: newDrawing,
   });
 });
+
 
 // -----------------------
 // 4. (샘플) 저장된 이미지 한 장을 YOLO+룰 해석해보기
