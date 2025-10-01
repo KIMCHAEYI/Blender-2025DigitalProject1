@@ -15,7 +15,20 @@ body {
   padding: 0;
   height: 100%;
   font-family: inherit;
-  background-color: #edf4ff;
+  background: linear-gradient(
+      to bottom,
+      #ffffff 0%,
+      #edf4ff 20%,
+      #94aed9 70%,
+      #77a1eb 100%
+    ),
+    radial-gradient(
+      circle at 70% 20%,
+      rgba(236, 72, 153, 0.25),
+      transparent 60%
+    ),
+    radial-gradient(circle at 30% 80%, rgba(139, 92, 246, 0.2), transparent 65%);
+  background-blend-mode: screen;
 }
 
 .question {
