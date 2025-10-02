@@ -65,7 +65,7 @@ const upload = multer({ storage });
 //    POST /api/drawings/upload  (form-data: drawing(file), type(text), session_id(text))
 // ─────────────────────────────────────────────────────────────────────────────
 router.post("/upload", upload.single("drawing"), (req, res) => {
-  const { session_id, type, eraseCount, resetCount } = req.body;
+  const { session_id, type, eraseCount, resetCount, duration } = req.body;
   if (!session_id || !type || !req.file) {
     return res.status(400).json({ message: "session_id, type, drawing 필수" });
   }
@@ -91,7 +91,7 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
     absPath,
     erase_count: Number(eraseCount) || 0,
     reset_count: Number(resetCount) || 0,
-    duration: Number(duration) || 0,   // ← 추가
+    duration: Number(duration) || 0,  
     status: "uploaded",
     result: null,
     createdAt: now,
@@ -115,6 +115,7 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
       if (!d1) return;
       d1.status = "processing";
       d1.updatedAt = new Date().toISOString();
+      d1.duration = Number(req.body.duration) || 0;
       writeDB(db1);
 
       // YOLO 호출 (FastAPI는 업로드 필드명을 image로 받음)
