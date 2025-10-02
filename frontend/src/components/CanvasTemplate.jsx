@@ -41,6 +41,20 @@ export default function CanvasTemplate({
   const levels = [2, 4, 8]; // 얇게(2), 중간(4), 굵게(8)
   const [penSize, setPenSize] = useState(levels[1]); // 기본값: 중간(4)
 
+  // 펜 굵기 기록 (thin | normal | thick)
+  const [penUsageHistory, setPenUsageHistory] = useState({
+    thin: 0,
+    normal: 0,
+    thick: 0,
+  });
+
+  // penSize와 penThickness 매핑
+  const thicknessMap = {
+    2: "thin",
+    4: "normal",
+    8: "thick",
+  };
+
   // 굵기 늘리기
   const increasePen = () => {
     const idx = levels.indexOf(penSize);
@@ -74,6 +88,10 @@ export default function CanvasTemplate({
     (userData && userData.session_id) ||
     sessionStorage.getItem("session_id") ||
     sessionStorage.getItem("user_id");
+
+  useEffect(() => {
+    console.log("현재 펜 사용 내역:", penUsageHistory);
+  }, [penUsageHistory]);
 
   // 모달 안내
   useEffect(() => {
@@ -191,6 +209,7 @@ export default function CanvasTemplate({
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
+      formData.append("penUsage", JSON.stringify(penUsageHistory));
 
       const data = uploadRes?.data || {};
       const imagePath =
@@ -234,6 +253,14 @@ export default function CanvasTemplate({
   // 그리기 핸들러
   const handleMouseDown = (e) => {
     setIsDrawing(true);
+
+    // 펜 사용 내역 업데이트
+    const thickness = thicknessMap[penSize];
+    setPenUsageHistory((prev) => ({
+      ...prev,
+      [thickness]: prev[thickness] + 1,
+    }));
+
     const stage = e.target.getStage();
     const pointer = stage.getPointerPosition();
     const scale = stage.scaleX();

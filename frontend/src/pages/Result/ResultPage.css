@@ -37,19 +37,12 @@ body {
   top: 0;
   padding-block: 12px;
   z-index: 5;
-  background: var(--bg);
   border-bottom: 1px solid var(--border);
 }
 
 .summary-bar h1 {
   font-size: 26px;
   margin: 0 0 10px;
-}
-
-.chips {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
 }
 
 /* ===== 종합 해석 카드 ===== */
@@ -70,10 +63,23 @@ body {
   line-height: 1.5;
 }
 
+.diagnosis-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  margin-block: 18px;
+}
+.diagnosis-card h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
 /* ===== 카드 그리드 ===== */
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); /* 📌 반응형 */
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   gap: var(--gap);
   justify-content: center; /* 가운데 정렬 */
 }
@@ -176,6 +182,12 @@ body {
 }
 .card-details[open] > summary {
   background: #f1f3f5;
+}
+
+.counselor-summary {
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-block: 18px;
 }
 
 .object-list {
