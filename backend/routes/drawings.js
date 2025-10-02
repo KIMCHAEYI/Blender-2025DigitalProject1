@@ -188,7 +188,7 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
 
           // 콘솔 출력
           console.log(
-            "\n================= 🧠 전체 종합(상담자용) ================="
+            "\n================= 🧠 전체 종합(세션=${session_id}) ================="
           );
           console.log(overall.personalized_overall || "(없음)");
           if (overall.strengths?.length) {
