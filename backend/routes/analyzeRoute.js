@@ -35,18 +35,42 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { drawingType, yoloResult, eraseCount = 0, resetCount = 0 } = req.body;
+    const {
+      drawingType,
+      yoloResult,
+      eraseCount = 0,
+      resetCount = 0,
+      penUsage = null   // ✅ 추가
+    } = req.body;
 
     if (!drawingType || !yoloResult) {
       return res.status(400).json({ error: "drawingType과 yoloResult가 필요합니다" });
     }
 
-    const analysis = interpretYOLOResult(yoloResult, drawingType, eraseCount, resetCount);
+    // penUsage는 JSON 문자열일 수도 있으니 파싱 시도
+    let parsedPenUsage = penUsage;
+    if (typeof penUsage === "string") {
+      try {
+        parsedPenUsage = JSON.parse(penUsage);
+      } catch {
+        parsedPenUsage = null;
+      }
+    }
+
+    const analysis = interpretYOLOResult(
+      yoloResult,
+      drawingType,
+      eraseCount,
+      resetCount,
+      parsedPenUsage  // ✅ 여기서 전달
+    );
+
     res.json({ analysis });
   } catch (err) {
     console.error("POST 분석 실패:", err);
     res.status(500).json({ error: "분석 실패", detail: err.message });
   }
 });
+
 
 module.exports = router;

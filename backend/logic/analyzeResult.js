@@ -75,7 +75,7 @@ function pushIfLow(labelCounts, label, maxAllowed, arr, key) {
 }
 
 // 메인: YOLO 결과 해석 + step2 분기/질문
-function interpretYOLOResult(yoloResult, drawingType, eraseCount = 0, resetCount = 0) {
+function interpretYOLOResult(yoloResult, drawingType, eraseCount = 0, resetCount = 0, penUsage = null) {
   // 방어
   const objList = Array.isArray(yoloResult?.objects) ? yoloResult.objects : [];
   const rulesForType = ruleData[drawingType] || [];
@@ -120,7 +120,7 @@ for (const r of rulesForType) {
   }
 }
 
-  // 3) 행동(지우개/리셋) 규칙
+  // 3) 행동 규칙 (기존)
   const behaviorRules = ruleData.behavior || [];
   const behaviorAnalyses = [];
   for (const r of behaviorRules) {
@@ -129,6 +129,28 @@ for (const r of rulesForType) {
       behaviorAnalyses.push({
         label: r.field === "erase_count" ? "지우기 사용" : "리셋 사용",
         meaning: r.meaning,
+      });
+    }
+  }
+
+  // 3-1) 펜 굵기 해석 (신규)
+  const penAnalyses = [];
+  if (penUsage) {
+    // 예: penUsage = { thin: 12, normal: 30, thick: 5 }
+    const entries = Object.entries(penUsage);
+    if (entries.length > 0) {
+      const [mainThickness] = entries.sort((a, b) => b[1] - a[1])[0]; // 가장 많이 쓴 굵기
+      let meaning = "";
+      if (mainThickness === "thin") {
+        meaning = "✏️ 가는 선을 주로 사용하여 섬세하고 신중한 성향을 보입니다.";
+      } else if (mainThickness === "normal") {
+        meaning = "🖊️ 보통 굵기를 주로 사용하여 안정적이고 균형 잡힌 성향을 보입니다.";
+      } else if (mainThickness === "thick") {
+        meaning = "🖌️ 굵은 선을 주로 사용하여 강한 자기표현 욕구와 에너지를 나타냅니다.";
+      }
+      penAnalyses.push({
+        label: "펜 굵기 사용",
+        meaning,
       });
     }
   }
@@ -193,6 +215,7 @@ for (const r of rulesForType) {
     ...objectAnalyses,
     ...missingAnalyses,
     ...behaviorAnalyses,
+    ...penAnalyses,
   ];
   const uniqueAnalyses = [];
   const seen = new Set();
