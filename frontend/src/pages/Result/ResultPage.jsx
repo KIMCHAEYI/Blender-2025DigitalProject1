@@ -88,11 +88,13 @@ const normalizeDrawings = (raw = {}) => {
       item?.result?.yolo ||
       (item?.result?.yolo_image ? { image: item.result.yolo_image } : null);
 
-    const analysis =
-      item?.analysis ||
-      item?.result?.analysis ||
-      item?.objects || // 서버가 objects로 보낼 때
-      [];
+    // 항상 배열로 맞춰주기
+    let analysisRaw =
+      item?.analysis || item?.result?.analysis || item?.objects || [];
+
+    const analysis = Array.isArray(analysisRaw)
+      ? analysisRaw
+      : analysisRaw?.analysis || []; // 객체라면 그 안에 들어있는 analysis 배열 꺼내기
 
     // ✅ drawing_id는 "서버가 준 값"을 최우선으로 보존 (falsy라도 덮어쓰지 않기)
     const pick = (v) =>
@@ -244,8 +246,14 @@ export default function ResultPage() {
                 : undefined) ??
               null;
 
-            const analysis =
-              src?.analysis || src?.result?.analysis || src?.objects || [];
+            // analysis 항상 배열로 맞추기
+            // 기존
+            let analysisRaw =
+              item?.analysis || item?.result?.analysis || item?.objects || [];
+
+            const analysis = Array.isArray(analysisRaw)
+              ? analysisRaw
+              : analysisRaw?.analysis || []; // 객체라면 그 안의 analysis 배열 꺼내기
 
             const yolo =
               src?.yolo ||
@@ -261,7 +269,7 @@ export default function ResultPage() {
               yolo: merged[key]?.yolo || yolo || null,
               analysis: merged[key]?.analysis?.length
                 ? merged[key].analysis
-                : analysis || [],
+                : analysis, // ← 여기서 이제 항상 배열
               drawing_id:
                 typeof merged[key]?.drawing_id !== "undefined"
                   ? merged[key].drawing_id
