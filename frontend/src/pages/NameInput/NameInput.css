@@ -1,18 +1,25 @@
+.name-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 세로 가운데 */
+  align-items: center; /* 가로 가운데 */
+  min-height: 100vh; /* 화면 전체 높이 기준 */
+  text-align: center;
+  gap: 20px; /* 요소 간 간격 */
+}
+
 .name-page input {
-  width: 207px;
-  height: 47px;
+  width: 240px; /* 태블릿용 조금 크게 */
+  height: 52px;
+  font-size: 20px;
+  text-align: center; /* 입력도 가운데 */
+  border: 2px solid #3e70c7;
+  border-radius: 8px;
+  padding: 8px;
 }
 
-.btn:disabled,
-.btn.is-disabled,
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  filter: grayscale(10%);
-  pointer-events: none; /* 클릭/탭 막기 */
-}
-
-/* 선택: 활성일 때만 살짝 밝아지는 호버 */
-.btn-primary:not(:disabled):hover {
-  filter: brightness(1.03);
+.name-page button {
+  font-size: 20px;
+  padding: 14px 32px;
+  border-radius: 12px;
 }

@@ -6,13 +6,6 @@
   overflow: auto; /* margin collapse 방지 */
 }
 
-.question {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 40px;
-  overflow: hidden;
-}
-
 .highlight {
   color: #3b5bdb;
 }

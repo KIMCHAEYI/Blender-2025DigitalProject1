@@ -158,12 +158,6 @@
   z-index: 300;
 }
 
-.next-button-icon {
-  width: 100px;
-  height: auto;
-  display: block;
-}
-
 /* 모달 공통 */
 .modal-overlay {
   position: fixed;

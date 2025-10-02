@@ -1,9 +1,3 @@
-// src/pages/Result/ResultPage.jsx — Mobile/Card UI + 사람 남/여 분리 + URL 안전보정 + 분석 폴링 보강
-// - 상단 요약 바(Chip)
-// - 가로 스크롤 카드(집/나무/사람(남/여)) + 원본/분석 탭
-// - 세부 분석 접기/펼치기
-// - FAB: 요약/상세 PDF, 홈
-
 import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../contexts/UserContext";
@@ -11,17 +5,7 @@ import axios from "axios";
 import { waitForAnalysis } from "../../utils/pollDrawing";
 import "./ResultPage.css";
 
-// ===== BASE 안전 해석 (fallback 제거: same-origin 우선) =====
-const resolveApiBase = () => {
-  const raw = (import.meta?.env?.VITE_API_BASE ?? "").trim();
-  if (!raw || raw === "undefined" || raw === "null") return ""; // same-origin 사용
-  try {
-    return new URL(raw).origin;
-  } catch {
-    return "";
-  }
-};
-const API_BASE = resolveApiBase();
+const API_BASE = "http://172.20.12.234:5000";
 
 // ===== 절대/상대 URL 합성 (한글/공백 파일명 안전) =====
 const toAbsUrl = (path) => {
@@ -146,8 +130,11 @@ const sortTypes = (types) => {
 };
 
 export default function ResultPage() {
+  console.log("API_BASE:", API_BASE);
+  console.log("import.meta.env:", import.meta.env);
+
   const navigate = useNavigate();
-  const { userData, setUserData } = useUserContext(); // ← setUserData 복구
+  const { userData, setUserData } = useUserContext();
   const safeUser = userData ?? {
     name: "-",
     gender: "-",
