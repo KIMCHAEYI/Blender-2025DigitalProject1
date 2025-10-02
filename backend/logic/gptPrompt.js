@@ -250,8 +250,34 @@ ${perList || "(없음)"}`,
   };
 }
 
+// ========= 3) 색채 해석 =========
+async function refineColorAnalysis(rawAnalysis) {
+  const { choices } = await openai.chat.completions.create({
+    model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+    temperature: 0.3,
+    max_tokens: 300,
+    messages: [
+      {
+        role: "system",
+        content:
+          "너는 HTP 검사 색채 해석을 상담 보고서 톤으로 자연스럽게 다듬는 역할이다. " +
+          "중복을 줄이고, 따뜻하고 차분한 한국어 문장으로 정리하라. 단정적인 표현은 피하라.",
+      },
+      {
+        role: "user",
+        content: `아래 색채 해석 초안을 더 자연스럽게 다듬어줘.
+[초안]
+${rawAnalysis}`,
+      },
+    ],
+  });
+
+  return choices?.[0]?.message?.content?.trim() || rawAnalysis;
+}
+
 module.exports = {
   interpretMultipleDrawings, // 기존 전체(analysis 직접) -> 전체 종합
-  summarizeDrawingForCounselor, // 🔹신규: 단일 그림 요약
-  synthesizeOverallFromDrawingSummaries, // 🔹신규: 그림별 요약 → 전체 종합
+  summarizeDrawingForCounselor, // 단일 그림 요약
+  synthesizeOverallFromDrawingSummaries, // 그림별 요약 → 전체 종합
+  refineColorAnalysis, // 색채 해석 
 };

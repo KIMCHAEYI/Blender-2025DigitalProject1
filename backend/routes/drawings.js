@@ -122,6 +122,7 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
       const typeForYolo =
         type === "person_male" || type === "person_female" ? "person" : type;
       const yolo = await runYOLOAnalysis(absPath, typeForYolo);
+      console.log("[DEBUG] YOLO 호출 absPath:", absPath, fs.existsSync(absPath));
 
       // 룰 해석 → 객체별 meaning 생성(라벨/위치/면적 기준)
       const analysis = interpretYOLOResult(
@@ -130,6 +131,7 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
         d1.erase_count || 0,
         d1.reset_count || 0
       );
+      
 
       // 결과 저장 (남/여는 subtype으로 보존)
       const db2 = readDB();
@@ -137,7 +139,7 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
       const d2 = s2?.drawings?.find((d) => d.id === drawingId);
       if (!d2) return;
       d2.status = "done";
-      d2.result = { yolo, analysis, subtype: type };
+      d2.result = { yolo, analysis, subtype: type, bbox_url: yolo?.bbox_url };
       d2.updatedAt = new Date().toISOString();
       writeDB(db2);
 

@@ -12321,10 +12321,12 @@
         "erase_count": 0,
         "reset_count": 0,
         "duration": 4,
-        "status": "processing",
-        "result": null,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
         "createdAt": "2025-10-02T07:37:11.011Z",
-        "updatedAt": "2025-10-02T07:37:11.032Z"
+        "updatedAt": "2025-10-02T07:37:41.065Z"
       }
     ]
   },
@@ -12346,10 +12348,12 @@
         "erase_count": 0,
         "reset_count": 0,
         "duration": 7,
-        "status": "processing",
-        "result": null,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
         "createdAt": "2025-10-02T07:37:14.090Z",
-        "updatedAt": "2025-10-02T07:37:14.105Z"
+        "updatedAt": "2025-10-02T07:37:44.125Z"
       },
       {
         "id": "1759390645477",
@@ -12360,10 +12364,12 @@
         "erase_count": 0,
         "reset_count": 0,
         "duration": 9,
-        "status": "processing",
-        "result": null,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
         "createdAt": "2025-10-02T07:37:25.468Z",
-        "updatedAt": "2025-10-02T07:37:25.494Z"
+        "updatedAt": "2025-10-02T07:37:55.522Z"
       },
       {
         "id": "1759390649433",
@@ -12374,10 +12380,12 @@
         "erase_count": 0,
         "reset_count": 0,
         "duration": 3,
-        "status": "processing",
-        "result": null,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
         "createdAt": "2025-10-02T07:37:29.414Z",
-        "updatedAt": "2025-10-02T07:37:29.465Z"
+        "updatedAt": "2025-10-02T07:37:59.546Z"
       },
       {
         "id": "1759390654361",
@@ -12388,10 +12396,12 @@
         "erase_count": 0,
         "reset_count": 0,
         "duration": 4,
-        "status": "processing",
-        "result": null,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
         "createdAt": "2025-10-02T07:37:34.355Z",
-        "updatedAt": "2025-10-02T07:37:34.375Z"
+        "updatedAt": "2025-10-02T07:38:04.395Z"
       }
     ]
   },
@@ -12413,10 +12423,1955 @@
         "erase_count": 0,
         "reset_count": 0,
         "duration": 5,
-        "status": "processing",
-        "result": null,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
         "createdAt": "2025-10-02T07:37:33.368Z",
-        "updatedAt": "2025-10-02T07:37:33.383Z"
+        "updatedAt": "2025-10-02T07:38:03.401Z"
+      },
+      {
+        "id": "1759390659567",
+        "type": "tree",
+        "filename": "1759390659550-6sy69g.png",
+        "path": "/uploads/1759390659550-6sy69g.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759390659550-6sy69g.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 4,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-10-02T07:37:39.561Z",
+        "updatedAt": "2025-10-02T07:38:09.602Z"
+      },
+      {
+        "id": "1759390668867",
+        "type": "person",
+        "filename": "1759390668842-x3ofa1.png",
+        "path": "/uploads/1759390668842-x3ofa1.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759390668842-x3ofa1.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 8,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-10-02T07:37:48.861Z",
+        "updatedAt": "2025-10-02T07:38:18.895Z"
+      },
+      {
+        "id": "1759390676570",
+        "type": "person",
+        "filename": "1759390676552-1gx1ws.png",
+        "path": "/uploads/1759390676552-1gx1ws.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759390676552-1gx1ws.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 7,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-10-02T07:37:56.565Z",
+        "updatedAt": "2025-10-02T07:38:26.616Z"
+      }
+    ]
+  },
+  {
+    "id": "1759391113780",
+    "name": "호떡",
+    "gender": "남자",
+    "birth": "2025-02-02",
+    "password": "$2b$10$2DLH1.awLSiMRC0s8ksesO1kfMaBunY2CQ3hAwoBV/jj17C9nrruq",
+    "first_gender": null,
+    "createdAt": "2025-10-02T07:45:13.780Z",
+    "drawings": [
+      {
+        "id": "1759391120016",
+        "type": "house",
+        "filename": "1759391120003-tz622l.png",
+        "path": "/uploads/1759391120003-tz622l.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759391120003-tz622l.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 5,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-10-02T07:45:20.010Z",
+        "updatedAt": "2025-10-02T07:45:50.059Z"
+      },
+      {
+        "id": "1759391307429",
+        "type": "tree",
+        "filename": "1759391307413-s3gdk8.png",
+        "path": "/uploads/1759391307413-s3gdk8.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759391307413-s3gdk8.png",
+        "erase_count": 0,
+        "reset_count": 1,
+        "duration": 5,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-10-02T07:48:27.421Z",
+        "updatedAt": "2025-10-02T07:48:57.514Z"
+      },
+      {
+        "id": "1759391679967",
+        "type": "person",
+        "filename": "1759391679954-plppco.png",
+        "path": "/uploads/1759391679954-plppco.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759391679954-plppco.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 2,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: connect ECONNREFUSED 127.0.0.1:8000"
+        },
+        "createdAt": "2025-10-02T07:54:39.960Z",
+        "updatedAt": "2025-10-02T07:54:40.053Z"
+      },
+      {
+        "id": "1759391886646",
+        "type": "person",
+        "filename": "1759391886622-ya0w0k.png",
+        "path": "/uploads/1759391886622-ya0w0k.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759391886622-ya0w0k.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 206,
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "운동화",
+                "confidence": 0.9657101035118103,
+                "x": 146,
+                "y": 609,
+                "w": 366,
+                "h": 391
+              },
+              {
+                "label": "사람전체",
+                "confidence": 0.8242498636245728,
+                "x": 118,
+                "y": 220,
+                "w": 694,
+                "h": 1124
+              }
+            ],
+            "bbox_url": "/uploads/yolo_bbox/person/20251002_165821_bbox.jpg"
+          },
+          "analysis": {
+            "step": 2,
+            "drawingType": "person",
+            "analysis": [
+              {
+                "label": "운동화",
+                "areaRatio": 0.0873,
+                "position": "middle-left",
+                "w": 366,
+                "h": 391,
+                "cx": 329,
+                "cy": 804.5,
+                "meaning": "- 보통의 신발은 특별한 해석이 없습니다. 그러나 아주 커다란 신발은 안정에 대한 욕구를 보이는 것입니다."
+              },
+              {
+                "label": "사람전체",
+                "areaRatio": 0.4761,
+                "position": "middle-center",
+                "w": 694,
+                "h": 1124,
+                "cx": 465,
+                "cy": 782,
+                "meaning": "- 사람 전체의 크기로는 특별한 해석이 없습니다."
+              },
+              {
+                "label": "머리 (미표현)",
+                "meaning": "머리를 그리지 않은 경우 신경증, 우울증, 자폐적 경향이 있는 사람의 경우가 많습니다."
+              },
+              {
+                "label": "얼굴 (미표현)",
+                "meaning": "얼굴의 표정이 생략되거나 희미하다면 대인관계의 갈등 등을 회피하고 사회적 관계로부터 물러서고자 하는 마음을 내포합니다."
+              },
+              {
+                "label": "눈 (미표현)",
+                "meaning": "눈을 그리지 않은 경우, 환시가 있거나 절시증의 경향에 죄의식을 가지고 있을 경우가 있습니다. 혹은 성에 대한 명확한 개념이 없을 수 있습니다."
+              },
+              {
+                "label": "코 (미표현)",
+                "meaning": "코를 그리지 않은 경우 성에 대해 무엇인가 갈등을 겪고 있으며, 남성일 경우 남성임을 거부하고 동성애의 경향이 있을 가능성을 보일 수 있습니다. 혹은 성에 대한 명확한 개념이 없을 수 있습니다."
+              },
+              {
+                "label": "입 (미표현)",
+                "meaning": "입이 그려지지 않은 경우 애정 욕구에 대한 강한 거부, 우울함, 사회와의 교류에 필요한 구순 활동에 갈등이 있는 것입니다. 혹은 천식 환자일 수 있습니다."
+              },
+              {
+                "label": "귀 (미표현)",
+                "meaning": "귀를 그리지 않는 경우 타인의 견해를 부인하는 성격일 수 있으나, 주요한 해석은 아닙니다."
+              },
+              {
+                "label": "머리카락 (미표현)",
+                "meaning": "머리카락이 없는 경우 유아기적 성욕에 대한 정신 분열의 표시일 수 있으며, 남성다움에 대한 보상적인 특징을 띄는 공상일 수 있습니다."
+              },
+              {
+                "label": "목 (미표현)",
+                "meaning": "목은 지적 영역과 충동영역을 연결하는 기관이므로 목을 생략한 그림은 미성숙한 정신상태와 관련이 있습니다. 그렇기에 아동의 그림에는 목이 없는 것이 많습니다."
+              },
+              {
+                "label": "상체 (미표현)",
+                "meaning": "상체 전체를 생략하는 경우 자신을 표현하는 것과 사회적 상호작용에 위축되어 있음을 시사합니다."
+              },
+              {
+                "label": "팔 (미표현)",
+                "meaning": "팔을 그리지 않은 경우 성적욕망에 대한 심한 죄의식, 우울증의 증후일 수 있습니다. 그러나 아동에게 있어서는 미성숙이 아닌 단지 팔이 없는 형태가 미적으로 좋게 보일 수 있기에 자세한 문답이 필요합니다."
+              },
+              {
+                "label": "손 (미표현)",
+                "meaning": "손을 그리지 않은 경우 정서장애의 가능성을 보일 수 있습니다. 공격성, 환경에 대한 무력감, 신경증을 의미하는 현실 거부적인 지표입니다."
+              },
+              {
+                "label": "다리 (미표현)",
+                "meaning": "다리를 그리지 않은 경우 압박과 의존에 대한 병적인 감정, 자율성의 결여를 의미합니다."
+              },
+              {
+                "label": "발 (미표현)",
+                "meaning": "발을 그리지 않은 경우 운동성과 자율성을 결여당한 상태, 도피하고자 하는 욕구를 나타냅니다."
+              },
+              {
+                "label": "지우기 사용",
+                "meaning": "지우기 없이 완성 → 안정적이고 자신감 있는 태도."
+              },
+              {
+                "label": "리셋 사용",
+                "meaning": "리셋 없이 진행 → 계획성과 자기 확신."
+              }
+            ],
+            "extraQuestion": "그린 사람의 얼굴에는 코가 있을까요? 코를 추가해 얼굴을 완성해 보세요."
+          },
+          "subtype": "person",
+          "bbox_url": "/uploads/yolo_bbox/person/20251002_165821_bbox.jpg",
+          "counselor_summary": "호떡님은 자신의 내면 세계를 탐색하는 데 있어 깊은 관심을 가지고 있는 것으로 보입니다. 그림 속 인물은 다양한 감정을 표현하고 있으며, 이는 호떡님이 타인과의 관계에서 느끼는 복잡한 감정을 반영할 가능성이 있습니다. 또한, 인물의 자세나 표정은 자신에 대한 인식이나 자아의 상태를 나타내는 듯합니다. 이러한 요소들은 호떡님이 자신을 이해하고자 하는 욕구를 시사할 수 있습니다. 전반적으로, 호떡님은 주변 환경과의 상호작용에서 느끼는 감정의 깊이를 탐구하고자 하는 경향이 있는 것으로 해석될 수 있습니다. 이러한 그림을 통해 호떡님은 자신의 감정을 표현하고, 이를 통해 더 나은 자기 이해를 추구하는 모습이 엿보입니다."
+        },
+        "createdAt": "2025-10-02T07:58:06.634Z",
+        "updatedAt": "2025-10-02T07:58:25.764Z"
+      }
+    ]
+  },
+  {
+    "id": "1759391344521",
+    "name": "ㄴㅇㄹ",
+    "gender": "여자",
+    "birth": "2024-04-05",
+    "password": "$2b$10$AXVtPMz1Uv1idydhKiwI0.fAfVn5a5OQnTKt/V4vHCax2ttG2u1fi",
+    "first_gender": null,
+    "createdAt": "2025-10-02T07:49:04.521Z",
+    "drawings": [
+      {
+        "id": "1759391349673",
+        "type": "house",
+        "filename": "1759391349655-inwf0y.png",
+        "path": "/uploads/1759391349655-inwf0y.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759391349655-inwf0y.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 4,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-10-02T07:49:09.666Z",
+        "updatedAt": "2025-10-02T07:49:39.710Z"
+      },
+      {
+        "id": "1759391352973",
+        "type": "tree",
+        "filename": "1759391352958-yjkcms.png",
+        "path": "/uploads/1759391352958-yjkcms.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759391352958-yjkcms.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 1,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-10-02T07:49:12.960Z",
+        "updatedAt": "2025-10-02T07:49:43.010Z"
+      },
+      {
+        "id": "1759391355197",
+        "type": "person",
+        "filename": "1759391355184-gylumc.png",
+        "path": "/uploads/1759391355184-gylumc.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759391355184-gylumc.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 1,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-10-02T07:49:15.186Z",
+        "updatedAt": "2025-10-02T07:49:45.249Z"
+      },
+      {
+        "id": "1759391357962",
+        "type": "person",
+        "filename": "1759391357951-maw7m8.png",
+        "path": "/uploads/1759391357951-maw7m8.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759391357951-maw7m8.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 2,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-10-02T07:49:17.953Z",
+        "updatedAt": "2025-10-02T07:49:48.006Z"
+      }
+    ]
+  },
+  {
+    "id": "1759391431840",
+    "name": "ㅇㅇㅇ",
+    "gender": "남자",
+    "birth": "2025-02-02",
+    "password": "$2b$10$t4MYGhPNF3Di8oie9poCw.PZVVA4X6s1DPuhjDT2eeDJVMZt3fbiq",
+    "first_gender": null,
+    "createdAt": "2025-10-02T07:50:31.840Z",
+    "drawings": [
+      {
+        "id": "1759391447347",
+        "type": "house",
+        "filename": "1759391447319-7gmg6o.png",
+        "path": "/uploads/1759391447319-7gmg6o.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759391447319-7gmg6o.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 14,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-10-02T07:50:47.342Z",
+        "updatedAt": "2025-10-02T07:51:17.391Z"
+      },
+      {
+        "id": "1759391453065",
+        "type": "tree",
+        "filename": "1759391453058-808xj8.png",
+        "path": "/uploads/1759391453058-808xj8.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759391453058-808xj8.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 4,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-10-02T07:50:53.060Z",
+        "updatedAt": "2025-10-02T07:51:23.095Z"
+      },
+      {
+        "id": "1759391457185",
+        "type": "person",
+        "filename": "1759391457175-dx3ujr.png",
+        "path": "/uploads/1759391457175-dx3ujr.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759391457175-dx3ujr.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 3,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-10-02T07:50:57.178Z",
+        "updatedAt": "2025-10-02T07:51:27.227Z"
+      },
+      {
+        "id": "1759391461156",
+        "type": "person",
+        "filename": "1759391461149-7p2tww.png",
+        "path": "/uploads/1759391461149-7p2tww.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759391461149-7p2tww.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 3,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: undefined"
+        },
+        "createdAt": "2025-10-02T07:51:01.151Z",
+        "updatedAt": "2025-10-02T07:51:31.189Z"
+      }
+    ]
+  },
+  {
+    "id": "1759391996853",
+    "name": "ㅇㅇㅇ",
+    "gender": "남자",
+    "birth": "2024-02-03",
+    "password": "$2b$10$ouFPoTKyvIWRWweGMBflZeih/WvqYSaOibYMK3lnMLFdHCJYi54ZC",
+    "first_gender": null,
+    "createdAt": "2025-10-02T07:59:56.853Z",
+    "drawings": [
+      {
+        "id": "1759392002921",
+        "type": "house",
+        "filename": "1759392002892-igj3cw.png",
+        "path": "/uploads/1759392002892-igj3cw.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759392002892-igj3cw.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 5,
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "house",
+            "objects": [
+              {
+                "label": "지붕",
+                "confidence": 0.9704523086547852,
+                "x": 173,
+                "y": 263,
+                "w": 565,
+                "h": 194
+              },
+              {
+                "label": "집벽",
+                "confidence": 0.8965197801589966,
+                "x": 280,
+                "y": 458,
+                "w": 395,
+                "h": 291
+              },
+              {
+                "label": "창문",
+                "confidence": 0.8036079406738281,
+                "x": 291,
+                "y": 471,
+                "w": 230,
+                "h": 167
+              },
+              {
+                "label": "집전체",
+                "confidence": 0.6066451668739319,
+                "x": 151,
+                "y": 0,
+                "w": 1146,
+                "h": 917
+              },
+              {
+                "label": "집벽",
+                "confidence": 0.5212871432304382,
+                "x": 165,
+                "y": 0,
+                "w": 1130,
+                "h": 917
+              },
+              {
+                "label": "창문",
+                "confidence": 0.4214070439338684,
+                "x": 270,
+                "y": 445,
+                "w": 403,
+                "h": 298
+              }
+            ],
+            "bbox_url": "/uploads/yolo_bbox/house/20251002_170016_bbox.jpg"
+          },
+          "analysis": {
+            "step": 2,
+            "drawingType": "house",
+            "analysis": [
+              {
+                "label": "지붕",
+                "areaRatio": 0.0669,
+                "position": "top-center",
+                "w": 565,
+                "h": 194,
+                "cx": 455.5,
+                "cy": 360,
+                "meaning": "- 지붕의 크기가 작은 경우 내적 인지과정이 활발하지 않으며 회피, 억제, 억압의 성향이 있음을 나타냅니다."
+              },
+              {
+                "label": "집벽",
+                "areaRatio": 0.0702,
+                "position": "middle-center",
+                "w": 395,
+                "h": 291,
+                "cx": 477.5,
+                "cy": 603.5,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "창문",
+                "areaRatio": 0.0234,
+                "position": "middle-left",
+                "w": 230,
+                "h": 167,
+                "cx": 406,
+                "cy": 554.5,
+                "meaning": "- 창문의 크기가 작은 경우 외부 세계에 대한 심리적인 거리감과 수줍음을 나타냅니다."
+              },
+              {
+                "label": "집전체",
+                "areaRatio": 0.6414,
+                "position": "middle-center",
+                "w": 1146,
+                "h": 917,
+                "cx": 724,
+                "cy": 458.5,
+                "meaning": "- 그림이 지나치게 큰 경우, 과장된 자기 표현, 과잉행동, 통제력 부족, 공격성 또는 조증적 특성을 시사할 수 있습니다."
+              },
+              {
+                "label": "문 (미표현)",
+                "meaning": "문이 그려지지 않은 경우 가정환경에서 타인과 접촉하지 않으려는 감정, 외계와의 교류를 원치 않는 냉정함을 뜻합니다."
+              },
+              {
+                "label": "지우기 사용",
+                "meaning": "지우기 없이 완성 → 안정적이고 자신감 있는 태도."
+              },
+              {
+                "label": "리셋 사용",
+                "meaning": "리셋 없이 진행 → 계획성과 자기 확신."
+              }
+            ],
+            "extraQuestion": "집에 들어갈 수 있는 현관문을 추가해 보세요."
+          },
+          "subtype": "house",
+          "bbox_url": "/uploads/yolo_bbox/house/20251002_170016_bbox.jpg",
+          "counselor_summary": "ㅇㅇㅇ님은 안정감과 소속감을 중시하는 경향이 있는 것으로 보입니다. 그림에서 나타나는 요소들은 개인의 내면 세계와 관련된 다양한 감정을 반영하고 있을 가능성이 있습니다. 특히, 주변 환경과의 조화로운 관계를 추구하는 모습이 엿보입니다. 이러한 특성은 대인 관계에서의 신뢰와 친밀감을 중요시하는 태도로 이어질 수 있습니다. 또한, 자신이 속한 공간에 대한 긍정적인 인식을 나타내고 있으며, 이는 삶의 전반적인 만족도와 연결될 수 있습니다. 전반적으로, 이러한 경향은 ㅇㅇㅇ님이 안정적인 환경을 선호하고, 그 안에서 자신을 표현하고자 하는 욕구를 내포하고 있을 수 있음을 시사합니다."
+        },
+        "createdAt": "2025-10-02T08:00:02.909Z",
+        "updatedAt": "2025-10-02T08:00:25.202Z"
+      },
+      {
+        "id": "1759392005732",
+        "type": "tree",
+        "filename": "1759392005706-xhwnds.png",
+        "path": "/uploads/1759392005706-xhwnds.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759392005706-xhwnds.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 1,
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "tree",
+            "objects": [],
+            "bbox_url": "/uploads/yolo_bbox/tree/20251002_170029_bbox.jpg"
+          },
+          "analysis": {
+            "step": 2,
+            "drawingType": "tree",
+            "analysis": [
+              {
+                "label": "기둥 (미표현)",
+                "meaning": "기둥이 없는 경우 자아가 매우 약화되었거나 와해되어 정신 병리학적인 상태에 있을 가능성이 높습니다. 심한 자기 부적절감이나 지나친 억제, 회피를 의미합니다."
+              },
+              {
+                "label": "가지 (미표현)",
+                "meaning": "가지가 없는 경우, 세상과의 상호작용이 매우 억제되고 위축되어 있음을 의미할 수 있습니다. 환경에서의 불만족이나 타인과의 관계에서 있는 어려움이 있을 수 있습니다."
+              },
+              {
+                "label": "뿌리 (미표현)",
+                "meaning": "나무의 기둥에 뿌리가 없는 경우 불안정한 삶을 살고 있다고 느끼며, 무언가 잘못되었다고 생각하는 경향이 있습니다."
+              },
+              {
+                "label": "나뭇잎 (미표현)",
+                "meaning": "나뭇잎이 없는 나무의 경우 활력감의 상실을 나타낼 수 있습니다."
+              },
+              {
+                "label": "지우기 사용",
+                "meaning": "지우기 없이 완성 → 안정적이고 자신감 있는 태도."
+              },
+              {
+                "label": "리셋 사용",
+                "meaning": "리셋 없이 진행 → 계획성과 자기 확신."
+              }
+            ],
+            "extraQuestion": "나무 아래에 자라고 있을 뿌리를 그려주세요."
+          },
+          "subtype": "tree",
+          "bbox_url": "/uploads/yolo_bbox/tree/20251002_170029_bbox.jpg"
+        },
+        "createdAt": "2025-10-02T08:00:05.709Z",
+        "updatedAt": "2025-10-02T08:00:30.244Z"
+      },
+      {
+        "id": "1759392007818",
+        "type": "person",
+        "filename": "1759392007774-lwbecu.png",
+        "path": "/uploads/1759392007774-lwbecu.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759392007774-lwbecu.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 1,
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [],
+            "bbox_url": "/uploads/yolo_bbox/person/20251002_170030_bbox.jpg"
+          },
+          "analysis": {
+            "step": 2,
+            "drawingType": "person",
+            "analysis": [
+              {
+                "label": "머리 (미표현)",
+                "meaning": "머리를 그리지 않은 경우 신경증, 우울증, 자폐적 경향이 있는 사람의 경우가 많습니다."
+              },
+              {
+                "label": "얼굴 (미표현)",
+                "meaning": "얼굴의 표정이 생략되거나 희미하다면 대인관계의 갈등 등을 회피하고 사회적 관계로부터 물러서고자 하는 마음을 내포합니다."
+              },
+              {
+                "label": "눈 (미표현)",
+                "meaning": "눈을 그리지 않은 경우, 환시가 있거나 절시증의 경향에 죄의식을 가지고 있을 경우가 있습니다. 혹은 성에 대한 명확한 개념이 없을 수 있습니다."
+              },
+              {
+                "label": "코 (미표현)",
+                "meaning": "코를 그리지 않은 경우 성에 대해 무엇인가 갈등을 겪고 있으며, 남성일 경우 남성임을 거부하고 동성애의 경향이 있을 가능성을 보일 수 있습니다. 혹은 성에 대한 명확한 개념이 없을 수 있습니다."
+              },
+              {
+                "label": "입 (미표현)",
+                "meaning": "입이 그려지지 않은 경우 애정 욕구에 대한 강한 거부, 우울함, 사회와의 교류에 필요한 구순 활동에 갈등이 있는 것입니다. 혹은 천식 환자일 수 있습니다."
+              },
+              {
+                "label": "귀 (미표현)",
+                "meaning": "귀를 그리지 않는 경우 타인의 견해를 부인하는 성격일 수 있으나, 주요한 해석은 아닙니다."
+              },
+              {
+                "label": "머리카락 (미표현)",
+                "meaning": "머리카락이 없는 경우 유아기적 성욕에 대한 정신 분열의 표시일 수 있으며, 남성다움에 대한 보상적인 특징을 띄는 공상일 수 있습니다."
+              },
+              {
+                "label": "목 (미표현)",
+                "meaning": "목은 지적 영역과 충동영역을 연결하는 기관이므로 목을 생략한 그림은 미성숙한 정신상태와 관련이 있습니다. 그렇기에 아동의 그림에는 목이 없는 것이 많습니다."
+              },
+              {
+                "label": "상체 (미표현)",
+                "meaning": "상체 전체를 생략하는 경우 자신을 표현하는 것과 사회적 상호작용에 위축되어 있음을 시사합니다."
+              },
+              {
+                "label": "팔 (미표현)",
+                "meaning": "팔을 그리지 않은 경우 성적욕망에 대한 심한 죄의식, 우울증의 증후일 수 있습니다. 그러나 아동에게 있어서는 미성숙이 아닌 단지 팔이 없는 형태가 미적으로 좋게 보일 수 있기에 자세한 문답이 필요합니다."
+              },
+              {
+                "label": "손 (미표현)",
+                "meaning": "손을 그리지 않은 경우 정서장애의 가능성을 보일 수 있습니다. 공격성, 환경에 대한 무력감, 신경증을 의미하는 현실 거부적인 지표입니다."
+              },
+              {
+                "label": "다리 (미표현)",
+                "meaning": "다리를 그리지 않은 경우 압박과 의존에 대한 병적인 감정, 자율성의 결여를 의미합니다."
+              },
+              {
+                "label": "발 (미표현)",
+                "meaning": "발을 그리지 않은 경우 운동성과 자율성을 결여당한 상태, 도피하고자 하는 욕구를 나타냅니다."
+              },
+              {
+                "label": "운동화 (미표현)",
+                "meaning": "신발을 그리지 않은 경우 원시적이며 억압되지 않은 공격성과 성욕을 의미하는 것입니다."
+              },
+              {
+                "label": "지우기 사용",
+                "meaning": "지우기 없이 완성 → 안정적이고 자신감 있는 태도."
+              },
+              {
+                "label": "리셋 사용",
+                "meaning": "리셋 없이 진행 → 계획성과 자기 확신."
+              }
+            ],
+            "extraQuestion": "그린 사람의 다리에는 발이 있나요? 발과 신발을 표현해 보세요."
+          },
+          "subtype": "person",
+          "bbox_url": "/uploads/yolo_bbox/person/20251002_170030_bbox.jpg",
+          "counselor_summary": "ㅇㅇㅇ님은 자신을 표현하는 방식에서 내면의 감정과 생각을 드러내는 경향이 있는 것으로 보입니다. 그림 속 인물은 주변 환경과의 관계를 통해 자신을 인식하고, 타인과의 연결을 중요시하는 모습이 엿보입니다. 이러한 요소들은 대인관계에 대한 관심이나 소통의 필요성을 시사할 수 있습니다. 또한, 인물의 자세나 표정은 자신감이나 안정감을 나타내는 동시에, 때로는 불안정한 감정을 내포하고 있을 가능성도 있습니다. 전반적으로, ㅇㅇㅇ님은 자신을 둘러싼 세계와의 상호작용을 통해 다양한 감정을 경험하고 있는 것으로 해석될 수 있습니다. 이러한 경향은 향후 상담 과정에서 더 깊이 탐구할 수 있는 주제가 될 것입니다."
+        },
+        "createdAt": "2025-10-02T08:00:07.777Z",
+        "updatedAt": "2025-10-02T08:00:40.600Z"
+      },
+      {
+        "id": "1759392009369",
+        "type": "person",
+        "filename": "1759392009302-1gpny3.png",
+        "path": "/uploads/1759392009302-1gpny3.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759392009302-1gpny3.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 1,
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [],
+            "bbox_url": "/uploads/yolo_bbox/person/20251002_170030_bbox.jpg"
+          },
+          "analysis": {
+            "step": 2,
+            "drawingType": "person",
+            "analysis": [
+              {
+                "label": "머리 (미표현)",
+                "meaning": "머리를 그리지 않은 경우 신경증, 우울증, 자폐적 경향이 있는 사람의 경우가 많습니다."
+              },
+              {
+                "label": "얼굴 (미표현)",
+                "meaning": "얼굴의 표정이 생략되거나 희미하다면 대인관계의 갈등 등을 회피하고 사회적 관계로부터 물러서고자 하는 마음을 내포합니다."
+              },
+              {
+                "label": "눈 (미표현)",
+                "meaning": "눈을 그리지 않은 경우, 환시가 있거나 절시증의 경향에 죄의식을 가지고 있을 경우가 있습니다. 혹은 성에 대한 명확한 개념이 없을 수 있습니다."
+              },
+              {
+                "label": "코 (미표현)",
+                "meaning": "코를 그리지 않은 경우 성에 대해 무엇인가 갈등을 겪고 있으며, 남성일 경우 남성임을 거부하고 동성애의 경향이 있을 가능성을 보일 수 있습니다. 혹은 성에 대한 명확한 개념이 없을 수 있습니다."
+              },
+              {
+                "label": "입 (미표현)",
+                "meaning": "입이 그려지지 않은 경우 애정 욕구에 대한 강한 거부, 우울함, 사회와의 교류에 필요한 구순 활동에 갈등이 있는 것입니다. 혹은 천식 환자일 수 있습니다."
+              },
+              {
+                "label": "귀 (미표현)",
+                "meaning": "귀를 그리지 않는 경우 타인의 견해를 부인하는 성격일 수 있으나, 주요한 해석은 아닙니다."
+              },
+              {
+                "label": "머리카락 (미표현)",
+                "meaning": "머리카락이 없는 경우 유아기적 성욕에 대한 정신 분열의 표시일 수 있으며, 남성다움에 대한 보상적인 특징을 띄는 공상일 수 있습니다."
+              },
+              {
+                "label": "목 (미표현)",
+                "meaning": "목은 지적 영역과 충동영역을 연결하는 기관이므로 목을 생략한 그림은 미성숙한 정신상태와 관련이 있습니다. 그렇기에 아동의 그림에는 목이 없는 것이 많습니다."
+              },
+              {
+                "label": "상체 (미표현)",
+                "meaning": "상체 전체를 생략하는 경우 자신을 표현하는 것과 사회적 상호작용에 위축되어 있음을 시사합니다."
+              },
+              {
+                "label": "팔 (미표현)",
+                "meaning": "팔을 그리지 않은 경우 성적욕망에 대한 심한 죄의식, 우울증의 증후일 수 있습니다. 그러나 아동에게 있어서는 미성숙이 아닌 단지 팔이 없는 형태가 미적으로 좋게 보일 수 있기에 자세한 문답이 필요합니다."
+              },
+              {
+                "label": "손 (미표현)",
+                "meaning": "손을 그리지 않은 경우 정서장애의 가능성을 보일 수 있습니다. 공격성, 환경에 대한 무력감, 신경증을 의미하는 현실 거부적인 지표입니다."
+              },
+              {
+                "label": "다리 (미표현)",
+                "meaning": "다리를 그리지 않은 경우 압박과 의존에 대한 병적인 감정, 자율성의 결여를 의미합니다."
+              },
+              {
+                "label": "발 (미표현)",
+                "meaning": "발을 그리지 않은 경우 운동성과 자율성을 결여당한 상태, 도피하고자 하는 욕구를 나타냅니다."
+              },
+              {
+                "label": "운동화 (미표현)",
+                "meaning": "신발을 그리지 않은 경우 원시적이며 억압되지 않은 공격성과 성욕을 의미하는 것입니다."
+              },
+              {
+                "label": "지우기 사용",
+                "meaning": "지우기 없이 완성 → 안정적이고 자신감 있는 태도."
+              },
+              {
+                "label": "리셋 사용",
+                "meaning": "리셋 없이 진행 → 계획성과 자기 확신."
+              }
+            ],
+            "extraQuestion": "그린 사람의 다리에는 발이 있나요? 발과 신발을 표현해 보세요."
+          },
+          "subtype": "person",
+          "bbox_url": "/uploads/yolo_bbox/person/20251002_170030_bbox.jpg"
+        },
+        "createdAt": "2025-10-02T08:00:09.304Z",
+        "updatedAt": "2025-10-02T08:00:30.562Z"
+      }
+    ],
+    "summary_overall": {
+      "personalized_overall": "전반적으로 안정감과 소속감을 중시하는 경향이 있으며, 내면 세계의 다양한 감정을 반영하는 모습이 보입니다. 대인 관계에서 신뢰와 친밀감을 중요시하며, 긍정적인 환경 인식을 통해 삶의 만족도를 높이려는 의지가 엿보입니다.",
+      "strengths": [
+        "안정적인 환경 선호",
+        "신뢰와 친밀감 중시",
+        "긍정적인 자기 인식"
+      ],
+      "cautions": [
+        "주변 환경과의 조화 추구가 지나칠 경우 스트레스를 유발할 수 있음"
+      ],
+      "per_drawing": {
+        "house": "안정감과 소속감을 중시하는 경향이 드러남.",
+        "tree": "자아의 성장과 발전을 나타낼 가능성이 있음.",
+        "person_man": "대인 관계에서의 신뢰와 친밀감이 강조됨.",
+        "person_woman": "자신의 감정을 표현하고자 하는 욕구가 보임."
+      }
+    }
+  },
+  {
+    "id": "1759392186936",
+    "name": "안수진",
+    "gender": "남자",
+    "birth": "2024-03-03",
+    "password": "$2b$10$F9Ujr13dtnhuseNU1urypusLP5.TuYuluL2sOUMVMtVC5dXjxwyf2",
+    "first_gender": null,
+    "createdAt": "2025-10-02T08:03:06.936Z",
+    "drawings": [
+      {
+        "id": "1759392192979",
+        "type": "house",
+        "filename": "1759392192948-ul9lh8.png",
+        "path": "/uploads/1759392192948-ul9lh8.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759392192948-ul9lh8.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 5,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: timeout of 30000ms exceeded"
+        },
+        "createdAt": "2025-10-02T08:03:12.965Z",
+        "updatedAt": "2025-10-02T08:03:43.183Z"
+      },
+      {
+        "id": "1759392271190",
+        "type": "tree",
+        "filename": "1759392271168-fxfqg5.png",
+        "path": "/uploads/1759392271168-fxfqg5.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759392271168-fxfqg5.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 3,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: timeout of 30000ms exceeded"
+        },
+        "createdAt": "2025-10-02T08:04:31.178Z",
+        "updatedAt": "2025-10-02T08:05:01.393Z"
+      },
+      {
+        "id": "1759392332960",
+        "type": "person",
+        "filename": "1759392332942-ycdprq.png",
+        "path": "/uploads/1759392332942-ycdprq.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759392332942-ycdprq.png",
+        "erase_count": 1,
+        "reset_count": 0,
+        "duration": 9,
+        "status": "error",
+        "result": {
+          "error": "YOLO request failed: connect ECONNREFUSED 127.0.0.1:8000"
+        },
+        "createdAt": "2025-10-02T08:05:32.950Z",
+        "updatedAt": "2025-10-02T08:05:33.107Z"
+      },
+      {
+        "id": "1759392485070",
+        "type": "person",
+        "filename": "1759392485050-q0pxk8.png",
+        "path": "/uploads/1759392485050-q0pxk8.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759392485050-q0pxk8.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 152,
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "목",
+                "confidence": 0.9422726631164551,
+                "x": 440,
+                "y": 727,
+                "w": 104,
+                "h": 75
+              },
+              {
+                "label": "남자구두",
+                "confidence": 0.6941198706626892,
+                "x": 247,
+                "y": 771,
+                "w": 451,
+                "h": 482
+              },
+              {
+                "label": "사람전체",
+                "confidence": 0.6880879402160645,
+                "x": 91,
+                "y": 297,
+                "w": 742,
+                "h": 1025
+              },
+              {
+                "label": "머리",
+                "confidence": 0.6694422960281372,
+                "x": 239,
+                "y": 297,
+                "w": 480,
+                "h": 452
+              },
+              {
+                "label": "상체",
+                "confidence": 0.3706285059452057,
+                "x": 263,
+                "y": 775,
+                "w": 434,
+                "h": 479
+              }
+            ],
+            "bbox_url": "/uploads/yolo_bbox/person/20251002_170810_bbox.jpg"
+          },
+          "analysis": {
+            "step": 2,
+            "drawingType": "person",
+            "analysis": [
+              {
+                "label": "목",
+                "areaRatio": 0.0048,
+                "position": "middle-center",
+                "w": 104,
+                "h": 75,
+                "cx": 492,
+                "cy": 764.5,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "남자구두",
+                "areaRatio": 0.1327,
+                "position": "bottom-center",
+                "w": 451,
+                "h": 482,
+                "cx": 472.5,
+                "cy": 1012,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "사람전체",
+                "areaRatio": 0.4642,
+                "position": "middle-center",
+                "w": 742,
+                "h": 1025,
+                "cx": 462,
+                "cy": 809.5,
+                "meaning": "- 사람 전체의 크기로는 특별한 해석이 없습니다."
+              },
+              {
+                "label": "머리",
+                "areaRatio": 0.1324,
+                "position": "middle-center",
+                "w": 480,
+                "h": 452,
+                "cx": 479,
+                "cy": 523,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "상체",
+                "areaRatio": 0.1269,
+                "position": "bottom-center",
+                "w": 434,
+                "h": 479,
+                "cx": 480,
+                "cy": 1014.5,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "얼굴 (미표현)",
+                "meaning": "얼굴의 표정이 생략되거나 희미하다면 대인관계의 갈등 등을 회피하고 사회적 관계로부터 물러서고자 하는 마음을 내포합니다."
+              },
+              {
+                "label": "눈 (미표현)",
+                "meaning": "눈을 그리지 않은 경우, 환시가 있거나 절시증의 경향에 죄의식을 가지고 있을 경우가 있습니다. 혹은 성에 대한 명확한 개념이 없을 수 있습니다."
+              },
+              {
+                "label": "코 (미표현)",
+                "meaning": "코를 그리지 않은 경우 성에 대해 무엇인가 갈등을 겪고 있으며, 남성일 경우 남성임을 거부하고 동성애의 경향이 있을 가능성을 보일 수 있습니다. 혹은 성에 대한 명확한 개념이 없을 수 있습니다."
+              },
+              {
+                "label": "입 (미표현)",
+                "meaning": "입이 그려지지 않은 경우 애정 욕구에 대한 강한 거부, 우울함, 사회와의 교류에 필요한 구순 활동에 갈등이 있는 것입니다. 혹은 천식 환자일 수 있습니다."
+              },
+              {
+                "label": "귀 (미표현)",
+                "meaning": "귀를 그리지 않는 경우 타인의 견해를 부인하는 성격일 수 있으나, 주요한 해석은 아닙니다."
+              },
+              {
+                "label": "머리카락 (미표현)",
+                "meaning": "머리카락이 없는 경우 유아기적 성욕에 대한 정신 분열의 표시일 수 있으며, 남성다움에 대한 보상적인 특징을 띄는 공상일 수 있습니다."
+              },
+              {
+                "label": "팔 (미표현)",
+                "meaning": "팔을 그리지 않은 경우 성적욕망에 대한 심한 죄의식, 우울증의 증후일 수 있습니다. 그러나 아동에게 있어서는 미성숙이 아닌 단지 팔이 없는 형태가 미적으로 좋게 보일 수 있기에 자세한 문답이 필요합니다."
+              },
+              {
+                "label": "손 (미표현)",
+                "meaning": "손을 그리지 않은 경우 정서장애의 가능성을 보일 수 있습니다. 공격성, 환경에 대한 무력감, 신경증을 의미하는 현실 거부적인 지표입니다."
+              },
+              {
+                "label": "다리 (미표현)",
+                "meaning": "다리를 그리지 않은 경우 압박과 의존에 대한 병적인 감정, 자율성의 결여를 의미합니다."
+              },
+              {
+                "label": "발 (미표현)",
+                "meaning": "발을 그리지 않은 경우 운동성과 자율성을 결여당한 상태, 도피하고자 하는 욕구를 나타냅니다."
+              },
+              {
+                "label": "운동화 (미표현)",
+                "meaning": "신발을 그리지 않은 경우 원시적이며 억압되지 않은 공격성과 성욕을 의미하는 것입니다."
+              },
+              {
+                "label": "지우기 사용",
+                "meaning": "지우기 없이 완성 → 안정적이고 자신감 있는 태도."
+              },
+              {
+                "label": "리셋 사용",
+                "meaning": "리셋 없이 진행 → 계획성과 자기 확신."
+              }
+            ],
+            "extraQuestion": "그린 사람의 다리에는 발이 있나요? 발과 신발을 표현해 보세요."
+          },
+          "subtype": "person",
+          "bbox_url": "/uploads/yolo_bbox/person/20251002_170810_bbox.jpg",
+          "counselor_summary": "안수진님은 자신을 표현하는 방식에서 내면의 감정을 드러내는 경향이 있는 것으로 보입니다. 이러한 표현은 자신에 대한 인식이나 주변과의 관계에서 느끼는 감정의 복잡성을 반영할 수 있습니다. 그림 속 인물의 모습은 자신감과 함께 약간의 불안감을 내포하고 있는 듯하며, 이는 대인관계에서의 긴장감을 시사할 수 있습니다. 또한, 주변 환경과의 상호작용이 중요한 요소로 작용할 가능성이 있습니다. 이러한 점은 안수진님이 타인과의 관계에서 느끼는 감정의 깊이를 나타내는 것으로 해석될 수 있습니다. 전반적으로, 이러한 경향은 안수진님이 자신의 감정을 탐색하고 이해하려는 노력을 하고 있음을 보여주는 것일 수 있습니다."
+        },
+        "createdAt": "2025-10-02T08:08:05.059Z",
+        "updatedAt": "2025-10-02T08:08:18.107Z"
+      }
+    ]
+  },
+  {
+    "id": "1759392577159",
+    "name": "긴",
+    "gender": "남자",
+    "birth": "2024-04-04",
+    "password": "$2b$10$a58L58TcjDI9EN409VS5Te49UbzHyRpFAkfiRa87XMNb8cp5q20AW",
+    "first_gender": null,
+    "createdAt": "2025-10-02T08:09:37.159Z",
+    "drawings": [
+      {
+        "id": "1759392584701",
+        "type": "house",
+        "filename": "1759392584682-evxqw3.png",
+        "path": "/uploads/1759392584682-evxqw3.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759392584682-evxqw3.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 6,
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "house",
+            "objects": [
+              {
+                "label": "집벽",
+                "confidence": 0.9735288619995117,
+                "x": 554,
+                "y": 447,
+                "w": 583,
+                "h": 523
+              },
+              {
+                "label": "지붕",
+                "confidence": 0.9715914130210876,
+                "x": 372,
+                "y": 119,
+                "w": 787,
+                "h": 384
+              },
+              {
+                "label": "산",
+                "confidence": 0.8468672037124634,
+                "x": 376,
+                "y": 122,
+                "w": 785,
+                "h": 379
+              },
+              {
+                "label": "집전체",
+                "confidence": 0.34279412031173706,
+                "x": 271,
+                "y": 13,
+                "w": 924,
+                "h": 960
+              }
+            ],
+            "bbox_url": "/uploads/yolo_bbox/house/20251002_170953_bbox.jpg"
+          },
+          "analysis": {
+            "step": 2,
+            "drawingType": "house",
+            "analysis": [
+              {
+                "label": "집벽",
+                "areaRatio": 0.1861,
+                "position": "middle-right",
+                "w": 583,
+                "h": 523,
+                "cx": 845.5,
+                "cy": 708.5,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "지붕",
+                "areaRatio": 0.1845,
+                "position": "top-center",
+                "w": 787,
+                "h": 384,
+                "cx": 765.5,
+                "cy": 311,
+                "meaning": "- 지붕의 크기가 작은 경우 내적 인지과정이 활발하지 않으며 회피, 억제, 억압의 성향이 있음을 나타냅니다."
+              },
+              {
+                "label": "산",
+                "areaRatio": 0.1816,
+                "position": "top-center",
+                "w": 785,
+                "h": 379,
+                "cx": 768.5,
+                "cy": 311.5,
+                "meaning": "- 어머니의 보호에 대한 욕구와 안전에 대한 갈망이 반영되어 있습니다."
+              },
+              {
+                "label": "집전체",
+                "areaRatio": 0.5414,
+                "position": "middle-center",
+                "w": 924,
+                "h": 960,
+                "cx": 733,
+                "cy": 493,
+                "meaning": "- 보통 크기의 그림은 평균적이고 안정된 자아 구조를 반영할 수 있습니다."
+              },
+              {
+                "label": "문 (미표현)",
+                "meaning": "문이 그려지지 않은 경우 가정환경에서 타인과 접촉하지 않으려는 감정, 외계와의 교류를 원치 않는 냉정함을 뜻합니다."
+              },
+              {
+                "label": "창문 (미표현)",
+                "meaning": "창문이 그려지지 않은 경우 폐쇄적 사고와 정신적인 분열이 의심될 수 있습니다. 주의깊은 관찰이 필요합니다. "
+              },
+              {
+                "label": "지우기 사용",
+                "meaning": "지우기 없이 완성 → 안정적이고 자신감 있는 태도."
+              },
+              {
+                "label": "리셋 사용",
+                "meaning": "리셋 없이 진행 → 계획성과 자기 확신."
+              }
+            ],
+            "extraQuestion": "집 근처에 새로운 울타리를 표현해 보세요. 꽃, 나무, 돌 모두 상관 없어요!"
+          },
+          "subtype": "house",
+          "bbox_url": "/uploads/yolo_bbox/house/20251002_170953_bbox.jpg",
+          "counselor_summary": "긴님은 자신이 속한 환경에 대한 깊은 관심과 애정을 표현하는 경향이 있는 것으로 보입니다. 그림에서 나타나는 요소들은 안정감과 편안함을 추구하는 마음을 반영하고 있는 듯합니다. 이러한 모습은 긴님이 일상에서 느끼는 안전한 공간에 대한 갈망을 시사할 수 있습니다. 또한, 그림의 구성은 긴님이 소중히 여기는 관계와 연결된 감정을 나타내는 것으로 해석될 수 있습니다. 전반적으로, 긴님은 자신이 원하는 환경을 통해 내면의 평화를 찾고자 하는 가능성이 엿보입니다. 이러한 경향은 긴님이 주변과의 조화로운 관계를 중시하는 성향과 관련이 있을 수 있습니다."
+        },
+        "createdAt": "2025-10-02T08:09:44.696Z",
+        "updatedAt": "2025-10-02T08:09:59.840Z"
+      },
+      {
+        "id": "1759392589878",
+        "type": "tree",
+        "filename": "1759392589853-8tgvf8.png",
+        "path": "/uploads/1759392589853-8tgvf8.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759392589853-8tgvf8.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 3,
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "tree",
+            "objects": [],
+            "bbox_url": "/uploads/yolo_bbox/tree/20251002_171006_bbox.jpg"
+          },
+          "analysis": {
+            "step": 2,
+            "drawingType": "tree",
+            "analysis": [
+              {
+                "label": "기둥 (미표현)",
+                "meaning": "기둥이 없는 경우 자아가 매우 약화되었거나 와해되어 정신 병리학적인 상태에 있을 가능성이 높습니다. 심한 자기 부적절감이나 지나친 억제, 회피를 의미합니다."
+              },
+              {
+                "label": "가지 (미표현)",
+                "meaning": "가지가 없는 경우, 세상과의 상호작용이 매우 억제되고 위축되어 있음을 의미할 수 있습니다. 환경에서의 불만족이나 타인과의 관계에서 있는 어려움이 있을 수 있습니다."
+              },
+              {
+                "label": "뿌리 (미표현)",
+                "meaning": "나무의 기둥에 뿌리가 없는 경우 불안정한 삶을 살고 있다고 느끼며, 무언가 잘못되었다고 생각하는 경향이 있습니다."
+              },
+              {
+                "label": "나뭇잎 (미표현)",
+                "meaning": "나뭇잎이 없는 나무의 경우 활력감의 상실을 나타낼 수 있습니다."
+              },
+              {
+                "label": "지우기 사용",
+                "meaning": "지우기 없이 완성 → 안정적이고 자신감 있는 태도."
+              },
+              {
+                "label": "리셋 사용",
+                "meaning": "리셋 없이 진행 → 계획성과 자기 확신."
+              }
+            ],
+            "extraQuestion": "나무에서 자라고 있을 열매를 그려주세요. 열매의 모양과 종류는 상관 없어요!"
+          },
+          "subtype": "tree",
+          "bbox_url": "/uploads/yolo_bbox/tree/20251002_171006_bbox.jpg"
+        },
+        "createdAt": "2025-10-02T08:09:49.859Z",
+        "updatedAt": "2025-10-02T08:10:06.673Z"
+      },
+      {
+        "id": "1759392593634",
+        "type": "person",
+        "filename": "1759392593601-ji9xd8.png",
+        "path": "/uploads/1759392593601-ji9xd8.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759392593601-ji9xd8.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 3,
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "운동화",
+                "confidence": 0.9783544540405273,
+                "x": 0,
+                "y": 110,
+                "w": 522,
+                "h": 598
+              }
+            ],
+            "bbox_url": "/uploads/yolo_bbox/person/20251002_171008_bbox.jpg"
+          },
+          "analysis": {
+            "step": 2,
+            "drawingType": "person",
+            "analysis": [
+              {
+                "label": "운동화",
+                "areaRatio": 0.1905,
+                "position": "top-left",
+                "w": 522,
+                "h": 598,
+                "cx": 261,
+                "cy": 409,
+                "meaning": "- 보통의 신발은 특별한 해석이 없습니다. 그러나 아주 커다란 신발은 안정에 대한 욕구를 보이는 것입니다."
+              },
+              {
+                "label": "머리 (미표현)",
+                "meaning": "머리를 그리지 않은 경우 신경증, 우울증, 자폐적 경향이 있는 사람의 경우가 많습니다."
+              },
+              {
+                "label": "얼굴 (미표현)",
+                "meaning": "얼굴의 표정이 생략되거나 희미하다면 대인관계의 갈등 등을 회피하고 사회적 관계로부터 물러서고자 하는 마음을 내포합니다."
+              },
+              {
+                "label": "눈 (미표현)",
+                "meaning": "눈을 그리지 않은 경우, 환시가 있거나 절시증의 경향에 죄의식을 가지고 있을 경우가 있습니다. 혹은 성에 대한 명확한 개념이 없을 수 있습니다."
+              },
+              {
+                "label": "코 (미표현)",
+                "meaning": "코를 그리지 않은 경우 성에 대해 무엇인가 갈등을 겪고 있으며, 남성일 경우 남성임을 거부하고 동성애의 경향이 있을 가능성을 보일 수 있습니다. 혹은 성에 대한 명확한 개념이 없을 수 있습니다."
+              },
+              {
+                "label": "입 (미표현)",
+                "meaning": "입이 그려지지 않은 경우 애정 욕구에 대한 강한 거부, 우울함, 사회와의 교류에 필요한 구순 활동에 갈등이 있는 것입니다. 혹은 천식 환자일 수 있습니다."
+              },
+              {
+                "label": "귀 (미표현)",
+                "meaning": "귀를 그리지 않는 경우 타인의 견해를 부인하는 성격일 수 있으나, 주요한 해석은 아닙니다."
+              },
+              {
+                "label": "머리카락 (미표현)",
+                "meaning": "머리카락이 없는 경우 유아기적 성욕에 대한 정신 분열의 표시일 수 있으며, 남성다움에 대한 보상적인 특징을 띄는 공상일 수 있습니다."
+              },
+              {
+                "label": "목 (미표현)",
+                "meaning": "목은 지적 영역과 충동영역을 연결하는 기관이므로 목을 생략한 그림은 미성숙한 정신상태와 관련이 있습니다. 그렇기에 아동의 그림에는 목이 없는 것이 많습니다."
+              },
+              {
+                "label": "상체 (미표현)",
+                "meaning": "상체 전체를 생략하는 경우 자신을 표현하는 것과 사회적 상호작용에 위축되어 있음을 시사합니다."
+              },
+              {
+                "label": "팔 (미표현)",
+                "meaning": "팔을 그리지 않은 경우 성적욕망에 대한 심한 죄의식, 우울증의 증후일 수 있습니다. 그러나 아동에게 있어서는 미성숙이 아닌 단지 팔이 없는 형태가 미적으로 좋게 보일 수 있기에 자세한 문답이 필요합니다."
+              },
+              {
+                "label": "손 (미표현)",
+                "meaning": "손을 그리지 않은 경우 정서장애의 가능성을 보일 수 있습니다. 공격성, 환경에 대한 무력감, 신경증을 의미하는 현실 거부적인 지표입니다."
+              },
+              {
+                "label": "다리 (미표현)",
+                "meaning": "다리를 그리지 않은 경우 압박과 의존에 대한 병적인 감정, 자율성의 결여를 의미합니다."
+              },
+              {
+                "label": "발 (미표현)",
+                "meaning": "발을 그리지 않은 경우 운동성과 자율성을 결여당한 상태, 도피하고자 하는 욕구를 나타냅니다."
+              },
+              {
+                "label": "지우기 사용",
+                "meaning": "지우기 없이 완성 → 안정적이고 자신감 있는 태도."
+              },
+              {
+                "label": "리셋 사용",
+                "meaning": "리셋 없이 진행 → 계획성과 자기 확신."
+              }
+            ],
+            "extraQuestion": "그린 사람의 얼굴에는 코가 있을까요? 코를 추가해 얼굴을 완성해 보세요."
+          },
+          "subtype": "person",
+          "bbox_url": "/uploads/yolo_bbox/person/20251002_171008_bbox.jpg",
+          "counselor_summary": "긴님은 자신의 내면 세계를 표현하는 데 있어 섬세한 감정을 드러내는 경향이 있는 것으로 보입니다. 그림 속 인물의 모습은 자신감과 동시에 약간의 불안감을 내포하고 있는 듯합니다. 이는 대인 관계에서의 복잡한 감정을 반영할 가능성이 있습니다. 또한, 주변 환경과의 관계를 통해 자신의 정체성을 탐색하려는 모습이 엿보입니다. 이러한 요소들은 긴님이 타인과의 연결을 중시하면서도, 내면의 갈등을 겪고 있을 수 있음을 시사합니다. 전반적으로 긴님은 자신의 감정을 솔직하게 표현하려는 의지를 보이며, 이는 긍정적인 자기 탐색의 과정으로 해석될 수 있습니다."
+        },
+        "createdAt": "2025-10-02T08:09:53.610Z",
+        "updatedAt": "2025-10-02T08:10:14.351Z"
+      }
+    ]
+  },
+  {
+    "id": "1759393064345",
+    "name": "가나딩",
+    "gender": "여자",
+    "birth": "2021-09-04",
+    "password": "$2b$10$ArWPYO94RO2DdGK6Sch0qOixNwZ0.1dtPfvYwW82lwMP5fjHKYZOC",
+    "first_gender": null,
+    "createdAt": "2025-10-02T08:17:44.345Z",
+    "drawings": [
+      {
+        "id": "1759393075509",
+        "type": "house",
+        "filename": "1759393075496-3d13nn.png",
+        "path": "/uploads/1759393075496-3d13nn.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759393075496-3d13nn.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 10,
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "house",
+            "objects": [
+              {
+                "label": "집전체",
+                "confidence": 0.9853072762489319,
+                "x": 406,
+                "y": 145,
+                "w": 772,
+                "h": 691
+              },
+              {
+                "label": "지붕",
+                "confidence": 0.9800987243652344,
+                "x": 407,
+                "y": 142,
+                "w": 773,
+                "h": 301
+              },
+              {
+                "label": "집벽",
+                "confidence": 0.9699722528457642,
+                "x": 568,
+                "y": 415,
+                "w": 550,
+                "h": 409
+              },
+              {
+                "label": "창문",
+                "confidence": 0.9611650705337524,
+                "x": 776,
+                "y": 477,
+                "w": 153,
+                "h": 181
+              }
+            ],
+            "bbox_url": "/uploads/yolo_bbox/house/20251002_171803_bbox.jpg"
+          },
+          "analysis": {
+            "step": 2,
+            "drawingType": "house",
+            "analysis": [
+              {
+                "label": "집전체",
+                "areaRatio": 0.3256,
+                "position": "middle-center",
+                "w": 772,
+                "h": 691,
+                "cx": 792,
+                "cy": 490.5,
+                "meaning": "- 보통 크기의 그림은 평균적이고 안정된 자아 구조를 반영할 수 있습니다."
+              },
+              {
+                "label": "지붕",
+                "areaRatio": 0.142,
+                "position": "top-center",
+                "w": 773,
+                "h": 301,
+                "cx": 793.5,
+                "cy": 292.5,
+                "meaning": "- 지붕의 크기가 작은 경우 내적 인지과정이 활발하지 않으며 회피, 억제, 억압의 성향이 있음을 나타냅니다."
+              },
+              {
+                "label": "집벽",
+                "areaRatio": 0.1373,
+                "position": "middle-center",
+                "w": 550,
+                "h": 409,
+                "cx": 843,
+                "cy": 619.5,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "창문",
+                "areaRatio": 0.0169,
+                "position": "middle-right",
+                "w": 153,
+                "h": 181,
+                "cx": 852.5,
+                "cy": 567.5,
+                "meaning": "- 창문의 크기가 작은 경우 외부 세계에 대한 심리적인 거리감과 수줍음을 나타냅니다."
+              },
+              {
+                "label": "문 (미표현)",
+                "meaning": "문이 그려지지 않은 경우 가정환경에서 타인과 접촉하지 않으려는 감정, 외계와의 교류를 원치 않는 냉정함을 뜻합니다."
+              },
+              {
+                "label": "지우기 사용",
+                "meaning": "지우기 없이 완성 → 안정적이고 자신감 있는 태도."
+              },
+              {
+                "label": "리셋 사용",
+                "meaning": "리셋 없이 진행 → 계획성과 자기 확신."
+              }
+            ],
+            "extraQuestion": "집 근처에 새로운 울타리를 표현해 보세요. 꽃, 나무, 돌 모두 상관 없어요!"
+          },
+          "subtype": "house",
+          "bbox_url": "/uploads/yolo_bbox/house/20251002_171803_bbox.jpg",
+          "counselor_summary": "가나딩님은 자신만의 공간에 대한 깊은 생각과 감정을 표현하신 것으로 보입니다. 그림에서 나타나는 요소들은 안정감과 편안함을 추구하는 경향을 시사합니다. 이러한 표현은 가나딩님이 주변 환경과의 관계를 중요시하며, 소속감과 안전함을 느끼고자 하는 마음을 반영할 수 있습니다. 또한, 세부적인 부분에서 나타나는 선택들은 개인의 가치관이나 우선순위에 대한 통찰을 제공할 가능성이 있습니다. 전반적으로, 가나딩님은 내면의 세계를 탐색하며, 자신이 원하는 삶의 방식에 대한 고민을 하고 계신 듯합니다. 이러한 과정은 자기 이해를 심화시키고, 앞으로의 방향성을 설정하는 데 도움이 될 수 있습니다."
+        },
+        "createdAt": "2025-10-02T08:17:55.502Z",
+        "updatedAt": "2025-10-02T08:18:09.607Z"
+      },
+      {
+        "id": "1759393097011",
+        "type": "person",
+        "filename": "1759393096995-ut9wg1.png",
+        "path": "/uploads/1759393096995-ut9wg1.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759393096995-ut9wg1.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 12,
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "머리",
+                "confidence": 0.9662257432937622,
+                "x": 197,
+                "y": 226,
+                "w": 392,
+                "h": 466
+              },
+              {
+                "label": "얼굴",
+                "confidence": 0.9440418481826782,
+                "x": 197,
+                "y": 405,
+                "w": 391,
+                "h": 283
+              },
+              {
+                "label": "귀",
+                "confidence": 0.9303088188171387,
+                "x": 201,
+                "y": 470,
+                "w": 76,
+                "h": 113
+              },
+              {
+                "label": "코",
+                "confidence": 0.9023474454879761,
+                "x": 336,
+                "y": 454,
+                "w": 20,
+                "h": 77
+              },
+              {
+                "label": "눈",
+                "confidence": 0.8237999677658081,
+                "x": 408,
+                "y": 409,
+                "w": 17,
+                "h": 54
+              },
+              {
+                "label": "눈",
+                "confidence": 0.8012853264808655,
+                "x": 336,
+                "y": 453,
+                "w": 20,
+                "h": 77
+              },
+              {
+                "label": "사람전체",
+                "confidence": 0.7889531254768372,
+                "x": 10,
+                "y": 220,
+                "w": 709,
+                "h": 826
+              },
+              {
+                "label": "귀",
+                "confidence": 0.7687743306159973,
+                "x": 536,
+                "y": 413,
+                "w": 50,
+                "h": 101
+              },
+              {
+                "label": "입",
+                "confidence": 0.6267936825752258,
+                "x": 356,
+                "y": 524,
+                "w": 70,
+                "h": 66
+              },
+              {
+                "label": "코",
+                "confidence": 0.5863997936248779,
+                "x": 355,
+                "y": 524,
+                "w": 71,
+                "h": 65
+              },
+              {
+                "label": "입",
+                "confidence": 0.40328773856163025,
+                "x": 197,
+                "y": 404,
+                "w": 392,
+                "h": 284
+              },
+              {
+                "label": "코",
+                "confidence": 0.37303590774536133,
+                "x": 408,
+                "y": 409,
+                "w": 17,
+                "h": 55
+              },
+              {
+                "label": "얼굴",
+                "confidence": 0.29069599509239197,
+                "x": 358,
+                "y": 524,
+                "w": 70,
+                "h": 69
+              }
+            ],
+            "bbox_url": "/uploads/yolo_bbox/person/20251002_171822_bbox.jpg"
+          },
+          "analysis": {
+            "step": 1,
+            "drawingType": "person",
+            "analysis": [
+              {
+                "label": "머리",
+                "areaRatio": 0.1115,
+                "position": "middle-left",
+                "w": 392,
+                "h": 466,
+                "cx": 393,
+                "cy": 459,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "얼굴",
+                "areaRatio": 0.0675,
+                "position": "middle-left",
+                "w": 391,
+                "h": 283,
+                "cx": 392.5,
+                "cy": 546.5,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "귀",
+                "areaRatio": 0.0052,
+                "position": "middle-left",
+                "w": 76,
+                "h": 113,
+                "cx": 239,
+                "cy": 526.5,
+                "meaning": "- 보통 크기의 평범한 귀를 그린 경우 특별한 해석은 없습니다. 귀를 세밀하게 묘사하는 경우 지나친 민감함을, 비대칭하게 그리는 경우 외부의 위험에 대한 관심을 뜻합니다. 특히 귀를 강조한다면 귀에 대한 과민성, 청각장애, 신경증을 의심해보아야 합니다."
+              },
+              {
+                "label": "코",
+                "areaRatio": 0.0009,
+                "position": "middle-left",
+                "w": 20,
+                "h": 77,
+                "cx": 346,
+                "cy": 492.5,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "눈",
+                "areaRatio": 0.0006,
+                "position": "middle-left",
+                "w": 17,
+                "h": 54,
+                "cx": 416.5,
+                "cy": 436,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "사람전체",
+                "areaRatio": 0.3574,
+                "position": "middle-left",
+                "w": 709,
+                "h": 826,
+                "cx": 364.5,
+                "cy": 633,
+                "meaning": "- 사람 전체의 크기로는 특별한 해석이 없습니다."
+              },
+              {
+                "label": "입",
+                "areaRatio": 0.0028,
+                "position": "middle-left",
+                "w": 70,
+                "h": 66,
+                "cx": 391,
+                "cy": 557,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "머리카락 (미표현)",
+                "meaning": "머리카락이 없는 경우 유아기적 성욕에 대한 정신 분열의 표시일 수 있으며, 남성다움에 대한 보상적인 특징을 띄는 공상일 수 있습니다."
+              },
+              {
+                "label": "목 (미표현)",
+                "meaning": "목은 지적 영역과 충동영역을 연결하는 기관이므로 목을 생략한 그림은 미성숙한 정신상태와 관련이 있습니다. 그렇기에 아동의 그림에는 목이 없는 것이 많습니다."
+              },
+              {
+                "label": "상체 (미표현)",
+                "meaning": "상체 전체를 생략하는 경우 자신을 표현하는 것과 사회적 상호작용에 위축되어 있음을 시사합니다."
+              },
+              {
+                "label": "팔 (미표현)",
+                "meaning": "팔을 그리지 않은 경우 성적욕망에 대한 심한 죄의식, 우울증의 증후일 수 있습니다. 그러나 아동에게 있어서는 미성숙이 아닌 단지 팔이 없는 형태가 미적으로 좋게 보일 수 있기에 자세한 문답이 필요합니다."
+              },
+              {
+                "label": "손 (미표현)",
+                "meaning": "손을 그리지 않은 경우 정서장애의 가능성을 보일 수 있습니다. 공격성, 환경에 대한 무력감, 신경증을 의미하는 현실 거부적인 지표입니다."
+              },
+              {
+                "label": "다리 (미표현)",
+                "meaning": "다리를 그리지 않은 경우 압박과 의존에 대한 병적인 감정, 자율성의 결여를 의미합니다."
+              },
+              {
+                "label": "발 (미표현)",
+                "meaning": "발을 그리지 않은 경우 운동성과 자율성을 결여당한 상태, 도피하고자 하는 욕구를 나타냅니다."
+              },
+              {
+                "label": "운동화 (미표현)",
+                "meaning": "신발을 그리지 않은 경우 원시적이며 억압되지 않은 공격성과 성욕을 의미하는 것입니다."
+              },
+              {
+                "label": "지우기 사용",
+                "meaning": "지우기 없이 완성 → 안정적이고 자신감 있는 태도."
+              },
+              {
+                "label": "리셋 사용",
+                "meaning": "리셋 없이 진행 → 계획성과 자기 확신."
+              }
+            ]
+          },
+          "subtype": "person",
+          "bbox_url": "/uploads/yolo_bbox/person/20251002_171822_bbox.jpg",
+          "counselor_summary": "가나딩님은 자신의 내면 세계를 표현하는 데 있어 섬세한 감정을 드러내는 경향이 있습니다. 그림에서 나타나는 요소들은 그가 주변과의 관계를 어떻게 인식하고 있는지를 시사하는 듯합니다. 또한, 자신을 둘러싼 환경에 대한 반응이 복합적으로 나타나며, 이는 대인 관계에서의 복잡한 감정을 반영할 수 있습니다. 이러한 표현은 가나딩님이 자신의 정체성을 탐색하고 있음을 암시하는 것으로 보입니다. 전반적으로, 그의 그림은 내적 갈등과 동시에 외부 세계와의 연결을 모색하는 과정을 보여주는 듯합니다. 이를 통해 그는 자신을 이해하고자 하는 깊은 욕구를 가지고 있을 가능성이 있습니다."
+        },
+        "createdAt": "2025-10-02T08:18:17.006Z",
+        "updatedAt": "2025-10-02T08:18:27.744Z"
+      },
+      {
+        "id": "1759393108669",
+        "type": "person",
+        "filename": "1759393108628-brozp8.png",
+        "path": "/uploads/1759393108628-brozp8.png",
+        "absPath": "C:\\Users\\82103\\Desktop\\Blender_2025DigitalProject1\\backend\\uploads\\1759393108628-brozp8.png",
+        "erase_count": 0,
+        "reset_count": 0,
+        "duration": 11,
+        "status": "done",
+        "result": {
+          "yolo": {
+            "type": "person",
+            "objects": [
+              {
+                "label": "머리",
+                "confidence": 0.9731634259223938,
+                "x": 121,
+                "y": 112,
+                "w": 368,
+                "h": 324
+              },
+              {
+                "label": "얼굴",
+                "confidence": 0.9700568914413452,
+                "x": 122,
+                "y": 219,
+                "w": 370,
+                "h": 217
+              },
+              {
+                "label": "귀",
+                "confidence": 0.9551523923873901,
+                "x": 433,
+                "y": 231,
+                "w": 53,
+                "h": 96
+              },
+              {
+                "label": "귀",
+                "confidence": 0.9437991380691528,
+                "x": 124,
+                "y": 228,
+                "w": 99,
+                "h": 108
+              },
+              {
+                "label": "입",
+                "confidence": 0.9411025643348694,
+                "x": 273,
+                "y": 290,
+                "w": 135,
+                "h": 57
+              },
+              {
+                "label": "사람전체",
+                "confidence": 0.9334665536880493,
+                "x": 126,
+                "y": 111,
+                "w": 490,
+                "h": 817
+              },
+              {
+                "label": "팔",
+                "confidence": 0.8538501858711243,
+                "x": 484,
+                "y": 390,
+                "w": 126,
+                "h": 117
+              },
+              {
+                "label": "눈",
+                "confidence": 0.8299593329429626,
+                "x": 311,
+                "y": 243,
+                "w": 16,
+                "h": 47
+              },
+              {
+                "label": "눈",
+                "confidence": 0.7092089056968689,
+                "x": 354,
+                "y": 242,
+                "w": 11,
+                "h": 25
+              },
+              {
+                "label": "코",
+                "confidence": 0.6578348875045776,
+                "x": 311,
+                "y": 243,
+                "w": 16,
+                "h": 47
+              },
+              {
+                "label": "팔",
+                "confidence": 0.6491211652755737,
+                "x": 155,
+                "y": 419,
+                "w": 142,
+                "h": 118
+              },
+              {
+                "label": "남자구두",
+                "confidence": 0.6223965287208557,
+                "x": 368,
+                "y": 551,
+                "w": 149,
+                "h": 377
+              },
+              {
+                "label": "머리카락",
+                "confidence": 0.27664050459861755,
+                "x": 212,
+                "y": 116,
+                "w": 231,
+                "h": 121
+              }
+            ],
+            "bbox_url": "/uploads/yolo_bbox/person/20251002_171833_bbox.jpg"
+          },
+          "analysis": {
+            "step": 1,
+            "drawingType": "person",
+            "analysis": [
+              {
+                "label": "머리",
+                "areaRatio": 0.0728,
+                "position": "top-left",
+                "w": 368,
+                "h": 324,
+                "cx": 305,
+                "cy": 274,
+                "meaning": "- 머리를 몸체보다 과도히 작게 그리는 경우 강박증 환자이거나 죄악감의 원천을 부정하려는 경우, 지적인 무력감이 있는 것입니다."
+              },
+              {
+                "label": "얼굴",
+                "areaRatio": 0.049,
+                "position": "top-left",
+                "w": 370,
+                "h": 217,
+                "cx": 307,
+                "cy": 327.5,
+                "meaning": "- 아주 작은 얼굴의 경우 매우 약한 자아의 강도를 나타냅니다. 이때 표정이 생략되거나 희미하다면 대인관계의 갈등 등을 회피하고 사회적 관계로부터 물러서고자 하는 마음을 내포합니다."
+              },
+              {
+                "label": "귀",
+                "areaRatio": 0.0031,
+                "position": "top-center",
+                "w": 53,
+                "h": 96,
+                "cx": 459.5,
+                "cy": 279,
+                "meaning": "- 보통 크기의 평범한 귀를 그린 경우 특별한 해석은 없습니다. 귀를 세밀하게 묘사하는 경우 지나친 민감함을, 비대칭하게 그리는 경우 외부의 위험에 대한 관심을 뜻합니다. 특히 귀를 강조한다면 귀에 대한 과민성, 청각장애, 신경증을 의심해보아야 합니다."
+              },
+              {
+                "label": "입",
+                "areaRatio": 0.0047,
+                "position": "top-left",
+                "w": 135,
+                "h": 57,
+                "cx": 340.5,
+                "cy": 318.5,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "사람전체",
+                "areaRatio": 0.2443,
+                "position": "middle-left",
+                "w": 490,
+                "h": 817,
+                "cx": 371,
+                "cy": 519.5,
+                "meaning": "- 사람 전체의 크기로는 특별한 해석이 없습니다."
+              },
+              {
+                "label": "팔",
+                "areaRatio": 0.009,
+                "position": "middle-center",
+                "w": 126,
+                "h": 117,
+                "cx": 547,
+                "cy": 448.5,
+                "meaning": "- 지나치게 짧은 팔은 삶에 대한 무력감, 긴 팔은 부정당한 경험을 보상하기 위한 야망으로 볼 수 있습니다. 그러나 무릎을 넘어갈 정도로 긴 팔은 공격적인 성향을 보이는 것입니다. 넓게 벌린 팔은 안정에 대한 강한 욕구를, 몸에 딱 붙인 팔은 수동적이며 방어적인 태도를 의미합니다."
+              },
+              {
+                "label": "눈",
+                "areaRatio": 0.0005,
+                "position": "top-left",
+                "w": 16,
+                "h": 47,
+                "cx": 319,
+                "cy": 266.5,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "코",
+                "areaRatio": 0.0005,
+                "position": "top-left",
+                "w": 16,
+                "h": 47,
+                "cx": 319,
+                "cy": 266.5,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "남자구두",
+                "areaRatio": 0.0343,
+                "position": "middle-center",
+                "w": 149,
+                "h": 377,
+                "cx": 442.5,
+                "cy": 739.5,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "머리카락",
+                "areaRatio": 0.0171,
+                "position": "top-left",
+                "w": 231,
+                "h": 121,
+                "cx": 327.5,
+                "cy": 176.5,
+                "meaning": "해석 기준 없음"
+              },
+              {
+                "label": "목 (미표현)",
+                "meaning": "목은 지적 영역과 충동영역을 연결하는 기관이므로 목을 생략한 그림은 미성숙한 정신상태와 관련이 있습니다. 그렇기에 아동의 그림에는 목이 없는 것이 많습니다."
+              },
+              {
+                "label": "상체 (미표현)",
+                "meaning": "상체 전체를 생략하는 경우 자신을 표현하는 것과 사회적 상호작용에 위축되어 있음을 시사합니다."
+              },
+              {
+                "label": "손 (미표현)",
+                "meaning": "손을 그리지 않은 경우 정서장애의 가능성을 보일 수 있습니다. 공격성, 환경에 대한 무력감, 신경증을 의미하는 현실 거부적인 지표입니다."
+              },
+              {
+                "label": "다리 (미표현)",
+                "meaning": "다리를 그리지 않은 경우 압박과 의존에 대한 병적인 감정, 자율성의 결여를 의미합니다."
+              },
+              {
+                "label": "발 (미표현)",
+                "meaning": "발을 그리지 않은 경우 운동성과 자율성을 결여당한 상태, 도피하고자 하는 욕구를 나타냅니다."
+              },
+              {
+                "label": "운동화 (미표현)",
+                "meaning": "신발을 그리지 않은 경우 원시적이며 억압되지 않은 공격성과 성욕을 의미하는 것입니다."
+              },
+              {
+                "label": "지우기 사용",
+                "meaning": "지우기 없이 완성 → 안정적이고 자신감 있는 태도."
+              },
+              {
+                "label": "리셋 사용",
+                "meaning": "리셋 없이 진행 → 계획성과 자기 확신."
+              }
+            ]
+          },
+          "subtype": "person",
+          "bbox_url": "/uploads/yolo_bbox/person/20251002_171833_bbox.jpg",
+          "counselor_summary": "가나딩님은 자신을 표현하는 방식에서 내면의 감정을 드러내고 있는 것으로 보입니다. 그림의 구성 요소들은 개인의 정체성과 관계에 대한 탐색을 시사하는 듯합니다. 이러한 표현은 가나딩님이 주변과의 연결을 중요시하며, 그 속에서 자신을 찾고자 하는 욕구가 반영된 것으로 해석될 수 있습니다. 또한, 그림의 분위기와 색감은 안정감과 편안함을 추구하는 경향을 나타내는 것일 수 있습니다. 전반적으로, 가나딩님은 자신과 타인 간의 관계를 깊이 있게 고민하고 있는 듯하며, 이를 통해 자신을 이해하고자 하는 노력이 엿보입니다. 이러한 요소들은 가나딩님의 심리적 상태와 감정적 요구를 이해하는 데 중요한 단서를 제공할 수 있습니다."
+        },
+        "createdAt": "2025-10-02T08:18:28.648Z",
+        "updatedAt": "2025-10-02T08:18:38.216Z"
       }
     ]
   }

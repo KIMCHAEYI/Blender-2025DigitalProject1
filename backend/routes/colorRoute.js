@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const { analyzeColors } = require("../logic/colorAnalyzer");
+const { refineColorAnalysis } = require("../logic/gptPrompt");
 
 const router = express.Router();
 const DB_FILE = path.join(__dirname, "../models/db.json");
@@ -27,9 +28,13 @@ router.post("/", async (req, res) => {
   const imagePath = path.join(__dirname, "../uploads", file);
 
   try {
+    // 1) 색채 분석
     const result = await analyzeColors(imagePath);
 
-    // DB 반영
+    // 2) GPT로 다듬기
+    const refined = await refineColorAnalysis(result.analysis);
+
+    // 3) DB 반영
     const db = readDB();
     const session = db.find((s) => s.id === session_id);
     if (session) {
@@ -37,14 +42,21 @@ router.post("/", async (req, res) => {
       if (drawing) {
         drawing.result = {
           ...drawing.result,
-          colorAnalysis: result // ✅ 별도 필드에 저장
+          colorAnalysis: {
+            ...result,      // step, colors, analysis (원본)
+            refined         // GPT 다듬은 버전
+          }
         };
         drawing.updatedAt = new Date().toISOString();
         writeDB(db);
       }
     }
 
-    res.json(result);
+    // 4) 응답 (그림별로 색채해석 따로 나감)
+    res.json({
+      ...result,
+      refined
+    });
   } catch (err) {
     console.error("❌ 색상 분석 실패:", err.message);
     res
@@ -52,5 +64,6 @@ router.post("/", async (req, res) => {
       .json({ error: "색상 분석 실패", detail: err.message });
   }
 });
+
 
 module.exports = router;
