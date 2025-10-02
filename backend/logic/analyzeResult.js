@@ -138,7 +138,7 @@ for (const r of rulesForType) {
   let extraQuestion = null;
 
   if (
-    (drawingType === "house" && detectedObjects.length <= 30) ||
+    (drawingType === "house" && detectedObjects.length <= 10) ||
     (drawingType === "tree" && detectedObjects.length <= 5) ||
     (drawingType === "person" && detectedObjects.length <= 5)
   ) {
@@ -188,16 +188,29 @@ for (const r of rulesForType) {
     }
   }
 
-return {
-  step,
-  drawingType,
-  analysis: [
+  // 중복 제거: label + meaning 기준
+  const combinedAnalyses = [
     ...objectAnalyses,
-    ...missingAnalyses,   // ← 추가됨
+    ...missingAnalyses,
     ...behaviorAnalyses,
-  ],
-  ...(extraQuestion && { extraQuestion }),
-};
+  ];
+  const uniqueAnalyses = [];
+  const seen = new Set();
+
+  for (const a of combinedAnalyses) {
+    const key = `${a.label}::${a.meaning}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      uniqueAnalyses.push(a);
+    }
+  }
+
+  return {
+    step,
+    drawingType,
+    analysis: uniqueAnalyses,
+    ...(extraQuestion && { extraQuestion }),
+  };
 }
 
 module.exports = { analyzeYOLOResult, interpretYOLOResult };

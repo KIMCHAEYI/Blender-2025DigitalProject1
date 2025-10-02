@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import "./HouseCanvas.css";
+import "../intro.css";
 
 export default function HouseIntro() {
   const navigate = useNavigate();

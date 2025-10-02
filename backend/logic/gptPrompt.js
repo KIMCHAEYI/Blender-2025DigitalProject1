@@ -162,13 +162,15 @@ async function interpretMultipleDrawings(drawings, opts = {}) {
 // return: { personalized_overall, strengths, cautions, per_drawing }
 async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
   const name = (opts.name || "").trim();
+  const firstGender = opts.first_gender || null;
+  const userGender = opts.gender || null;   // 🔹 사용자 성별 추가
 
   const perMap = {};
   for (const e of entries) {
     const t = e.type;
     if (t === "person_male") perMap.person_man = e.summary;
     else if (t === "person_female") perMap.person_woman = e.summary;
-    else perMap[t] = e.summary; // house, tree, person
+    else perMap[t] = e.summary;
   }
 
   const perList = Object.entries(perMap)
@@ -178,6 +180,18 @@ async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
   const nameRule = name
     ? `첫 문장은 반드시 "${name}님은 ..."으로 시작하라.`
     : "첫 문장은 내담자의 특성을 한 문장으로 요약하라.";
+
+  // 🔹 성별 선택 해석 규칙
+  let genderNote = "";
+  if (firstGender && userGender) {
+    if (firstGender === userGender) {
+      genderNote =
+        "먼저 그린 성별이 내담자 자신의 성별과 동일하므로, 자기 동일시가 자연스럽게 이루어지는 일반적인 양상을 반영한다.";
+    } else {
+      genderNote =
+        "먼저 그린 성별이 내담자의 성별과 달라, 성 역할 동일시에 갈등이 있거나, 현재 생활에서 특정 이성에 대해 큰 비중을 두고 있음을 시사한다. (긍정적이든 부정적이든 가능).";
+    }
+  }
 
   const { choices } = await openai.chat.completions.create({
     model: process.env.OPENAI_MODEL || "gpt-4o-mini",
@@ -196,27 +210,28 @@ async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
 
 요구 스키마:
 {
-  "personalized_overall": string,  // 8~12문장, ${nameRule}
-  "strengths": string[],           // 2~4개 (각 항목 끝에 간단한 근거 표현 가능: (일관성, 집중경향 등))
-  "cautions": string[],            // 2~4개 (가설 어조)
-  "per_drawing": {                 // 입력에 있는 항목만 포함
+  "personalized_overall": string,
+  "strengths": string[],
+  "cautions": string[],
+  "per_drawing": {
     "house"?: string,
     "tree"?: string,
     "person_man"?: string,
-    "person_woman"?: string,
-    "person"?: string
+    "person_woman"?: string
   }
 }
 
-[그림별 종합 요약]
-${perList || "(없음)"}
-
 주의:
 - 특정 객체/라벨/위치/수치와 연결짓는 표현 금지.
-- 중복을 합치고 자연스럽게 담아라.`,
+- 중복을 합치고 자연스럽게 담아라.
+- ${genderNote}
+
+[그림별 종합 요약]
+${perList || "(없음)"}`,
       },
     ],
   });
+
 
   const raw = choices?.[0]?.message?.content?.trim() || "{}";
   let parsed;

@@ -187,7 +187,7 @@ export default function CanvasTemplate({
       );
 
       const uploadRes = await axios.post(
-        "http://192.168.0.250:5000/api/drawings/upload",
+        "http://172.20.12.234:5000/api/drawings/upload",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

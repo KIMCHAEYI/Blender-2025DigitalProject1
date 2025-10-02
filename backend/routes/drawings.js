@@ -85,12 +85,13 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
 
   session.drawings.push({
     id: drawingId,
-    type, // person_male | person_female | house | tree
+    type,
     filename,
     path: relPath,
     absPath,
     erase_count: Number(eraseCount) || 0,
     reset_count: Number(resetCount) || 0,
+    duration: Number(duration) || 0,   // ← 추가
     status: "uploaded",
     result: null,
     createdAt: now,
@@ -181,6 +182,8 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
 
           const overall = await synthesizeOverallFromDrawingSummaries(entries, {
             name,
+            gender: sessionAfter.gender,       
+            first_gender: sessionAfter.first_gender,  
           });
 
           sessionAfter.summary_overall = overall;
@@ -188,8 +191,9 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
 
           // 콘솔 출력
           console.log(
-            "\n================= 🧠 전체 종합(상담자용) ================="
+            `\n================= 🧠 전체 종합(세션=${session_id}) =================`
           );
+
           console.log(overall.personalized_overall || "(없음)");
           if (overall.strengths?.length) {
             console.log("\n✅ Strengths");

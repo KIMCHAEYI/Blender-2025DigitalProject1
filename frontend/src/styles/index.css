@@ -1,4 +1,11 @@
-/* ---------- 기본 Reset 및 전역 스타일 ---------- */
+/* ---------- 폰트 등록 ---------- */
+
+@font-face {
+  font-family: "surround";
+  src: url("/fonts/Cafe24Ssurround-v2.0.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
 
 :root {
   font-family: "Pretendard", sans-serif;
@@ -14,8 +21,8 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: inherit;
-  background: linear-gradient(
+  font-family: "Pretendard", sans-serif; /* 기본 글씨체 Pretendard */
+  /* background: linear-gradient(
       to bottom,
       #ffffff 0%,
       #edf4ff 20%,
@@ -28,40 +35,49 @@ body {
       transparent 60%
     ),
     radial-gradient(circle at 30% 80%, rgba(139, 92, 246, 0.2), transparent 65%);
+  background-blend-mode: screen; */
+  background: radial-gradient(
+      circle at 30% 20%,
+      rgba(255, 182, 193, 0.35),
+      /* 연핑크 */ transparent 60%
+    ),
+    radial-gradient(
+      circle at 70% 80%,
+      rgba(173, 216, 230, 0.35),
+      /* 연하늘 */ transparent 65%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(186, 230, 253, 0.3),
+      /* 연파랑 */ transparent 70%
+    ),
+    linear-gradient(
+      to bottom,
+      #ffffff 0%,
+      #f3f6ff 40%,
+      #e0ecff 80%,
+      #d6e4ff 100%
+    );
   background-blend-mode: screen;
 }
 
-.question {
-  font-size: 48px;
+/* ---------- 텍스트 스타일 ---------- */
+
+/* 일반 본문 설명문 → Pretendard */
+body,
+p,
+span,
+li,
+.description {
+  font-family: "Pretendard", sans-serif;
+}
+
+h1,
+h2,
+h3,
+.question,
+.highlight,
+.rectangle-title {
+  font-family: "surround", "Pretendard", sans-serif;
   font-weight: 700;
-  margin-bottom: 39px;
-  text-align: center;
-}
-
-.highlight {
-  color: #3e70c7;
-  font-weight: bold;
-}
-
-.page-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-height: 100dvh;
-}
-
-.highlight {
-  color: #3e70c7;
-}
-
-@font-face {
-  font-family: "GowunDodum-Regular";
-  font-weight: normal;
-  src: url("./fonts/GowunDodum-Regular.ttf") format("truetype");
-}
-
-body {
-  font-family: "GowunDodum-Regular";
 }

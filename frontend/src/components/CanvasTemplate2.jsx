@@ -1,4 +1,4 @@
-// src/components/CanvasTemplate.jsx
+// src/components/CanvasTemplate2.jsx
 import React, { useRef, useState, useEffect } from "react";
 import { Stage, Layer, Line, Rect } from "react-konva";
 import { useNavigate } from "react-router-dom";
@@ -166,7 +166,7 @@ export default function CanvasTemplate({
 
       // ★ 업로드 엔드포인트(분석은 백엔드가 비동기 처리, ResultPage에서 폴링)
       const uploadRes = await axios.post(
-        "http://192.168.0.250:5000/api/drawings/upload",
+        "http://172.20.12.234:5000/api/drawings/upload",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
