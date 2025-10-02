@@ -4,6 +4,7 @@ import time, logging, os
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.concurrency import run_in_threadpool
+from backend.results_yolo.save_bbox import save_bbox_image # 수진
 import numpy as np
 import cv2
 import torch
@@ -93,8 +94,13 @@ async def analyze_drawing(drawing_type: str, image: UploadFile = File(...)):
 
     # 3) 추론(무겁기 때문에 스레드풀 사용)
     model = MODELS[drawing_type]
+    results = await run_in_threadpool(model, img) #수진
     objects = await run_in_threadpool(_infer_sync, model, img)
+    
+    # ✅ bbox 이미지 저장 추가
+    rendered = results.render()[0]   # YOLO가 그린 bbox 이미지 (numpy BGR)
+    bbox_url = save_bbox_image(rendered, category=drawing_type)
 
     # 로그: 총 처리 시간
     log.info(f"POST /analyze/{drawing_type} -> {len(objects)} objs in {time.time()-t0:.2f}s")
-    return {"type": drawing_type, "objects": objects}
+    return {"type": drawing_type, "objects": objects, "bbox_url": bbox_url}
