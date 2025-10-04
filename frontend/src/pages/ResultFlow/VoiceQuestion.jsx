@@ -16,9 +16,7 @@ export default function VoiceQuestion() {
 
   return (
     <div className="page-center landscape">
-      <h2 className="question">“이 집에 살고 있는 가족은 누구인가요?”</h2>
-      <img src="/assets/test_house.png" className="img-test" width={400} />
-      <div className="voice-bar">🔊</div>
+      <h2 className="question">“2단계”</h2>
       <button className="btn-base btn-next" onClick={handleNext}>
         완료
       </button>

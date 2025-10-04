@@ -1,15 +1,14 @@
+// src/pages/GenderSelect/GenderSelect.jsx
 import { useState } from "react";
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../../components/Button";
-import "./GenderSelect.css";
 import { useUserContext } from "../../contexts/UserContext";
-import StepIndicator from "../../components/StepIndicator";
+import PageLayout from "../../components/PageLayout"; // ✅ 공통 레이아웃
+import "./GenderSelect.css";
 
 export default function GenderSelect() {
   const [gender, setGender] = useState("");
   const navigate = useNavigate();
-  const { setUserData, userData } = useUserContext();
+  const { setUserData } = useUserContext();
 
   const canNext = !!gender;
 
@@ -21,17 +20,20 @@ export default function GenderSelect() {
     if (gender) {
       setUserData((prev) => ({
         ...prev,
-        gender: gender,
+        gender,
       }));
-
       navigate("/password");
     }
   };
 
   return (
-    <div className="page-center gender-page">
-      <StepIndicator current={3} total={5} variant="topline" />
-
+    <PageLayout
+      step={3}
+      total={5}
+      buttonLabel="선택했어요"
+      onNext={handleNext}
+      nextEnabled={canNext}
+    >
       <h2 className="question">
         <span className="highlight">성별</span>을 선택해 주세요
       </h2>
@@ -49,15 +51,6 @@ export default function GenderSelect() {
           </button>
         ))}
       </div>
-
-      <Button
-        type="primary"
-        className="btn-primary"
-        onClick={handleNext}
-        disabled={!canNext}
-      >
-        선택했어요
-      </Button>
-    </div>
+    </PageLayout>
   );
 }

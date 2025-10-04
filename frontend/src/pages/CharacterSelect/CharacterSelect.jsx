@@ -1,16 +1,16 @@
-import { useState } from "react";
-import React from "react";
+// src/pages/CharacterSelect/CharacterSelect.jsx
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PageLayout from "../../components/PageLayout";
 import "./CharacterSelect.css";
-import StepIndicator from "../../components/StepIndicator";
 
 export default function CharacterSelect() {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState("");
 
   const characters = [
-    { id: "cha1", name: "뽈록이", img: "/images/rabbit.png" },
-    { id: "cha2", name: "동글이", img: "/images/human.png" },
+    { id: "plook", name: "몽이", emoji: "🐻" },
+    { id: "doongle", name: "그리", emoji: "🐰" },
   ];
 
   const handleNext = () => {
@@ -19,39 +19,41 @@ export default function CharacterSelect() {
     }
   };
 
-  return (
-    <div className="page-center character-page">
-      <StepIndicator current={5} total={5} variant="topline" />
+  const canNext = !!selected;
 
+  const selectedChar = characters.find((ch) => ch.id === selected);
+
+  return (
+    <PageLayout
+      step={5}
+      total={5}
+      buttonLabel="선택했어요"
+      onNext={handleNext}
+      nextEnabled={canNext}
+    >
       <h2 className="question">
-        <span className="highlight">여정을 함께할 캐릭터</span>를 골라주세요
+        <span className="highlight">캐릭터</span>를 골라주세요
       </h2>
 
-      <div className="character-list">
-        {characters.map((char) => (
-          <div
-            key={char.id}
-            className={`character-item ${
-              selected === char.id ? "selected" : ""
-            }`}
-            onClick={() => setSelected(char.id)}
+      <div className="character-grid">
+        {characters.map((ch) => (
+          <button
+            key={ch.id}
+            className={`character-card ${selected === ch.id ? "selected" : ""}`}
+            onClick={() => setSelected(ch.id)}
           >
-            <img src={char.img} alt={char.name} />
-            <p>{char.name}</p>
-          </div>
+            <span className="character-emoji">{ch.emoji}</span>
+            <span className="character-name">{ch.name}</span>
+          </button>
         ))}
       </div>
 
-      <button
-        type="primary"
-        className="btn-base btn-primary"
-        onClick={handleNext}
-        disabled={!selected}
-      >
-        {selected
-          ? `${characters.find((c) => c.id === selected).name}와 함께 할래요`
-          : "선택해주세요"}
-      </button>
-    </div>
+      {/* ✅ 캐릭터 선택 후 메시지 */}
+      {selectedChar && (
+        <p className="character-message">
+          {selectedChar.name}가 함께 떠나요! {selectedChar.emoji}
+        </p>
+      )}
+    </PageLayout>
   );
 }

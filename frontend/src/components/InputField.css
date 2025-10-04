@@ -1,10 +1,11 @@
 /* src/components/InputField.css */
 
 .input-field {
-  height: 47px;
-  font-size: 16px;
-  border: 3px solid #42413f;
+  width: 220px;
+  height: 60px;
   border-radius: 10px;
+  font-size: 20px;
+  border: 3px solid #42413f;
   appearance: none;
   background-color: #fff;
   text-align: center;

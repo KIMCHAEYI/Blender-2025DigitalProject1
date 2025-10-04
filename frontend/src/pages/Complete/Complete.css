@@ -1,3 +1,13 @@
+.complete-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  gap: 20px;
+}
+
 .message {
   font-size: 48px;
   font-weight: bold;
@@ -13,8 +23,8 @@
 
 .button-finish {
   display: flex;
-  width: 271px;
-  height: 64px;
+  width: 270px;
+  height: 70px;
   padding: 12px 20px;
   justify-content: center;
   align-items: center;
@@ -26,7 +36,7 @@
 
 .button-finish {
   position: relative;
-  --cta-color: #5052bb; /* 링 색(원하는 브랜드 컬러로 변경) */
+  --cta-color: #5052bb;
   transition: transform 40ms ease, filter 160ms ease;
 }
 
@@ -36,7 +46,7 @@
 .cta-pulse::after {
   content: "";
   position: absolute;
-  inset: -6px; /* 버튼보다 약간 크게 */
+  inset: -6px;
   border-radius: inherit;
   box-shadow: 0 0 0 0 var(--cta-color);
   opacity: 0.55;
@@ -63,7 +73,6 @@
   }
 }
 
-/* 접근성: 모션 최소화 설정 존중 */
 @media (prefers-reduced-motion: reduce) {
   .cta-pulse,
   .cta-pulse::after {

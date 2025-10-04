@@ -1,154 +1,24 @@
-/* ------- tokens (원하면 컴포넌트 style prop으로 덮어쓰기) ------- */
-:global(:root) {
-}
-/* 기본값 */
-:where(.step, .head, .progress, .segments) {
-  --si-primary: #3b82f6; /* 바 색 */
-  --si-chip-bg: rgba(255, 255, 255, 0.65);
-  --si-chip-fg: #64748b;
-  --si-bar-width: 200px;
-  --si-bar-width-sm: 140px;
-  --si-bar-h: 8px;
-}
-
-/* ------- chip / plain ------- */
-.step {
-  display: inline-block;
-  margin: 0 auto 12px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--si-chip-fg);
-  text-align: center;
-}
-.chip {
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: var(--si-chip-bg);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-.plain {
-  background: none;
-  padding: 0;
-  border: 0;
-  box-shadow: none;
-}
-
-/* ------- bar ------- */
-.head {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin: 8px 0 16px;
-}
-
-.progress {
-  width: var(--si-bar-width);
-  height: var(--si-bar-h);
-  border-radius: 999px;
-  background: linear-gradient(#eef2f7, #e6ebf2);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08),
-    inset 0 0 0 1px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-}
-.progress > i {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    var(--si-primary),
-    color-mix(in oklab, var(--si-primary) 85%, #1f2937)
-  );
-  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.5);
-  transition: width 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.label {
-  font-size: 12px;
-  color: #6b7280;
-  min-width: 42px;
-  text-align: center;
-}
-
-/* ------- segmented (스텝형) ------- */
-.segments {
-  --segments: 5;
-  width: var(--si-bar-width);
-  display: grid;
-  grid-template-columns: repeat(var(--segments), 1fr);
-  gap: 6px;
-}
-.segment {
-  height: var(--si-bar-h);
-  border-radius: 999px;
-  background: #e5e7eb;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
-}
-.segmentOn {
-  background: var(--si-primary);
-  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.4);
-}
-/* 컨테이너 폭 안에서 가로선 */
-.lineWrap {
-  width: 100%;
-  max-width: 720px;
-  margin: 8px auto 18px;
-}
-.line {
-  height: 6px;
-  border-radius: 999px;
-  background: #e8edf5;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-}
-.line > i {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--si-primary, #3b82f6);
-  transition: width 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-/* 화면 최상단 풀-뷰포트 라인 (스토리/배너 느낌) */
-.topline {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: calc(env(safe-area-inset-top, 0px));
-  height: 4px;
-  background: #e8edf5;
-  z-index: 50;
-  overflow: hidden;
-}
-.topline > i {
-  display: block;
-  height: 100%;
-  background: var(--si-primary, #3b82f6);
-}
 /* === Kids stepper === */
 .kidsWrap {
-  --si-primary: #22c55e;
-  --si-node: 56px;
-  --si-gap: 12px;
-  --si-conn: 44px;
+  --si-primary: #5ea2c2;
+  --si-node: 64px;
+  --si-gap: 16px;
+  --si-conn: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin: 8px 0 18px;
+  gap: 12px;
+  margin: 16px 0 24px;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 .kids {
   display: flex;
   align-items: center;
   gap: var(--si-gap);
 }
-
 .kidDot {
   width: var(--si-node);
   height: var(--si-node);
@@ -156,10 +26,11 @@
   display: grid;
   place-items: center;
   background: #fff;
-  color: #334155;
+  color: #1f2937;
   font-weight: 800;
-  font-size: 18px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08), inset 0 0 0 2px #e5e7eb;
+  font-size: 20px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12), inset 0 0 0 2px #e5e7eb;
+  transition: all 0.25s ease;
 }
 .kidDotDone {
   background: radial-gradient(
@@ -168,47 +39,52 @@
     #fef3c7 45%,
     #fde68a 100%
   );
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
 }
 .kidDotActive {
-  outline: 4px solid color-mix(in oklab, var(--si-primary) 35%, transparent);
-  outline-offset: 3px;
-  animation: kid-bounce 0.9s ease-in-out infinite alternate;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1),
-    inset 0 0 0 2px color-mix(in oklab, var(--si-primary) 55%, #e5e7eb);
+  outline: 5px solid color-mix(in oklab, var(--si-primary) 40%, transparent);
+  outline-offset: 4px;
+  animation: kid-bounce 1s ease-in-out infinite alternate;
+  background: #dcf8fc;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12),
+    inset 0 0 0 2px color-mix(in oklab, var(--si-primary) 65%, #e5e7eb);
 }
 .kidEmoji {
-  font-size: 22px;
+  font-size: 26px;
   transform: translateY(-1px);
 }
-
 .connectorKids {
   width: var(--si-conn);
-  height: 8px;
+  height: 10px;
   border-radius: 999px;
   flex: 0 0 auto;
   background: #e2e8f0;
-  box-shadow: inset 0 0 0 2px #e5e7eb;
 }
 .connectorKidsDone {
-  background: linear-gradient(90deg, var(--si-primary), #a78bfa);
+  background: linear-gradient(90deg, var(--si-primary), #60a5fa);
   box-shadow: none;
 }
-
 @keyframes kid-bounce {
   from {
     transform: translateY(0);
   }
   to {
-    transform: translateY(-2px);
+    transform: translateY(-4px);
   }
 }
 
+/* 태블릿 최적화 */
 @media (max-width: 820px) {
   .kidsWrap {
-    --si-node: 52px;
-    --si-conn: 40px;
-    --si-gap: 10px;
+    --si-node: 60px;
+    --si-conn: 48px;
+    --si-gap: 14px;
+  }
+  .kidDot {
+    font-size: 18px;
+  }
+  .kidEmoji {
+    font-size: 24px;
   }
 }
 
@@ -217,15 +93,5 @@
   .line > i,
   .topline > i {
     transition: none;
-  }
-}
-
-@media (max-width: 600px) {
-  .progress,
-  .segments {
-    width: var(--si-bar-width-sm);
-  }
-  :where(.step) {
-    font-size: 12px;
   }
 }

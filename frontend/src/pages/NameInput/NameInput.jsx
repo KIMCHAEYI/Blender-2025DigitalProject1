@@ -1,12 +1,9 @@
 import { useState } from "react";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../../components/InputField";
-import Button from "../../components/Button";
-import "./NameInput.css";
 import { useUserContext } from "../../contexts/UserContext";
-import StepIndicator from "../../components/StepIndicator";
-import NextButton from "../../components/NextButton";
+import PageLayout from "../../components/PageLayout";
+import "./NameInput.css";
 
 export default function NameInput() {
   const [name, setName] = useState("");
@@ -15,36 +12,35 @@ export default function NameInput() {
   const canNext = name.trim().length > 0;
 
   const handleNext = () => {
-    if (name.trim()) {
+    if (canNext) {
       setUserData((prev) => ({
         ...prev,
         name: name.trim(),
       }));
-
-      navigate("/birth"); // 다음 페이지 경로
+      navigate("/birth");
     }
   };
 
   return (
-    <div className="page-center name-page">
-      <StepIndicator current={1} total={5} variant="topline" />
-
+    <PageLayout
+      step={1}
+      total={5}
+      buttonLabel="입력했어요"
+      onNext={handleNext}
+      nextEnabled={canNext}
+    >
       <h2 className="question">
         <span className="highlight">이름</span>을 입력해 주세요
       </h2>
       <InputField
         value={name}
         onChange={setName}
-        className="name-input"
         onKeyDown={(e) => {
           if (e.key === "Enter" && canNext) {
             handleNext();
           }
         }}
       />
-      <NextButton enabled={canNext} onClick={handleNext}>
-        입력했어요
-      </NextButton>
-    </div>
+    </PageLayout>
   );
 }

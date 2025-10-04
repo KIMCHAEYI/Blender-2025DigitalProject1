@@ -1,6 +1,6 @@
-// src/pages/ResultFlow/LoadingResult.jsx
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Result.css";
 
 export default function LoadingResult() {
   const navigate = useNavigate();
@@ -8,17 +8,22 @@ export default function LoadingResult() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       navigate("/result");
-    }, 3000); // 3초 후 자동 이동
+    }, 3000); // 기존 3초 유지
     return () => clearTimeout(timeout);
-  }, []);
+  }, [navigate]);
 
   return (
-    <div className="page-center loading-page landscape">
-      <div className="loading-circle"></div>
-      <p className="question">
-        <span className="highlight">인공지능(AI) 비전 기술</span>을 활용해
-        <br></br>그림의 크기와 배치, 색채 활용을
-        <span className="highlight"> 정밀 분석</span> 중입니다…
+    <div className="loading-page-container">
+      <div className="ai-bubble">
+        <div className="dot2" />
+        <div className="dot2" />
+        <div className="dot2" />
+      </div>
+
+      <p className="loading-text">
+        <span className="highlight">AI 친구</span>가 네 그림을
+        <br />
+        <span className="highlight">열심히 보고 있어요</span> 👀
       </p>
     </div>
   );

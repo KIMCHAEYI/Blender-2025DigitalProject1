@@ -105,7 +105,8 @@ export default function Home() {
             <h3>추가로 그림 그리기</h3>
             <img src="/images/step2.jpg" alt="step1" className="step1" />
             <div className="pill-list">
-              <div className="pill">✍️ 추가 그리기</div>
+              <div className="pill">🤖 AI 맞춤형 질문 생성</div>
+              <div className="pill">🎨 색채 분석</div>
               <div className="pill">🎯 심층 탐색</div>
             </div>
             <p>

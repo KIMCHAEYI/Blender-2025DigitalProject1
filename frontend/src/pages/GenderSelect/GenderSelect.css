@@ -1,26 +1,43 @@
+.gender-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  gap: 20px;
+}
+
 .gender-options {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 16px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .gender-button {
-  width: 116px;
-  height: 47px;
-  font-size: 16px;
+  flex: 1;
+  min-width: 100px;
+  height: 60px;
+  font-size: 20px;
   border: 3px solid #42413f;
-  border-radius: 8px;
-  width: 116px;
-  height: 47px;
-  font-size: 16px;
-  border-radius: 8px;
-  appearance: none;
+  border-radius: 10px;
   background-color: #fff;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .gender-button.selected {
   font-family: "Pretendard", sans-serif;
-  color: #ffffff;
-  border-color: #3e70c7;
-  background-color: #3e70c7;
-  outline: none;
+
+  border-color: #3b82f6;
+  background: #e0f2fe;
+  color: #1e3a8a;
+  font-weight: 600;
+
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.25);
+  transform: scale(1.03);
 }

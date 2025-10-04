@@ -1,92 +1,83 @@
-/* 리스트 레이아웃 */
-.character-list {
+.character-grid {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  gap: clamp(24px, 6vw, 80px);
-  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 24px;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto 0;
 }
 
-/* 기본 카드: 스티커 느낌 */
-.character-item {
-  position: relative;
+.character-card {
+  flex: 1;
+  min-width: 140px;
+  height: 160px;
+  background: #ffffff;
+  border: 3px solid #e2e8f0;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
-  padding: 18px 20px;
-  border-radius: 16px;
-  background: #ffffff;
-  border: 2px solid transparent; /* 실제 테두리는 투명 */
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  font-family: "Pretendard", sans-serif;
+  font-size: 17px;
+  color: #374151;
   cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
-.character-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.1);
+.character-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* 이미지 크기 */
-.character-item img {
-  width: clamp(96px, 12vw, 140px);
-  height: auto;
-  display: block;
-  object-fit: contain;
+.character-card.selected {
+  border-color: #3b82f6;
+  background: #e0f2fe;
+  color: #1e3a8a;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+  transform: scale(1.03);
 }
 
-/* 이름 텍스트 */
-.character-item p {
-  margin: 0;
-  font-size: clamp(14px, 1.6vw, 16px);
-  color: #3a3a3a;
+.character-emoji {
+  font-size: 48px;
+  margin-bottom: 8px;
 }
 
-/* ===== 선택 상태: 파랑 '글로우 링' + 체크 배지 + 살짝 팝 ===== */
-.character-item.selected {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  border: 3px solid #3e70c7;
+.character-name {
+  font-size: 18px;
+  font-weight: 700;
 }
 
-/* 체크 배지 (우상단) */
-.character-item.selected::before {
-  content: "✔";
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 14px;
-  line-height: 1;
-  color: #fff;
-  background: #3e70c7;
-  box-shadow: 0 2px 8px rgba(62, 112, 199, 0.45);
+.character-message {
+  margin-top: 20px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #2563eb;
+  animation: fadeInUp 0.4s ease;
 }
 
-/* 선택 시 이미지 살짝 팝 */
-@keyframes pop {
-  0% {
-    transform: scale(1);
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
   }
-  60% {
-    transform: scale(1.09);
-  }
-  100% {
-    transform: scale(1.06);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.character-item.selected img {
-  animation: pop 0.18s ease-out forwards;
-}
+@media (max-width: 600px) {
+  .character-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
 
-/* 접근성: 키보드 포커스 표시 */
-.character-item:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(62, 112, 199, 0.35);
+  .character-card {
+    width: 80%;
+    height: 140px;
+  }
 }
