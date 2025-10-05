@@ -1,0 +1,60 @@
+.htp-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 12px;
+  user-select: none;
+}
+
+.htp-progress__stage {
+  display: grid;
+  grid-template-rows: auto auto;
+  align-items: center;
+  justify-items: center;
+  min-width: 56px;
+  padding: 4px 6px;
+  border-radius: 12px;
+  transition: transform 120ms ease, opacity 120ms ease, background 120ms ease;
+  opacity: 0.55;
+}
+
+.htp-progress__stage.is-active {
+  opacity: 1;
+  background: rgba(62, 112, 199, 0.08); /* 파스텔 하이라이트 */
+}
+
+.htp-progress__icon {
+  font-size: 22px; /* 아이콘 크기 */
+  line-height: 1;
+}
+
+.htp-progress__label {
+  font-size: 12px;
+  color: #42413f;
+  margin-top: 4px;
+}
+
+/* 단계 사이 연결선 */
+.htp-progress__connector {
+  width: clamp(24px, 6vw, 64px);
+  height: 4px;
+  border-radius: 4px;
+  background: #d8e3ff; /* 비활성 라인 */
+  position: relative;
+  overflow: hidden;
+}
+
+.htp-progress__connector.is-filled {
+  background: linear-gradient(90deg, #6aa1ff, #a4c2ff);
+}
+
+/* 반응형 최소 여백 */
+@media (max-width: 480px) {
+  .htp-progress__label {
+    font-size: 11px;
+  }
+  .htp-progress__icon {
+    font-size: 20px;
+  }
+}

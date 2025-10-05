@@ -1,0 +1,81 @@
+.complete-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  gap: 20px;
+}
+
+.message {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.description {
+  font-family: "Pretendard", sans-serif;
+  font-size: 20px;
+  color: #555;
+  margin-bottom: 24px;
+}
+
+.button-finish {
+  display: flex;
+  width: 270px;
+  height: 70px;
+  padding: 12px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  background-color: #3e70c7;
+  font-size: 32px;
+}
+
+.button-finish {
+  position: relative;
+  --cta-color: #5052bb;
+  transition: transform 40ms ease, filter 160ms ease;
+}
+
+.cta-pulse {
+  animation: cta-breathe 1.4s ease-in-out infinite;
+}
+.cta-pulse::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 var(--cta-color);
+  opacity: 0.55;
+  pointer-events: none;
+  animation: cta-ring 1.4s ease-out infinite;
+}
+
+@keyframes cta-breathe {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(-1px) scale(1.03);
+  }
+}
+@keyframes cta-ring {
+  0% {
+    box-shadow: 0 0 0 0 var(--cta-color);
+    opacity: 0.55;
+  }
+  100% {
+    box-shadow: 0 0 0 16px rgba(79, 70, 229, 0);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-pulse,
+  .cta-pulse::after {
+    animation: none !important;
+  }
+}

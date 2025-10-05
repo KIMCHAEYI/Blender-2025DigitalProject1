@@ -1,0 +1,29 @@
+.birth-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+  gap: 20px;
+}
+.birth-select-group {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+.birth-select-group select {
+  width: 150px;
+  height: 60px;
+  font-size: 20px;
+  border: 3px solid #42413f;
+  border-radius: 10px;
+  appearance: none;
+  background-color: #fff;
+
+  padding-left: 12px;
+  text-align: left;
+  background-color: #fff;
+}
