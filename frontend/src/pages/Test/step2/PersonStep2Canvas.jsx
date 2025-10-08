@@ -25,7 +25,7 @@ export default function PersonStep2Canvas() {
       try {
         // ① Step2 질문 불러오기
         const qRes = await fetch(
-          `/api/step2/question?session_id=${sessionId}&type=person`
+          `http://172.30.1.87:5000/api/step2/question?session_id=${sessionId}&type=person`
         );
         if (!qRes.ok) throw new Error("질문 요청 실패");
         const qData = await qRes.json();
@@ -33,7 +33,7 @@ export default function PersonStep2Canvas() {
 
         // ② 이전 그림 불러오기 (사람 1단계)
         const dRes = await fetch(
-           `/api/drawing/${sessionId}/person`
+          `http://172.30.1.87:5000/api/drawing/${sessionId}/person`
         );
         if (!dRes.ok) throw new Error("이전 그림 요청 실패");
         const dData = await dRes.json();

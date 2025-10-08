@@ -9,6 +9,7 @@ export default function HouseStep2Canvas() {
   const [previousDrawing, setPreviousDrawing] = useState("");
   const [loading, setLoading] = useState(true);
 
+
   // 세션 ID 가져오기
   const sessionId =
     userData?.session_id ||

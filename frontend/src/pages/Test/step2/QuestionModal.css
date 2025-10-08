@@ -1,0 +1,92 @@
+/* 배경 어둡게 */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+/* 중앙 카드 */
+.modal-box {
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px 40px;
+  width: 440px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  transform: scale(0.9);
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* 페이드인 애니메이션 */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: #333;
+}
+
+.modal-question {
+  font-size: 16px;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.modal-guide {
+  text-align: left;
+  font-size: 15px;
+  color: #333;
+  line-height: 1.7;
+  margin-bottom: 24px;
+  list-style-type: none;
+  padding: 0;
+}
+
+/* 버튼 */
+.btn-start {
+  background-color: #4478ff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 26px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(68, 120, 255, 0.3);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+/* hover 시 확대 */
+.btn-start:hover {
+  background-color: #315fe0;
+  transform: scale(1.08);
+}
+
+/* 클릭 시 살짝 축소 */
+.btn-start:active {
+  transform: scale(0.95);
+}
+
+/* 백엔드 질문에 형광펜 */
+.highlight-text {
+  position: relative;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 2.0;
+  padding: 4px 8px;
+  background: linear-gradient(transparent 55%,  #fff9a8 55%,#fff59d 75%, transparent 75%); /* 형광펜 느낌 */
+  border-radius: 3px;
+}
