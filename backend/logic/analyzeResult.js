@@ -168,10 +168,15 @@ for (const r of rulesForType) {
   let extraQuestion = null;
 
   if (
-    (drawingType === "house" && detectedObjects.length <= 15) ||
-    (drawingType === "tree" && detectedObjects.length <= 10) ||
-    (drawingType === "person" && detectedObjects.length <= 10)
-  ) {
+  (drawingType === "house" && detectedObjects.length <= 15) ||
+  (drawingType === "tree" && detectedObjects.length <= 10) ||
+  (
+    (drawingType === "person" ||
+     drawingType === "person_male" ||
+     drawingType === "person_female") &&
+    detectedObjects.length <= 10
+  )
+) {
     step = 2;
 
     const conditional = step2Questions[drawingType]?.conditional || {};

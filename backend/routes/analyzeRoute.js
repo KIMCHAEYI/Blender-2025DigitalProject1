@@ -47,7 +47,7 @@ router.get("/", async (req, res) => {
       need_step2: needStep2,
       targets: step2Targets,
       step: analysis.step,
-      extraQuestion: analysis.extraQuestion || null,  // ✅ 추가
+      question: analysis.question || null,  // ✅ 추가
     });
 
   } catch (err) {
@@ -65,27 +65,84 @@ router.get("/session/:session_id", async (req, res) => {
 
   const results = [];
 
+  // 1️⃣ 모든 그림 YOLO + 해석 실행
   for (const drawing of session.drawings) {
-  const fileName = drawing.file_name || drawing.filename; // 🔹 유연하게 처리
+    const fileName = drawing.file_name || drawing.filename;
+    if (!fileName) continue;
 
-  if (!fileName) {
-    console.error(`[ERROR] 그림 파일명 없음: type=${drawing.type}`);
-    continue; // 파일명 없는 데이터는 건너뜀 (서버 크래시 방지)
+    const imgPath = path.join(__dirname, "../uploads", fileName);
+    const yolo = await runYOLOAnalysis(imgPath, drawing.type);
+    const analysis = interpretYOLOResult(yolo, drawing.type);
+
+    results.push({
+      type:
+        drawing.type === "person_male" || drawing.type === "person_female"
+          ? "person"
+          : drawing.type,
+      subtype: drawing.type, // 🔹 성별 보존
+      analysis,
+      path: drawing.path,
+      step: analysis.step,
+      question: analysis.question || null,
+    });
   }
 
-  const imgPath = path.join(__dirname, "../uploads", fileName);
-  const yolo = await runYOLOAnalysis(imgPath, drawing.type);
-  const analysis = interpretYOLOResult(yolo, drawing.type);
+  // 2️⃣ 사람 그림만 필터
+  const persons = results.filter((r) =>
+    r.subtype?.startsWith("person")
+  );
 
-  results.push({
-    type: drawing.type,
-    analysis,
-    path: drawing.path,
-    step: analysis.step,
-    extraQuestion: analysis.extraQuestion || null,
+  // 내부 함수: 둘 다 2단계일 때 선택 규칙
+  const pickPerson = (arr) => {
+    const [a, b] = arr;
+    const countA = a.analysis.analysis.length;
+    const countB = b.analysis.analysis.length;
+
+    if (countA < countB) return a;
+    if (countB < countA) return b;
+
+    // 객체 수 동일하면 랜덤
+    return Math.random() < 0.5 ? a : b;
+  };
+
+  // 3️⃣ 사람 2단계 판단 로직
+  let step2 = { person: false };
+  if (persons.length === 2) {
+    const steps = persons.map((p) => p.step);
+    if (steps.every((s) => s === 1)) {
+      step2 = { person: false };
+    } else if (steps.filter((s) => s === 2).length === 1) {
+      // 하나만 2단계
+      const selected = persons.find((p) => p.step === 2);
+      step2 = {
+        person: true,
+        target: selected.subtype,
+        image: selected.path,
+      };
+    } else if (steps.every((s) => s === 2)) {
+      // 둘 다 2 → pickPerson으로 선택
+      const selected = pickPerson(persons);
+      step2 = {
+        person: true,
+        target: selected.subtype,
+        image: selected.path,
+      };
+    }
+  } else if (persons.length === 1 && persons[0].step === 2) {
+    // 한쪽만 존재하고 2단계면
+    step2 = {
+      person: true,
+      target: persons[0].subtype,
+      image: persons[0].path,
+    };
+  }
+
+  // 4️⃣ 최종 응답
+  res.json({
+    session_id,
+    results,
+    step2, // ✅ { person: true/false, target, image }
   });
-}
-  res.json({ session_id, results });
 });
 
 

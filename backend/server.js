@@ -7,6 +7,7 @@ const sessionRoutes = require("./routes/sessions");
 const analyzeRoute = require("./routes/analyzeRoute");
 const drawingsRouter = require("./routes/drawings");
 const colorRoute = require("./routes/colorRoute");
+const step2Route = require("./routes/step2Route"); 
 
 const app = express();
 const PORT = 5000;
@@ -20,6 +21,8 @@ app.use(
   })
 );
 
+app.use("/api/step2", step2Route);
+
 app.use(express.json());
 
 // 업로드된 이미지 접근 허용
@@ -30,6 +33,7 @@ app.use("/api/sessions", sessionRoutes);   // 세션 관리
 app.use("/api/analyze", analyzeRoute);     // YOLO 분석
 app.use("/api/drawings", drawingsRouter);  // 그림 업로드
 app.use("/api/color-analyze", colorRoute); // ✅ 2단계 색상 분석 추가 (올바른 위치)
+app.use("/api/step2", step2Route); // ✅ CORS 적용 이후 등록
 
 // ✅ 서버 실행
 app.listen(PORT, "0.0.0.0", () => {
