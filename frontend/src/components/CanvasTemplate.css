@@ -116,16 +116,10 @@
   margin: 4px 0;
 }
 
-.btn-toolbar.btn-help {
-  min-width: 90px;
-  min-height: 44px;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.btn-toolbar.btn-help:hover {
-  background: #e8eef7;
+.icon-help {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
 }
 
 /* 진행 점: 캔버스 상단 좌측에 고정 */

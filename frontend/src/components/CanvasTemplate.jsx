@@ -12,15 +12,21 @@ import "./CanvasTemplate.css";
 // ===== API BASE (ENV 없으면 same-origin → Vite 프록시 경유) =====
 const resolveApiBase = () => {
   let raw = (import.meta?.env?.VITE_API_BASE ?? "").trim();
-  if (!raw || raw === "undefined" || raw === "null") return "";
+
+  // ✅ Fallback: .env가 비었을 때 수동 지정
+  if (!raw || raw === "undefined" || raw === "null" || raw === "") {
+    raw = "http://172.20.6.160:5000";
+  }
+
   if (!/^https?:\/\//i.test(raw)) raw = `http://${raw}`;
   try {
     const u = new URL(raw);
-    return `${u.protocol}//${u.host}`; // origin만 사용
+    return `${u.protocol}//${u.host}`;
   } catch {
-    return "";
+    return "http://172.20.6.160:5000";
   }
 };
+
 const API_BASE = resolveApiBase();
 
 export default function CanvasTemplate({
@@ -259,7 +265,7 @@ export default function CanvasTemplate({
         console.log("➡️ 2단계 완료 → 결과분기로 이동");
         navigate("/result/rotate");
       } else if (nextRoute) {
-        console.log("➡️ 1단계 완료 → 다음 라우트로 이동:", nextRoute);
+        //console.log("➡️ 1단계 완료 → 다음 라우트로 이동:", nextRoute);
         navigate(nextRoute);
       } else {
         console.log("⚠️ nextRoute 없음 → 결과분기로 기본 이동");
@@ -421,15 +427,21 @@ export default function CanvasTemplate({
           >
             🗑 처음부터
           </button>
-          <button
+          {/* <button
             type="button"
             className="btn-toolbar btn-help"
             onClick={() => setShowGuide(true)}
             aria-label="그림 도구 도움말 열기"
             title="도움말"
-          >
-            ❓
-          </button>
+          ></button> */}
+          <img
+            className="icon-help"
+            src="/images/help.png"
+            alt="도움말 아이콘"
+            onClick={() => setShowGuide(true)}
+            aria-label="그림 도구 도움말 열기"
+            title="도움말"
+          />
         </div>
 
         <div className="canvas-wrapper">

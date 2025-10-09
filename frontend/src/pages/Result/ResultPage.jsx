@@ -46,81 +46,26 @@ const normalizeDrawings = (raw = {}) => {
     ? raw
     : Object.entries(raw).map(([k, v]) => ({ ...v, _key: k }));
 
+  const normalizeUrl = (url) =>
+    url && !url.startsWith("http")
+      ? `http://172.20.6.160:5000/${url.replace(/^\/+/, "")}`
+      : url;
+
   for (const item of list) {
-    const typeFromKey = item?._key || item?.type || item?.result?.type;
-    const subtypeRaw = item?.subtype || item?.result?.subtype || item?.gender;
-    const mappedSub = mapSubtype(subtypeRaw);
-
-    let key = typeFromKey || "unknown";
-    if (
-      (key === "person" || key === "person_female" || key === "person_male") &&
-      mappedSub
-    )
-      key = mappedSub;
-    if (key === "person_woman") key = "person_female";
-    if (key === "person_man") key = "person_male";
-
-    const image =
-      item?.image ||
-      item?.result?.image ||
-      item?.file_path ||
-      item?.path ||
-      item?.result?.path ||
-      "";
-
-    // const yolo =
-    //   item?.yolo ||
-    //   item?.result?.yolo ||
-    //   (item?.result?.yolo_image ? { image: item.result.yolo_image } : null) ||
-    //   (item?.result?.bbox_url ? { image: item.result.bbox_url } : null) ||
-    //   (item?.yolo?.bbox_url ? { image: item.yolo.bbox_url } : null);
-    // 이걸 거치면 sec.yolo는 문자열(String) 이 되고, ResultCard.jsx에서는 sec.yolo?.image로 접근하니까 → undefined
-
-    const yoloRaw =
-      item?.yolo ||
-      item?.result?.yolo ||
-      item?.result?.yolo_image ||
-      item?.result?.bbox_url ||
-      item?.result?.bbox_image ||
-      item?.yolo?.bbox_url;
-
-    const yolo =
-      typeof yoloRaw === "string" && yoloRaw.trim()
-        ? { image: yoloRaw } // ✅ 문자열이면 { image: ... } 형태로 감싸줌
-        : yoloRaw && yoloRaw.image
-        ? yoloRaw
-        : null;
-
-    let analysisRaw =
-      item?.analysis || item?.result?.analysis || item?.objects || [];
-    const analysis = Array.isArray(analysisRaw)
-      ? analysisRaw
-      : analysisRaw?.analysis || [];
-
-    const counselor_summary =
-      item?.counselor_summary || item?.result?.counselor_summary || "";
-
-    const pick = (v) =>
-      typeof v !== "undefined" && v !== null ? v : undefined;
-    const drawing_id =
-      pick(item?.drawing_id) ??
-      pick(item?.result?.drawing_id) ??
-      pick(item?.id) ??
-      pick(item?.result?.id) ??
-      null;
+    const key = item.type || item._key || "unknown";
 
     out[key] = {
       ...item,
       type: key,
-      subtype: mappedSub || item?.subtype,
-      image,
-      yolo,
-      analysis,
-      drawing_id,
-      counselor_summary,
-      duration: item?.duration || item?.result?.duration || 0,
+      image: normalizeUrl(item.path),
+      yolo: item.bbox_url ? { image: normalizeUrl(item.bbox_url) } : null,
+      analysis: Array.isArray(item.analysis)
+        ? item.analysis
+        : item.analysis?.analysis || [],
+      counselor_summary: item.counselor_summary || "",
     };
   }
+
   return out;
 };
 

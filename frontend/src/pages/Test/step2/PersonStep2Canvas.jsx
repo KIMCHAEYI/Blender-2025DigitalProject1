@@ -36,8 +36,8 @@ export default function PersonStep2Canvas() {
           `http://172.20.6.160:5000/api/step2/question?session_id=${sessionId}&type=${drawingType}`
         );
         if (!qRes.ok) throw new Error("질문 요청 실패");
-        const qData = await qRes.json();
-        setBackendQuestion(qData?.question || "");
+        const questionData = await qRes.json();
+        setBackendQuestion(questionData?.extraQuestion || "");
 
         // ② 이전 그림(선택된 남/녀 중 하나) 불러오기
         const dRes = await fetch(

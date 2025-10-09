@@ -38,7 +38,7 @@ export default function HouseStep2Canvas() {
         );
         if (!questionRes.ok) throw new Error("질문 요청 실패");
         const questionData = await questionRes.json();
-        setBackendQuestion(questionData?.question || "");
+        setBackendQuestion(questionData?.extraQuestion || "");
 
         // ② 이전 그림(1단계 결과) 불러오기
         const drawingRes = await fetch(
@@ -77,14 +77,13 @@ export default function HouseStep2Canvas() {
     );
   }
 
-  // ✅ CanvasTemplate 렌더링
   return (
     <CanvasTemplate
       drawingType={drawingType}
-      nextRoute={nextRoute} // 자동 결정된 다음 라우트
+      nextRoute={nextRoute}
       backendQuestion={backendQuestion}
       previousDrawing={previousDrawing}
-      paletteEnabled={true} // Step2 기능 활성화
+      paletteEnabled={true}
     />
   );
 }

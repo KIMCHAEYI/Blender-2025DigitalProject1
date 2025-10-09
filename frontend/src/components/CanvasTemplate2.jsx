@@ -78,9 +78,9 @@ export default function CanvasTemplate({
         const formData = new FormData();
         formData.append("session_id", userData.session_id);
         formData.append("type", drawingType);
-        formData.append("image", file);
+        formData.append("drawing", file);
         await axios.post(
-          "http://172.20.6.160:5000/api/step2/upload",
+          "http://172.20.6.160:5000/api/drawings/upload",
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
@@ -112,13 +112,7 @@ export default function CanvasTemplate({
             {paletteEnabled && backendQuestion ? (
               <p className="step2-question">{backendQuestion}</p>
             ) : (
-              <h2 className="rectangle-title">
-                {drawingType === "house"
-                  ? "집을 그려보세요"
-                  : drawingType === "tree"
-                  ? "나무를 그려보세요"
-                  : "사람을 그려보세요"}
-              </h2>
+              <h2 className="rectangle-title">{backendQuestion || ""}</h2>
             )}
           </div>
         </div>
