@@ -6,18 +6,14 @@ import axios from "axios";
 import { useUserContext } from "../contexts/UserContext.jsx";
 import { generateSafePngFileName } from "../utils/generateFileName.js";
 import { dataURLtoFile } from "../utils/dataURLtoFile";
-
 import "./CanvasTemplate.css";
 
-// ===== API BASE (ENV 없으면 same-origin → Vite 프록시 경유) =====
+// ===== API BASE 설정 =====
 const resolveApiBase = () => {
   let raw = (import.meta?.env?.VITE_API_BASE ?? "").trim();
-
-  // ✅ Fallback: .env가 비었을 때 수동 지정
   if (!raw || raw === "undefined" || raw === "null" || raw === "") {
-    raw = "http://172.20.6.160:5000";
+    raw = "http://172.20.6.160:5000"; // ✅ 기본값
   }
-
   if (!/^https?:\/\//i.test(raw)) raw = `http://${raw}`;
   try {
     const u = new URL(raw);
@@ -26,7 +22,6 @@ const resolveApiBase = () => {
     return "http://172.20.6.160:5000";
   }
 };
-
 const API_BASE = resolveApiBase();
 
 export default function CanvasTemplate({
@@ -44,37 +39,9 @@ export default function CanvasTemplate({
 
   const [lines, setLines] = useState([]);
   const [isDrawing, setIsDrawing] = useState(false);
-  // 원하는 단계 (3단계 고정)
-  const levels = [2, 4, 8]; // 얇게(2), 중간(4), 굵게(8)
-  const [penSize, setPenSize] = useState(levels[1]); // 기본값: 중간(4)
-
-  // 펜 굵기 기록 (thin | normal | thick)
-  const [penUsageHistory, setPenUsageHistory] = useState({
-    thin: 0,
-    normal: 0,
-    thick: 0,
-  });
-
-  // penSize와 penThickness 매핑
-  const thicknessMap = {
-    2: "thin",
-    4: "normal",
-    8: "thick",
-  };
-
-  // 굵기 늘리기
-  const increasePen = () => {
-    const idx = levels.indexOf(penSize);
-    if (idx < levels.length - 1) setPenSize(levels[idx + 1]);
-  };
-
-  // 굵기 줄이기
-  const decreasePen = () => {
-    const idx = levels.indexOf(penSize);
-    if (idx > 0) setPenSize(levels[idx - 1]);
-  };
+  const levels = [2, 4, 8];
+  const [penSize, setPenSize] = useState(levels[1]);
   const [canvasWidth, setCanvasWidth] = useState(1123);
-
   const [eraseCount, setEraseCount] = useState(0);
   const [resetCount, setResetCount] = useState(0);
 
@@ -85,22 +52,29 @@ export default function CanvasTemplate({
 
   const { userData, setUserData } = useUserContext();
   const [startTime] = useState(Date.now());
-
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
 
-  // ✅ 세션ID 가져오기(컨텍스트 → 세션스토리지 순서)
-  const getSessionId = () =>
-    (userData && userData.session_id) ||
-    sessionStorage.getItem("session_id") ||
-    sessionStorage.getItem("user_id");
+  // 펜 굵기 기록
+  const [penUsageHistory, setPenUsageHistory] = useState({
+    thin: 0,
+    normal: 0,
+    thick: 0,
+  });
+  const thicknessMap = { 2: "thin", 4: "normal", 8: "thick" };
 
-  // useEffect(() => {
-  //   console.log("현재 펜 사용 내역:", penUsageHistory);
-  // }, [penUsageHistory]);
+  // 굵기 조절
+  const increasePen = () => {
+    const idx = levels.indexOf(penSize);
+    if (idx < levels.length - 1) setPenSize(levels[idx + 1]);
+  };
+  const decreasePen = () => {
+    const idx = levels.indexOf(penSize);
+    if (idx > 0) setPenSize(levels[idx - 1]);
+  };
 
-  // 모달 안내
+  // 가이드 최초 표시
   useEffect(() => {
     const seen = localStorage.getItem("seenToolbarGuideV2");
     if (!seen) {
@@ -109,66 +83,38 @@ export default function CanvasTemplate({
     }
   }, []);
 
-  // 캔버스 크기
+  // 캔버스 크기 자동조정
   useEffect(() => {
     const aspect = BASE_WIDTH / BASE_HEIGHT;
-
     const measureAndSet = () => {
       const headerH = headerRef.current?.getBoundingClientRect().height || 0;
       const toolbarW = toolbarRef.current?.getBoundingClientRect().width || 0;
       const footerRect = footerRef.current?.getBoundingClientRect();
-      const footerW = footerRect?.width || 0;
       const footerH = footerRect?.height || 0;
-
       const screenW = window.innerWidth;
       const screenH = window.innerHeight;
-
       const H_GUTTER = 24;
       const V_GUTTER = 24;
-      const EXTRA_TITLE_GAP = 16;
-      const RIGHT_RESERVED = footerW + 24;
-      const BOTTOM_RESERVED = footerH + 24;
-
-      const availW = Math.max(
-        0,
-        screenW - toolbarW - RIGHT_RESERVED - H_GUTTER * 2
-      );
-      const availH = Math.max(
-        0,
-        screenH - headerH - BOTTOM_RESERVED - (V_GUTTER * 2 + EXTRA_TITLE_GAP)
-      );
-
+      const availW = Math.max(0, screenW - toolbarW - H_GUTTER * 2);
+      const availH = Math.max(0, screenH - headerH - footerH - V_GUTTER * 2);
       const widthIfHeightLimited = availH * aspect;
-      const finalWidth = Math.floor(Math.min(availW, widthIfHeightLimited));
-      setCanvasWidth(Math.max(240, finalWidth));
+      setCanvasWidth(Math.floor(Math.min(availW, widthIfHeightLimited)));
     };
-
     measureAndSet();
     const ro = new ResizeObserver(measureAndSet);
     ro.observe(document.body);
-    if (headerRef.current) ro.observe(headerRef.current);
-    if (toolbarRef.current) ro.observe(toolbarRef.current);
-    if (footerRef.current) ro.observe(footerRef.current);
-
-    window.addEventListener("resize", measureAndSet);
-    window.addEventListener("orientationchange", measureAndSet);
-
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", measureAndSet);
-      window.removeEventListener("orientationchange", measureAndSet);
-    };
+    return () => ro.disconnect();
   }, [BASE_WIDTH, BASE_HEIGHT]);
 
-  // 버튼 핸들러
+  // 버튼 이벤트
   const handleCancelClick = () => setShowCancelModal(true);
   const handleCancelConfirm = () => navigate("/");
   const handleNextClick = () => setShowSubmitModal(true);
 
+  // 핵심 로직
   const handleNext = async () => {
     if (!stageRef.current) return;
 
-    // ✅ session_id 확보 (Context → sessionStorage fallback)
     const sid =
       userData?.session_id ||
       sessionStorage.getItem("session_id") ||
@@ -186,26 +132,10 @@ export default function CanvasTemplate({
       const fileName = generateSafePngFileName(userData || {}, drawingType);
       const file = dataURLtoFile(dataURL, fileName);
 
-      const isPM = drawingType === "person_male";
-      const isPF = drawingType === "person_female";
-      const typeForServer = isPM || isPF ? "person" : drawingType;
-      const subtypeForServer = isPM ? "male" : isPF ? "female" : "";
-      let outKey = drawingType;
-      if (drawingType === "person") {
-        if (subtypeForServer) outKey = `person_${subtypeForServer}`;
-        else if ((userData?.gender || "").includes("남"))
-          outKey = "person_male";
-        else if ((userData?.gender || "").includes("여"))
-          outKey = "person_female";
-      }
-
-      const first_gender = localStorage.getItem("firstGender");
-
-      // 2️⃣ 업로드 준비
+      // 2️⃣ 업로드 데이터 구성
       const formData = new FormData();
       formData.append("drawing", file);
-      formData.append("type", outKey || typeForServer);
-      if (subtypeForServer) formData.append("subtype", subtypeForServer);
+      formData.append("type", drawingType);
       formData.append("session_id", sid);
       formData.append("eraseCount", String(eraseCount));
       formData.append("resetCount", String(resetCount));
@@ -213,42 +143,24 @@ export default function CanvasTemplate({
         "duration",
         String(Math.floor((Date.now() - startTime) / 1000))
       );
-      formData.append("first_gender", first_gender);
       formData.append("penUsage", JSON.stringify(penUsageHistory));
 
       console.log("📤 업로드 시작:", drawingType);
       const uploadRes = await axios.post(
         `${API_BASE}/api/drawings/upload`,
         formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
-      const data = uploadRes?.data || {};
+      const data = uploadRes.data || {};
       console.log("✅ 업로드 완료:", data);
 
-      const imagePath =
-        data.path ||
-        data.image ||
-        data.file_path ||
-        data.result?.image ||
-        data.result?.path ||
-        "";
-      const drawingId =
-        data.drawing_id ||
-        data.id ||
-        data.result?.drawing_id ||
-        data.result?.id ||
-        null;
-
-      // ✅ 3️⃣ 파일 시스템 반영 최소 대기
-      await new Promise((r) => setTimeout(r, 150));
-
-      // ✅ 4️⃣ YOLO 분석 요청 (1회 시도 + 1회 재시도)
+      const imagePath = data.path || data.result?.path || data.file_path || "";
       const fileOnly = imagePath.split("/").pop();
+
+      // 3️⃣ YOLO 분석 요청
       const analyze = async () =>
-        await axios.get(`${API_BASE}/api/analyze`, {
-          params: { file: fileOnly, type: typeForServer },
+        axios.get(`${API_BASE}/api/analyze`, {
+          params: { file: fileOnly, type: drawingType, session_id: sid },
           timeout: 15000,
         });
 
@@ -256,59 +168,51 @@ export default function CanvasTemplate({
         console.log("🧠 YOLO 분석 요청:", fileOnly);
         await analyze();
       } catch {
-        console.warn("⚠️ YOLO 첫 시도 실패 → 200ms 후 재시도");
-        await new Promise((r) => setTimeout(r, 200));
+        console.warn("⚠️ YOLO 첫 시도 실패 → 재시도 중");
+        await new Promise((r) => setTimeout(r, 300));
         await analyze();
       }
 
-      // ✅ 5️⃣ 사용자 데이터 업데이트
+      // 4️⃣ 사용자 데이터 갱신
       setUserData((prev) => ({
         ...(prev || {}),
         session_id: sid,
         drawings: {
           ...(prev?.drawings || {}),
-          [outKey]: {
+          [drawingType]: {
             image: imagePath,
             eraseCount,
             resetCount,
             duration: Math.floor((Date.now() - startTime) / 1000),
-            drawing_id: drawingId,
           },
         },
       }));
 
-      // ✅ 6️⃣ 다음 화면 이동
+      // 5️⃣ 다음 페이지 이동
       if (nextRoute && nextRoute.includes("step2")) navigate("/result/rotate");
       else if (nextRoute) navigate(nextRoute);
       else navigate("/result/rotate");
     } catch (err) {
       console.error("❌ 업로드 또는 분석 실패:", err);
-      alert("그림 업로드에 실패했습니다. 잠시 후 다시 시도해주세요.");
+      alert(
+        "그림 업로드 또는 분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
+      );
     }
   };
 
   // 그리기 핸들러
   const handleMouseDown = (e) => {
     setIsDrawing(true);
-
-    // 펜 사용 내역 업데이트
     const thickness = thicknessMap[penSize];
-    setPenUsageHistory((prev) => ({
-      ...prev,
-      [thickness]: prev[thickness] + 1,
-    }));
-
+    setPenUsageHistory((p) => ({ ...p, [thickness]: p[thickness] + 1 }));
     const stage = e.target.getStage();
     const pointer = stage.getPointerPosition();
     const scale = stage.scaleX();
     const pos = { x: pointer.x / scale, y: pointer.y / scale };
-    const newLine = {
-      points: [pos.x, pos.y],
-      stroke: "#111",
-      strokeWidth: penSize,
-      timestamp: Date.now(),
-    };
-    setLines((prev) => [...prev, newLine]);
+    setLines((p) => [
+      ...p,
+      { points: [pos.x, pos.y], stroke: "#111", strokeWidth: penSize },
+    ]);
   };
 
   const handleMouseMove = (e) => {
@@ -316,74 +220,39 @@ export default function CanvasTemplate({
     const stage = e.target.getStage();
     const pointer = stage.getPointerPosition();
     const scale = stage.scaleX();
-    const point = { x: pointer.x / scale, y: pointer.y / scale };
-    setLines((prev) => {
-      if (prev.length === 0) return prev;
-      const last = prev[prev.length - 1];
-      const updated = { ...last, points: [...last.points, point.x, point.y] };
-      return [...prev.slice(0, -1), updated];
+    const pos = { x: pointer.x / scale, y: pointer.y / scale };
+    setLines((p) => {
+      const last = p[p.length - 1];
+      const updated = { ...last, points: [...last.points, pos.x, pos.y] };
+      return [...p.slice(0, -1), updated];
     });
   };
 
   const handleMouseUp = () => setIsDrawing(false);
-
-  // ✅ 되돌리기 버튼
-  const handleUndo = () => {
-    setLines((p) => p.slice(0, -1));
-    setEraseCount((c) => {
-      const newVal = c + 1;
-      return newVal;
-    });
-  };
-
-  // ✅ 처음부터 버튼
-  const handleClear = () => {
-    setLines([]);
-    setIsDrawing(false);
-    setResetCount((p) => {
-      const newVal = p + 1;
-      return newVal;
-    });
-  };
-
-  useEffect(() => {
-    if (eraseCount > 0) {
-      console.log(`✅ ${drawingType} 되돌리기 총 횟수: ${eraseCount}`);
-    }
-  }, [eraseCount, drawingType]);
-
-  useEffect(() => {
-    if (resetCount > 0) {
-      console.log(`✅ ${drawingType} 처음부터 총 횟수: ${resetCount}`);
-    }
-  }, [resetCount, drawingType]);
+  const handleUndo = () => setLines((p) => p.slice(0, -1));
+  const handleClear = () => setLines([]);
 
   const scale = canvasWidth / BASE_WIDTH;
 
   return (
     <div className="page-center house-page">
+      {/* 헤더 */}
       <div className="canvas-header-row" ref={headerRef}>
         <div className="rectangle-header">
           <h2 className="rectangle-title">{title}</h2>
         </div>
       </div>
 
+      {/* 바디 */}
       <div className="canvas-body" ref={wrapperRef}>
-        {/* 툴바 */}
-        <div className="toolbar" ref={toolbarRef} aria-label="그림 도구">
-          {/* 펜 굵기 Stepper */}
+        <div className="toolbar" ref={toolbarRef}>
           <div className="pen-stepper">
-            {/* + 버튼 (항상 위) */}
-            <button
-              type="button"
-              className="btn-toolbar"
-              onClick={increasePen}
-              title="굵기 늘리기"
-            >
+            <button onClick={increasePen} title="굵기 늘리기">
               <img
                 src="/assets/+.png"
                 alt="굵기 늘리기"
-                style={{ width: 45, height: 45 }}
+                width={45}
+                height={45}
               />
             </button>
             <div
@@ -405,72 +274,58 @@ export default function CanvasTemplate({
                 }}
               />
             </div>
-
-            {/* - 버튼 (항상 아래) */}
-            <button
-              type="button"
-              className="btn-toolbar"
-              onClick={decreasePen}
-              title="굵기 줄이기"
-            >
+            <button onClick={decreasePen} title="굵기 줄이기">
               <img
                 src="/assets/-.png"
                 alt="굵기 줄이기"
-                style={{ width: 45, height: 45 }}
+                width={45}
+                height={45}
               />
             </button>
           </div>
 
-          <button
-            type="button"
-            className="btn-toolbar"
+          <img
+            className="icon-oneback"
+            src="/images/oneback.png"
+            alt="되돌리기"
             onClick={handleUndo}
-            title="되돌리기"
-          >
-            ↩️ 되돌리기
-          </button>
-          <button
-            type="button"
-            className="btn-toolbar"
+          />
+          <img
+            className="icon-trash"
+            src="/images/trash.png"
+            alt="처음부터"
             onClick={handleClear}
-            title="처음부터"
-          >
-            🗑 처음부터
-          </button>
+          />
           <img
             className="icon-help"
-            src="/images/help.png"
-            alt="도움말 아이콘"
+            src="/images/question.png"
+            alt="도움말"
             onClick={() => setShowGuide(true)}
-            aria-label="그림 도구 도움말 열기"
-            title="도움말"
           />
         </div>
 
         <div className="canvas-wrapper">
-          {
-            <div className="progress-indicator static-overlay">
-              {Array.from({ length: totalSteps }).map((_, i) => (
-                <span
-                  key={i}
-                  className={`dot ${i < currentStep ? "active" : ""}`}
-                />
-              ))}
-            </div>
-          }
+          <div className="progress-indicator static-overlay">
+            {Array.from({ length: totalSteps }).map((_, i) => (
+              <span
+                key={i}
+                className={`dot ${i < currentStep ? "active" : ""}`}
+              />
+            ))}
+          </div>
 
           <Stage
             width={canvasWidth}
             height={(canvasWidth * BASE_HEIGHT) / BASE_WIDTH}
             scale={{ x: scale, y: scale }}
             className="drawing-canvas"
+            ref={stageRef}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onTouchStart={handleMouseDown}
             onTouchMove={handleMouseMove}
             onTouchEnd={handleMouseUp}
-            ref={stageRef}
           >
             <Layer>
               <Rect
@@ -495,62 +350,7 @@ export default function CanvasTemplate({
         </div>
       </div>
 
-      {/* 처음 방문 안내 모달 (한 번만 표시) */}
-      {showGuide && (
-        <div className="modal-overlay" onClick={() => setShowGuide(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                justifyContent: "center",
-              }}
-            >
-              <span role="img" aria-label="sparkles">
-                ✨
-              </span>{" "}
-              그림 도구 사용법
-            </h3>
-            <ul
-              style={{
-                textAlign: "left",
-                padding: "0 1rem",
-                lineHeight: 1.7,
-                fontSize: "16px",
-                marginTop: 8,
-              }}
-            >
-              <li>
-                ✏️ <b>굵기</b>는 <b>얇게 / 중간 / 굵게</b> 중에서 골라요.
-              </li>
-              <li>
-                ↩️ <b>되돌리기</b>: 방금 그린 선을 지워요.
-              </li>
-              <li>
-                🗑 <b>처음부터</b>: 그림을 모두 지워요.
-              </li>
-              <li>
-                👉 다 그렸으면 <b>다음으로</b> 버튼을 눌러요!
-              </li>
-              <li>
-                🟥 <b>검사 그만두기</b>: 지금 멈추면 <b>처음부터 다시 시작</b>
-                해요.
-              </li>
-              <br />
-              모르는 게 있으면 어른에게 도움을 요청하세요!
-            </ul>
-            <button
-              className="modal-button confirm"
-              onClick={() => setShowGuide(false)}
-              style={{ marginTop: 12 }}
-            >
-              알겠어요!
-            </button>
-          </div>
-        </div>
-      )}
-
+      {/* 푸터 */}
       <div className="footer-buttons-row" ref={footerRef}>
         <button className="btn-base btn-nextred" onClick={handleCancelClick}>
           검사 그만두기
@@ -560,6 +360,7 @@ export default function CanvasTemplate({
         </button>
       </div>
 
+      {/* 제출 모달 */}
       {showSubmitModal && (
         <div
           className="modal-overlay"
@@ -589,6 +390,7 @@ export default function CanvasTemplate({
         </div>
       )}
 
+      {/* 취소 모달 */}
       {showCancelModal && (
         <div
           className="modal-overlay"
@@ -611,6 +413,28 @@ export default function CanvasTemplate({
                 취소
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* 도움말 모달 */}
+      {showGuide && (
+        <div className="modal-overlay" onClick={() => setShowGuide(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>✨ 그림 도구 사용법</h3>
+            <ul style={{ textAlign: "left", padding: "0 1rem" }}>
+              <li>✏️ 굵기: 얇게 / 중간 / 굵게</li>
+              <li>↩️ 되돌리기</li>
+              <li>🗑 처음부터</li>
+              <li>👉 다 그렸으면 다음 버튼!</li>
+              <li>🟥 그만두면 처음부터 다시 시작!</li>
+            </ul>
+            <button
+              className="modal-button confirm"
+              onClick={() => setShowGuide(false)}
+            >
+              알겠어요!
+            </button>
           </div>
         </div>
       )}

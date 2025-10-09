@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../contexts/UserContext";
 import ResultCard from "../../components/ResultCard";
 import { downloadPdf } from "../../utils/pdfUtils";
+import axios from "axios";
 
 import "./ResultPage.css";
 
@@ -113,7 +114,7 @@ export default function ResultPage() {
       `${window.location.protocol}//${window.location.hostname}:5000`;
 
     axios
-      .get(`${API_BASE}/api/user/${userId}`)
+      .get(`${API_BASE}/api/sessions/${userId}`)
       .then((res) => {
         const data = res.data;
         setUserData((prev) => ({
