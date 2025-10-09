@@ -34,7 +34,7 @@ export default function Home() {
         <div className="logo" onClick={() => navigate("/")}></div>
         <div className="spacer" />
         <div className="inquiry" onClick={openModal}>
-          <img src="/images/contact.png" alt="contact" className="contact" />
+          <img src="/images/help.png" alt="contact" className="contact" />
         </div>
       </header>
 

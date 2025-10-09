@@ -55,9 +55,9 @@ export default function RotateResultIntro() {
           target?.analysis?.extraQuestion || target?.extraQuestion || "";
         const previousDrawing = target?.path || "";
 
-        console.log("🎯 2단계 대상:", firstTargetType);
-        console.log("💬 추가 질문:", backendQuestion);
-        console.log("🖼 이전 그림 경로:", previousDrawing);
+        // console.log("🎯 2단계 대상:", firstTargetType);
+        // console.log("💬 추가 질문:", backendQuestion);
+        // console.log("🖼 이전 그림 경로:", previousDrawing);
 
         // 세션 저장 (다음 단계들용)
         sessionStorage.setItem("step2_targets", JSON.stringify(uniqueStep2));

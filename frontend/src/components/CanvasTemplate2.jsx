@@ -7,7 +7,7 @@ import { useUserContext } from "../contexts/UserContext.jsx";
 import Palette from "../pages/Test/step2/Palette.jsx";
 import QuestionModal from "../pages/Test/step2/QuestionModal.jsx";
 import { colorPalette } from "../utils/colorPalette.js";
-import "./CanvasTemplate.css";
+import "./CanvasTemplate2.css";
 
 export default function CanvasTemplate({
   drawingType,
@@ -184,11 +184,7 @@ export default function CanvasTemplate({
                   height: drawingType === "house" ? "150px" : "220px",
                 }}
               >
-                {previousDrawing && (
-                  <div className="preview-box">
-                    <img src={previousDrawing} alt="이전 그림" />
-                  </div>
-                )}
+              {previousDrawing && <img src={previousDrawing} alt="이전 그림" />}
               </div>
 
               <div
@@ -196,7 +192,7 @@ export default function CanvasTemplate({
                 style={{
                   top: "50%",
                   left: "calc(50% + 550px)",
-                  transform: "translateY(-20%)",
+                  transform: "translateY(-10%)",
                 }}
               >
                 <Palette

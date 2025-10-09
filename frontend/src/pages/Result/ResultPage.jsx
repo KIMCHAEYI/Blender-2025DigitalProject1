@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../contexts/UserContext";
 import ResultCard from "../../components/ResultCard";
 import { downloadPdf } from "../../utils/pdfUtils";
+import axios from "axios";
 
 import "./ResultPage.css";
 
@@ -40,29 +41,35 @@ const mapSubtype = (s) => {
 };
 
 /** normalize */
-const normalizeDrawings = (raw = {}) => {
+const normalizeDrawings = (raw = []) => {
   const out = {};
-  const list = Array.isArray(raw)
-    ? raw
-    : Object.entries(raw).map(([k, v]) => ({ ...v, _key: k }));
+  const list = Array.isArray(raw) ? raw : Object.values(raw);
 
-  const normalizeUrl = (url) =>
-    url && !url.startsWith("http")
-      ? `http://172.20.6.160:5000/${url.replace(/^\/+/, "")}`
-      : url;
+  const normalizeUrl = (url) => {
+    if (!url) return "";
+    if (/^(https?:)?\/\//i.test(url) || /^data:|^blob:/i.test(url)) return url;
+    const API_BASE =
+      import.meta.env.VITE_API_BASE ||
+      `${window.location.protocol}//${window.location.hostname}:5000`;
+    const cleanPath = url.replace(/^\/+/, "");
+    return `${API_BASE}/${cleanPath}`;
+  };
 
   for (const item of list) {
     const key = item.type || item._key || "unknown";
+    const res = item.result || {};
 
     out[key] = {
       ...item,
       type: key,
       image: normalizeUrl(item.path),
-      yolo: item.bbox_url ? { image: normalizeUrl(item.bbox_url) } : null,
-      analysis: Array.isArray(item.analysis)
-        ? item.analysis
-        : item.analysis?.analysis || [],
-      counselor_summary: item.counselor_summary || "",
+      yolo: res.bbox_url ? { image: normalizeUrl(res.bbox_url) } : null,
+      analysis: Array.isArray(res.analysis)
+        ? res.analysis
+        : res.analysis?.analysis || [],
+      counselor_summary: res.counselor_summary || "",
+      colorAnalysis: res.colorAnalysis || {},
+      extraQuestion: res.analysis?.extraQuestion || "",
     };
   }
 
@@ -91,6 +98,34 @@ const formatDuration = (seconds) => {
 export default function ResultPage() {
   const navigate = useNavigate();
   const { userData, setUserData } = useUserContext();
+  const [loading, setLoading] = useState(true);
+  const [downloading, setDownloading] = useState(false);
+
+  useEffect(() => {
+    const userId = userData?.session_id || sessionStorage.getItem("user_id");
+    if (!userId) {
+      console.warn("❌ user_id 없음, 로그인 필요");
+      setLoading(false);
+      return;
+    }
+
+    const API_BASE =
+      import.meta.env.VITE_API_BASE ||
+      `${window.location.protocol}//${window.location.hostname}:5000`;
+
+    axios
+      .get(`${API_BASE}/api/sessions/${userId}`)
+      .then((res) => {
+        const data = res.data;
+        setUserData((prev) => ({
+          ...(prev || {}),
+          ...data, // 전체 사용자 정보 갱신
+        }));
+      })
+      .catch((err) => console.error("❌ 사용자 데이터 불러오기 실패:", err))
+      .finally(() => setLoading(false));
+  }, []);
+
   const safeUser = userData ?? {
     name: "-",
     gender: "-",
@@ -115,7 +150,9 @@ export default function ResultPage() {
     );
   }, [drawingsNormalized]);
 
-  const [downloading, setDownloading] = useState(false);
+  if (loading) {
+    return <div className="loading">분석 결과 불러오는 중...</div>;
+  }
 
   return (
     <div className="result-mobile">
@@ -130,7 +167,7 @@ export default function ResultPage() {
       {/* 진단 카드 */}
       <section className="diagnosis-card">
         <div className="diagnosis-text">
-          {safeUser.diagnosis || "(진단 내용 준비 중)"}
+          {safeUser.diagnosis_summary || "(진단 내용 준비 중)"}
         </div>
       </section>
 

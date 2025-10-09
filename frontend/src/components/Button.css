@@ -60,11 +60,6 @@
   box-shadow: 0 6px 0 #2f4b84;
 }
 
-.btn-nextblue:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 14px rgba(0, 0, 0, 0.3);
-}
-
 .btn-nextblue:active {
   transform: translateY(3px);
   box-shadow: 0 2px 0 #2f4b84;

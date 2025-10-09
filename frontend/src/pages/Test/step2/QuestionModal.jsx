@@ -21,7 +21,7 @@ export default function QuestionModal({ isOpen, onClose, question }) {
           <p className="highlight-text">{question || fallbackQuestion}</p>
 
         <ul className="modal-guide">
-          <li>🎨 색깔은 자유롭게 골라 사용할 수 있어요.</li>
+          <li>🎨 색깔을 자유롭게 골라 사용할 수 있어요.</li>
           <li>✏️ 굵기는 원하는 두께로 바꿔 그려보세요.</li>
           <li>↩️ 되돌리기 버튼으로 방금 그린 선을 지울 수 있어요.</li>
           <li>🗑 처음부터 버튼으로 전부 지울 수도 있어요.</li>
