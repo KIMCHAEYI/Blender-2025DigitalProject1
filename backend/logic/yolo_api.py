@@ -98,11 +98,12 @@ async def analyze_drawing(drawing_type: str, image: UploadFile = File(...)):
     results = await run_in_threadpool(model, img)
     objects = await run_in_threadpool(_infer_sync, model, img)
 
-    # 3️⃣ YOLO bbox 시각화 이미지(base64로 변환)
+    # 3️⃣ YOLO bbox 시각화 이미지 저장 (base64 대신 파일로 저장)
+    from backend.results_yolo.save_bbox import save_bbox_image
+
     rendered = results.render()[0]  # YOLO가 그린 bbox 이미지 (numpy BGR)
-    _, buffer = cv2.imencode(".png", rendered)
-    bbox_b64 = base64.b64encode(buffer).decode("utf-8")
-    bbox_url = f"data:image/png;base64,{bbox_b64}"
+    bbox_url = save_bbox_image(rendered, drawing_type)
+
 
     # 4️⃣ 로그 및 응답
     log.info(f"POST /analyze/{drawing_type} -> {len(objects)} objs in {time.time()-t0:.2f}s")
