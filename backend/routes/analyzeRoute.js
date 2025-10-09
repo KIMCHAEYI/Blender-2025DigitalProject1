@@ -1,9 +1,11 @@
 const { interpretMultipleDrawings } = require("../logic/gptPrompt");
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 const { runYOLOAnalysis } = require("../logic/yoloRunner");
 const { interpretYOLOResult } = require("../logic/analyzeResult"); 
 
+const DB_FILE = path.join(__dirname, "../models/db.json");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -44,12 +46,48 @@ router.get("/", async (req, res) => {
       subtype: rawType,
       need_step2: needStep2,
       targets: step2Targets,
+      step: analysis.step,
+      extraQuestion: analysis.extraQuestion || null,  // ✅ 추가
     });
+
   } catch (err) {
     console.error("분석 실패:", err);
     res.status(500).json({ error: "YOLO 분석 실패", detail: err.message });
   }
 });
+
+// 모든 그림 한번에 분석
+router.get("/session/:session_id", async (req, res) => {
+  const { session_id } = req.params;
+  const db = JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
+  const session = db.find((s) => s.id === session_id);
+  if (!session) return res.status(404).json({ error: "세션 없음" });
+
+  const results = [];
+
+  for (const drawing of session.drawings) {
+  const fileName = drawing.file_name || drawing.filename; // 🔹 유연하게 처리
+
+  if (!fileName) {
+    console.error(`[ERROR] 그림 파일명 없음: type=${drawing.type}`);
+    continue; // 파일명 없는 데이터는 건너뜀 (서버 크래시 방지)
+  }
+
+  const imgPath = path.join(__dirname, "../uploads", fileName);
+  const yolo = await runYOLOAnalysis(imgPath, drawing.type);
+  const analysis = interpretYOLOResult(yolo, drawing.type);
+
+  results.push({
+    type: drawing.type,
+    analysis,
+    path: drawing.path,
+    step: analysis.step,
+    extraQuestion: analysis.extraQuestion || null,
+  });
+}
+  res.json({ session_id, results });
+});
+
 
 router.post("/", async (req, res) => {
   try {
@@ -98,6 +136,12 @@ router.post("/overall", async (req, res) => {
     if (!Array.isArray(drawings) || drawings.length === 0) {
       return res.status(400).json({ error: "drawings 배열이 필요합니다." });
     }
+
+    // ✅ 추가: 터미널에서 성별 값 확인용 로그
+    // console.log("🎯 [성별 확인 - analyzeRoute]");
+    // console.log("사용자 성별(gender):", gender);
+    // console.log("먼저 그릴 성별(first_gender):", first_gender);
+    // console.log("--------------------------------------------");
 
     // GPT로 전체 종합 생성
     const overall = await interpretMultipleDrawings(drawings, {

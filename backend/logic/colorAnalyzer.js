@@ -2,7 +2,6 @@ const { createCanvas, loadImage } = require("canvas");
 const path = require("path");
 const fs = require("fs");
 
-// 🎨 팔레트 정의
 const palette = {
   "빨강": [255, 0, 0],
   "분홍": [255, 105, 180],

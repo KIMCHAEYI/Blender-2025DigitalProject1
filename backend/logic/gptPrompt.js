@@ -1,9 +1,8 @@
-// backend/logic/gptPrompt.js — detailed synthesis with name & JSON
+// backend/logic/gptPrompt.js 
 require("dotenv").config();
 const OpenAI = require("openai");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// person_male/female → 키 보정
 const keyOf = (type, subtype) => {
   if (type === "person") {
     if (subtype === "person_male") return "person_male";
@@ -14,7 +13,6 @@ const keyOf = (type, subtype) => {
   return type; // house | tree | person
 };
 
-// 입력 items → 프롬프트 블록
 function blocksFrom(items) {
   return items
     .map((it, i) => {
@@ -27,7 +25,6 @@ ${lines.length ? lines.join("\n") : "(해석 없음)"}`;
     .join("\n\n");
 }
 
-// 메시지 생성 (이름을 넣으면 첫 문장을 "{이름}님은..."으로 시작하도록 강제)
 function buildMessages(items, name) {
   const blocks = blocksFrom(items);
   const nameLine = name ? `이름: ${name}\n\n` : "";
@@ -82,11 +79,6 @@ function safeParseJSON(s) {
   }
 }
 
-/**
- * drawings: [{ type, result: { analysis:[{label,meaning}], subtype? } }, ...]
- * opts: { name?: string, model?, temperature?, max_tokens? }
- * return: { personalized_overall, per_drawing, raw }
- */
 async function summarizeDrawingForCounselor(draw, opts = {}) {
   const name = (opts.name || "").trim();
   const type = draw?.type || "unknown";
@@ -95,7 +87,6 @@ async function summarizeDrawingForCounselor(draw, opts = {}) {
     ? draw.result.analysis
     : [];
 
-  // 룰 해석 텍스트를 '근거 재료'로만 사용(라벨은 밖으로 내지 않게)
   const bullets = analysis
     .map((a) => `- ${a.meaning || ""}`.trim())
     .filter(Boolean)
@@ -156,13 +147,10 @@ async function interpretMultipleDrawings(drawings, opts = {}) {
 
 
 // ========= 2) 그림별 요약들을 모아 전체 종합 =========
-// entries: Array<{ type, summary }>  // summary는 위 함수 결과
-// opts: { name?: string }
-// return: { personalized_overall, per_drawing }
 async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
   const name = (opts.name || "").trim();
   const firstGender = opts.first_gender || null;
-  const userGender = opts.gender || null;   // 🔹 사용자 성별 추가
+  const userGender = opts.gender || null;  
 
   const perMap = {};
   for (const e of entries) {
@@ -180,7 +168,7 @@ async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
     ? `첫 문장은 반드시 "${name}님은 ..."으로 시작하라.`
     : "첫 문장은 내담자의 특성을 한 문장으로 요약하라.";
 
-  // 🔹 성별 선택 해석 규칙
+  // 성별 선택 해석 규칙
   let genderNote = "";
   if (firstGender && userGender) {
     if (firstGender === userGender) {
@@ -194,8 +182,8 @@ async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
 
   const { choices } = await openai.chat.completions.create({
   model: process.env.OPENAI_MODEL || "gpt-4o-mini",
-  temperature: 0.35,           // 🔹 약간 더 다양하게
-  max_tokens: 1500,            // 🔹 문장 수 늘릴 수 있게 토큰 여유 확보
+  temperature: 0.35,           
+  max_tokens: 1500,           
   messages: [
     {
       role: "system",
@@ -247,8 +235,8 @@ ${perList || "(없음)"}`,
   const diagnosis_summary = await generateDiagnosisSummary(overall_summary);
 
   return {
-    diagnosis_summary,  // 🆕 전문가 진단 필요 여부
-    overall_summary,     // 기존 personalized_overall
+    diagnosis_summary,  
+    overall_summary,   
     per_drawing: parsed.per_drawing || perMap,
   };
 }

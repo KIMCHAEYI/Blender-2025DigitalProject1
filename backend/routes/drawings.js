@@ -62,18 +62,32 @@ const upload = multer({ storage });
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1) 업로드 + 백그라운드 YOLO 분석
-//    POST /api/drawings/upload  (form-data: drawing(file), type(text), session_id(text))
 // ─────────────────────────────────────────────────────────────────────────────
 router.post("/upload", upload.single("drawing"), (req, res) => {
-  const { session_id, type, eraseCount, resetCount, duration } = req.body;
+  //const { session_id, type, eraseCount, resetCount, duration } = req.body;
+  //✅ first_gender 추가로 받아옴
+  const { session_id, type, eraseCount, resetCount, duration, first_gender } = req.body;
+
   if (!session_id || !type || !req.file) {
     return res.status(400).json({ message: "session_id, type, drawing 필수" });
   }
+
+  // const filename = req.file.filename;
+  // const relPath = "/uploads/" + filename;
+  // const absPath = req.file.path;
+  // const now = new Date().toISOString();
 
   const filename = req.file.filename;
   const relPath = "/uploads/" + filename;
   const absPath = req.file.path;
   const now = new Date().toISOString();
+
+  // ✅ 업로드 직후 req.body에서 필요한 값 캐시 (백그라운드에서 req.body가 사라지는 문제 해결)
+  const cachedFirstGender = first_gender || null;
+  const cachedPenUsage =
+    typeof req.body.penUsage === "string"
+      ? JSON.parse(req.body.penUsage)
+      : req.body.penUsage || null;
 
   const db = readDB();
   const session = db.find((s) => s.id === session_id);
@@ -105,7 +119,9 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
     path: relPath,
   });
 
-  // ── 백그라운드 분석 시작 ───────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// 백그라운드 분석 시작
+// ─────────────────────────────────────────────────────────────────────────────
   process.nextTick(async () => {
     try {
       // 상태: processing
@@ -125,13 +141,17 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
       console.log("[DEBUG] YOLO 호출 absPath:", absPath, fs.existsSync(absPath));
 
       // ✅ 기존 interpretYOLOResult 호출 부분을 아래처럼 수정 10월 9일
-      const penUsage =
-        typeof req.body.penUsage === "string"
-          ? JSON.parse(req.body.penUsage)
-          : req.body.penUsage || null;
+      // const penUsage =
+      //   typeof req.body.penUsage === "string"
+      //     ? JSON.parse(req.body.penUsage)
+      //     : req.body.penUsage || null;
 
-      const firstGender =
-        req.body.first_gender || req.body.firstGender || null;
+      // const firstGender =
+      //   req.body.first_gender || req.body.firstGender || null;
+
+      //✅ 캐시된 값으로 교체 (req.body는 이미 비어 있음)
+        const penUsage = cachedPenUsage;
+        const firstGender = cachedFirstGender;
 
       // 룰 해석 → 객체별 meaning 생성(라벨/위치/면적 기준)
       const analysis = interpretYOLOResult(
@@ -145,6 +165,7 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
       // ✅ 세션 정보 업데이트 (first_gender를 세션에 반영)
       if (firstGender && session) {
         session.first_gender = firstGender;
+        writeDB(db); // ✅ 세션 업데이트 즉시 저장 (GPT 종합 시 반영되도록)
       }      
 
       // 결과 저장 (남/여는 subtype으로 보존)

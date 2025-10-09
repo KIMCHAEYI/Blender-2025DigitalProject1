@@ -24,7 +24,7 @@ async function runYOLOAnalysis(imagePath, type = "house") {
       headers: form.getHeaders(),
       maxBodyLength: Infinity,
       maxContentLength: Infinity,
-      timeout: 30000,
+      timeout: 60000,
     });
     return resp.data;
   } catch (err) {

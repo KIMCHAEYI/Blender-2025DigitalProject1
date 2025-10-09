@@ -19,6 +19,7 @@ const DB_FILE = path.join(__dirname, "../models/db.json");
 
 console.log("✅ sessions.js loaded");
 
+
 // -----------------------
 // 1. 검사 시작
 // -----------------------
@@ -59,6 +60,7 @@ router.post("/start", async (req, res) => {
   }
 });
 
+
 // -----------------------
 // 2. 검사 결과 조회
 // -----------------------
@@ -97,6 +99,7 @@ router.post("/find", async (req, res) => {
   }
 });
 
+
 // -----------------------
 // 3. 그림 업로드 (파일만 저장)
 // -----------------------
@@ -110,57 +113,9 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// router.post("/upload-drawing", upload.single("drawing"), (req, res) => {
-//   console.log("📥 req.body =", req.body);
-//   console.log("📂 req.file =", req.file?.filename);
-
-//   console.log("📥 업로드 도착:", req.body);   
-//   console.log("📂 파일:", req.file);
-
-//   const { session_id, type, eraseCount, resetCount, duration } = req.body;
-
-//   if (!req.file) {
-//     return res.status(400).json({ message: "그림 파일이 없습니다." });
-//   }
-
-//   // DB 읽기
-//   const db = fs.existsSync(DB_FILE) ? JSON.parse(fs.readFileSync(DB_FILE, "utf-8")) : [];
-//   const session = db.find((s) => s.id === session_id);
-
-//   if (!session) {
-//     return res.status(404).json({ message: "세션을 찾을 수 없습니다." });
-//   }
-
-//   // 새로운 그림 데이터
-//   const newDrawing = {
-//     id: Date.now().toString(), // 고유 ID
-//     type,
-//     filename: req.file.filename,
-//     path: "/uploads/" + req.file.filename,
-//     absPath: req.file.path,
-//     erase_count: Number(eraseCount) || 0,   // ← 지우개 사용 횟수
-//     reset_count: Number(resetCount) || 0,   // ← 다시 그리기 횟수
-//     duration: Number(duration) || 0,        // ← 걸린 시간(초)
-//     status: "uploaded",
-//     result: null,
-//     createdAt: new Date().toISOString(),
-//     updatedAt: new Date().toISOString(),
-//   };
-
-//   // 세션에 추가
-//   if (!session.drawings) session.drawings = [];
-//   session.drawings.push(newDrawing);
-//   fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
-
-//   res.status(200).json({
-//     message: "그림이 성공적으로 업로드되었습니다.",
-//     drawing: newDrawing,
-//   });
-// });
-
 
 // -----------------------
-// 4. (샘플) 저장된 이미지 한 장을 YOLO+룰 해석해보기
+// 4. 저장된 이미지 한 장을 YOLO+룰 해석해보기
 // -----------------------
 router.post("/analyze-saved-drawing", async (req, res) => {
   try {
@@ -252,7 +207,7 @@ router.post("/generate-pdf", async (req, res) => {
 });
 
 // -----------------------
-// 🔹 먼저 그릴 성별(first_gender) 업데이트 10월 9일 추가
+// 7. 먼저 그릴 성별(first_gender) 
 // -----------------------
 router.post("/update-first-gender", (req, res) => {
   const { session_id, first_gender } = req.body;
@@ -275,7 +230,6 @@ router.post("/update-first-gender", (req, res) => {
       return res.status(404).json({ message: "세션을 찾을 수 없습니다." });
     }
 
-    // ✅ DB 업데이트
     session.first_gender = first_gender;
     session.updatedAt = new Date().toISOString();
 
@@ -290,6 +244,47 @@ router.post("/update-first-gender", (req, res) => {
   } catch (err) {
     console.error("❌ first_gender 업데이트 실패:", err.message);
     res.status(500).json({ message: "서버 오류로 업데이트 실패" });
+  }
+});
+
+
+// -----------------------
+// 8. 업로드된 그림을 DB에 반영
+// -----------------------
+router.post("/upload", upload.single("image"), (req, res) => {
+  const { session_id, type } = req.body;
+
+  if (!req.file) {
+    return res.status(400).json({ message: "파일이 업로드되지 않았습니다." });
+  }
+  if (!session_id || !type) {
+    return res.status(400).json({ message: "session_id와 type이 필요합니다." });
+  }
+
+  try {
+    const db = JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
+    const session = db.find((s) => s.id === session_id);
+
+    if (!session) {
+      return res.status(404).json({ message: "세션을 찾을 수 없습니다." });
+    }
+
+    // 새로운 그림 객체 추가
+    const newDrawing = {
+      type,
+      file_name: req.file.filename,
+      path: `/uploads/${req.file.filename}`,
+      uploadedAt: new Date().toISOString(),
+    };
+
+    session.drawings.push(newDrawing);
+    fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+
+    console.log(`✅ [그림 업로드 완료] ${type} → ${req.file.filename}`);
+    res.json({ message: "그림 업로드 완료", drawing: newDrawing });
+  } catch (err) {
+    console.error("❌ 그림 업로드 처리 실패:", err);
+    res.status(500).json({ message: "서버 오류로 업로드 실패" });
   }
 });
 
