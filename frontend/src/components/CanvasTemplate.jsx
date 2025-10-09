@@ -6,6 +6,7 @@ import axios from "axios";
 import { useUserContext } from "../contexts/UserContext.jsx";
 import { generateSafePngFileName } from "../utils/generateFileName.js";
 import { dataURLtoFile } from "../utils/dataURLtoFile";
+
 import "./CanvasTemplate.css";
 
 // ===== API BASE (ENV 없으면 same-origin → Vite 프록시 경유) =====
@@ -89,9 +90,9 @@ export default function CanvasTemplate({
     sessionStorage.getItem("session_id") ||
     sessionStorage.getItem("user_id");
 
-  useEffect(() => {
-    console.log("현재 펜 사용 내역:", penUsageHistory);
-  }, [penUsageHistory]);
+  // useEffect(() => {
+  //   console.log("현재 펜 사용 내역:", penUsageHistory);
+  // }, [penUsageHistory]);
 
   // 모달 안내
   useEffect(() => {
@@ -159,6 +160,7 @@ export default function CanvasTemplate({
   const handleNextClick = () => setShowSubmitModal(true);
 
   // 업로드 후 바로 다음 화면으로
+  // 업로드 + sessionStorage 저장 + 다음 이동
   const handleNext = async () => {
     if (!stageRef.current) return;
 
@@ -169,18 +171,15 @@ export default function CanvasTemplate({
     }
 
     try {
-      // 캔버스 → 파일
+      // ====== 그림 캡처 ======
       const dataURL = stageRef.current.toDataURL({ pixelRatio: 2 });
       const fileName = generateSafePngFileName(userData || {}, drawingType);
       const file = dataURLtoFile(dataURL, fileName);
 
-      // 사람(남/여) → 서버는 type=person + subtype
       const isPM = drawingType === "person_male";
       const isPF = drawingType === "person_female";
       const typeForServer = isPM || isPF ? "person" : drawingType;
       const subtypeForServer = isPM ? "male" : isPF ? "female" : "";
-
-      // 저장 키(카드에서 쓰는 키): person → person_male/female 로 강제 분기
       let outKey = drawingType;
       if (drawingType === "person") {
         if (subtypeForServer) outKey = `person_${subtypeForServer}`;
@@ -190,28 +189,31 @@ export default function CanvasTemplate({
           outKey = "person_female";
       }
 
-      // 업로드 폼
+      const first_gender = localStorage.getItem("firstGender");
       const formData = new FormData();
       formData.append("drawing", file);
       formData.append("type", typeForServer);
       if (subtypeForServer) formData.append("subtype", subtypeForServer);
       formData.append("session_id", sid);
-
       formData.append("eraseCount", String(eraseCount));
       formData.append("resetCount", String(resetCount));
       formData.append(
         "duration",
         String(Math.floor((Date.now() - startTime) / 1000))
       );
+      formData.append("first_gender", first_gender);
+      formData.append("penUsage", JSON.stringify(penUsageHistory));
 
+      // ====== 업로드 요청 ======
       const uploadRes = await axios.post(
-        "http://172.20.12.234:5000/api/drawings/upload",
+        `${API_BASE}/api/drawings/upload`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      formData.append("penUsage", JSON.stringify(penUsageHistory));
 
       const data = uploadRes?.data || {};
+      console.log("✅ 업로드 응답:", data);
+
       const imagePath =
         data.path ||
         data.image ||
@@ -219,7 +221,6 @@ export default function CanvasTemplate({
         data.result?.image ||
         data.result?.path ||
         "";
-
       const drawingId =
         data.drawing_id ||
         data.id ||
@@ -227,7 +228,15 @@ export default function CanvasTemplate({
         data.result?.id ||
         null;
 
-      // 업로드 성공 → 결과 기다리지 말고 바로 다음 화면으로 이동
+      const uploadedFile = imagePath?.split("/").pop() || file.name || fileName;
+      sessionStorage.setItem("latest_file", uploadedFile);
+      sessionStorage.setItem("latest_type", drawingType);
+      console.log("💾 latest_file 저장됨:", uploadedFile);
+      console.log("💾 latest_type 저장됨:", drawingType);
+
+      await new Promise((r) => setTimeout(r, 300));
+
+      // 사용자 정보 업데이트
       setUserData((prev) => ({
         ...(prev || {}),
         session_id: sid || prev?.session_id,
@@ -238,12 +247,24 @@ export default function CanvasTemplate({
             eraseCount,
             resetCount,
             duration: Math.floor((Date.now() - startTime) / 1000),
-            drawing_id: drawingId, // ResultPage 폴링용
+            drawing_id: drawingId,
           },
         },
       }));
 
-      navigate(nextRoute);
+      // ✅ 이동 분기
+      // 1️⃣ 1단계 (house/tree/person 계열): nextRoute로 이동
+      // 2️⃣ 2단계 (step2_ prefix로 된 라우트): 결과분기(/result/rotate)
+      if (nextRoute && nextRoute.includes("step2")) {
+        console.log("➡️ 2단계 완료 → 결과분기로 이동");
+        navigate("/result/rotate");
+      } else if (nextRoute) {
+        console.log("➡️ 1단계 완료 → 다음 라우트로 이동:", nextRoute);
+        navigate(nextRoute);
+      } else {
+        console.log("⚠️ nextRoute 없음 → 결과분기로 기본 이동");
+        navigate("/result/rotate");
+      }
     } catch (err) {
       console.error("업로드 실패:", err?.response?.data || err.message);
       alert("그림 업로드에 실패했습니다.");
