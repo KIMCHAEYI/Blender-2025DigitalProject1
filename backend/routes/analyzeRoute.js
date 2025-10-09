@@ -1,5 +1,4 @@
 const { interpretMultipleDrawings } = require("../logic/gptPrompt");
-
 const express = require("express");
 const path = require("path");
 const { runYOLOAnalysis } = require("../logic/yoloRunner");
@@ -14,20 +13,34 @@ router.get("/", async (req, res) => {
     return res.status(400).json({ error: "file과 type 쿼리값이 필요합니다" });
   }
 
-  const imagePath = path.join(__dirname, "../uploads", fileName); // 절대경로
+  const imagePath = path.join(__dirname, "../uploads", fileName);
+
   try {
-    // 남/여 → YOLO용 타입 정규화
+    // YOLO 실행
     const typeForYolo =
       rawType === "person_male" || rawType === "person_female"
         ? "person"
         : rawType;
-    const yoloResult = await runYOLOAnalysis(imagePath, typeForYolo); // { objects: [...] }
+    const yoloResult = await runYOLOAnalysis(imagePath, typeForYolo);
+
+    // 분석 결과 해석
     const analysis = interpretYOLOResult(yoloResult, typeForYolo);
-    // 응답에 subtype(원래 요청 타입) 보존
+
+    // 🧩 2단계 판단 로직 통합
+    // 누락된 객체나 불완전 요소가 있으면 2단계 필요로 판단
+    const missingObjects = analysis.missingObjects || [];
+    const lowConfidence = analysis.lowConfidence || [];
+    const needStep2 = missingObjects.length > 0 || lowConfidence.length > 0;
+
+    const step2Targets = needStep2 ? [typeForYolo] : [];
+
+    // 응답 확장
     res.json({
       objects: yoloResult.objects,
       analysis,
       subtype: rawType,
+      need_step2: needStep2,
+      targets: step2Targets,
     });
   } catch (err) {
     console.error("분석 실패:", err);
@@ -97,5 +110,36 @@ router.post("/overall", async (req, res) => {
     res.status(500).json({ error: "전체 종합 실패", detail: err.message });
   }
 });
+
+// ✅ 분석 완료 상태 확인용 API
+router.get("/status", async (req, res) => {
+  const { session_id, type } = req.query;
+  if (!session_id || !type)
+    return res.status(400).json({ error: "session_id, type 필수" });
+
+  try {
+    // 분석 결과 파일 혹은 DB 상태 확인 로직 (예시)
+    const resultPath = path.join(
+      __dirname,
+      "../results",
+      `${session_id}_${type}.json`
+    );
+
+    if (fs.existsSync(resultPath)) {
+      const result = JSON.parse(fs.readFileSync(resultPath, "utf-8"));
+      return res.json({
+        status: "ready",
+        need_step2: result.need_step2 ?? false,
+        targets: result.targets ?? [],
+      });
+    } else {
+      return res.json({ status: "pending" });
+    }
+  } catch (err) {
+    console.error("분석 상태 확인 실패:", err);
+    res.status(500).json({ error: "status check failed" });
+  }
+});
+
 
 module.exports = router;

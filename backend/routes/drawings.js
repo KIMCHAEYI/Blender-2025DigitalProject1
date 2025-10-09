@@ -193,23 +193,12 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
           writeDB(dbAfter);
 
           // 콘솔 출력
-          console.log(
-            `\n================= 🧠 전체 종합(세션=${session_id}) =================`
-          );
-
-          console.log(overall.personalized_overall || "(없음)");
-          if (overall.strengths?.length) {
-            console.log("\n✅ Strengths");
-            overall.strengths.forEach((s) => console.log("- " + s));
-          }
-          if (overall.cautions?.length) {
-            console.log("\n⚠️  Cautions");
-            overall.cautions.forEach((c) => console.log("- " + c));
-          }
+          console.log("\n================= 🧠 전체 종합(세션=" + session_id + ") =================");
+          console.log(overall.overall_summary || "(없음)");
+          console.log("🩺 진단 요약:", overall.diagnosis_summary || "(없음)");
           console.log("\n🖼 Per Drawing 요약 →", overall.per_drawing);
-          console.log(
-            "=========================================================\n"
-          );
+          console.log("=========================================================\n");
+
         } else {
           console.log(
             `[GPT 전체 종합 대기] 현재 완료 ${doneDrawings.length}/4`

@@ -168,9 +168,9 @@ for (const r of rulesForType) {
   let extraQuestion = null;
 
   if (
-    (drawingType === "house" && detectedObjects.length <= 10) ||
-    (drawingType === "tree" && detectedObjects.length <= 5) ||
-    (drawingType === "person" && detectedObjects.length <= 5)
+    (drawingType === "house" && detectedObjects.length <= 15) ||
+    (drawingType === "tree" && detectedObjects.length <= 10) ||
+    (drawingType === "person" && detectedObjects.length <= 10)
   ) {
     step = 2;
 
