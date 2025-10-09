@@ -159,61 +159,6 @@
   z-index: 300;
 }
 
-/* 모달 공통 */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-.modal-content {
-  background: white;
-  padding: 24px;
-  border-radius: 16px;
-  text-align: center;
-}
-.modal-buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  margin-top: 20px;
-  flex-wrap: nowrap;
-}
-.modal-button {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 16px;
-  border-radius: 8px;
-  width: 250px;
-}
-.modal-button.confirm {
-  background-color: #3b82f6;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: none;
-}
-.modal-button.confirm:active {
-  background-color: #2563eb;
-  transform: scale(0.97);
-}
-.modal-button.cancel {
-  background-color: #d8d8d8;
-  color: black;
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: none;
-}
-.modal-button.cancel:active {
-  background-color: #e5e7eb;
-  transform: scale(0.97);
-}
-
 /* 🎨 Step2 이전 그림 미리보기용 박스 */
 .preview-box {
   position: absolute;

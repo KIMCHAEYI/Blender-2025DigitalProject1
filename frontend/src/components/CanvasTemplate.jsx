@@ -165,19 +165,23 @@ export default function CanvasTemplate({
   const handleCancelConfirm = () => navigate("/");
   const handleNextClick = () => setShowSubmitModal(true);
 
-  // 업로드 후 바로 다음 화면으로
-  // 업로드 + sessionStorage 저장 + 다음 이동
   const handleNext = async () => {
     if (!stageRef.current) return;
 
-    const sid = getSessionId();
+    // ✅ session_id 확보 (Context → sessionStorage fallback)
+    const sid =
+      userData?.session_id ||
+      sessionStorage.getItem("session_id") ||
+      sessionStorage.getItem("user_id");
+
     if (!sid) {
       alert("세션이 없습니다. 검사 시작(로그인/정보 입력)부터 해주세요.");
+      navigate("/");
       return;
     }
 
     try {
-      // ====== 그림 캡처 ======
+      // 1️⃣ 그림 캡처
       const dataURL = stageRef.current.toDataURL({ pixelRatio: 2 });
       const fileName = generateSafePngFileName(userData || {}, drawingType);
       const file = dataURLtoFile(dataURL, fileName);
@@ -196,9 +200,11 @@ export default function CanvasTemplate({
       }
 
       const first_gender = localStorage.getItem("firstGender");
+
+      // 2️⃣ 업로드 준비
       const formData = new FormData();
       formData.append("drawing", file);
-      formData.append("type", typeForServer);
+      formData.append("type", outKey || typeForServer);
       if (subtypeForServer) formData.append("subtype", subtypeForServer);
       formData.append("session_id", sid);
       formData.append("eraseCount", String(eraseCount));
@@ -210,15 +216,16 @@ export default function CanvasTemplate({
       formData.append("first_gender", first_gender);
       formData.append("penUsage", JSON.stringify(penUsageHistory));
 
-      // ====== 업로드 요청 ======
+      console.log("📤 업로드 시작:", drawingType);
       const uploadRes = await axios.post(
         `${API_BASE}/api/drawings/upload`,
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
       );
-
       const data = uploadRes?.data || {};
-      console.log("✅ 업로드 응답:", data);
+      console.log("✅ 업로드 완료:", data);
 
       const imagePath =
         data.path ||
@@ -234,18 +241,30 @@ export default function CanvasTemplate({
         data.result?.id ||
         null;
 
-      // const uploadedFile = imagePath?.split("/").pop() || file.name || fileName;
-      // sessionStorage.setItem("latest_file", uploadedFile);
-      // sessionStorage.setItem("latest_type", drawingType);
-      // console.log("💾 latest_file 저장됨:", uploadedFile);
-      // console.log("💾 latest_type 저장됨:", drawingType);
+      // ✅ 3️⃣ 파일 시스템 반영 최소 대기
+      await new Promise((r) => setTimeout(r, 150));
 
-      await new Promise((r) => setTimeout(r, 300));
+      // ✅ 4️⃣ YOLO 분석 요청 (1회 시도 + 1회 재시도)
+      const fileOnly = imagePath.split("/").pop();
+      const analyze = async () =>
+        await axios.get(`${API_BASE}/api/analyze`, {
+          params: { file: fileOnly, type: typeForServer },
+          timeout: 15000,
+        });
 
-      // 사용자 정보 업데이트
+      try {
+        console.log("🧠 YOLO 분석 요청:", fileOnly);
+        await analyze();
+      } catch {
+        console.warn("⚠️ YOLO 첫 시도 실패 → 200ms 후 재시도");
+        await new Promise((r) => setTimeout(r, 200));
+        await analyze();
+      }
+
+      // ✅ 5️⃣ 사용자 데이터 업데이트
       setUserData((prev) => ({
         ...(prev || {}),
-        session_id: sid || prev?.session_id,
+        session_id: sid,
         drawings: {
           ...(prev?.drawings || {}),
           [outKey]: {
@@ -258,22 +277,13 @@ export default function CanvasTemplate({
         },
       }));
 
-      // ✅ 이동 분기
-      // 1️⃣ 1단계 (house/tree/person 계열): nextRoute로 이동
-      // 2️⃣ 2단계 (step2_ prefix로 된 라우트): 결과분기(/result/rotate)
-      if (nextRoute && nextRoute.includes("step2")) {
-        console.log("➡️ 2단계 완료 → 결과분기로 이동");
-        navigate("/result/rotate");
-      } else if (nextRoute) {
-        //console.log("➡️ 1단계 완료 → 다음 라우트로 이동:", nextRoute);
-        navigate(nextRoute);
-      } else {
-        console.log("⚠️ nextRoute 없음 → 결과분기로 기본 이동");
-        navigate("/result/rotate");
-      }
+      // ✅ 6️⃣ 다음 화면 이동
+      if (nextRoute && nextRoute.includes("step2")) navigate("/result/rotate");
+      else if (nextRoute) navigate(nextRoute);
+      else navigate("/result/rotate");
     } catch (err) {
-      console.error("업로드 실패:", err?.response?.data || err.message);
-      alert("그림 업로드에 실패했습니다.");
+      console.error("❌ 업로드 또는 분석 실패:", err);
+      alert("그림 업로드에 실패했습니다. 잠시 후 다시 시도해주세요.");
     }
   };
 
@@ -427,13 +437,6 @@ export default function CanvasTemplate({
           >
             🗑 처음부터
           </button>
-          {/* <button
-            type="button"
-            className="btn-toolbar btn-help"
-            onClick={() => setShowGuide(true)}
-            aria-label="그림 도구 도움말 열기"
-            title="도움말"
-          ></button> */}
           <img
             className="icon-help"
             src="/images/help.png"
