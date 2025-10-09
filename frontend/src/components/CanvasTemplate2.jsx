@@ -139,14 +139,13 @@ export default function CanvasTemplate({
             {paletteEnabled && backendQuestion ? (
               <p
                 className="step2-question"
+                dangerouslySetInnerHTML={{ __html: backendQuestion }}
                 style={{
                   textAlign: "center",
                   lineHeight: "1.6",
                   whiteSpace: "pre-line",
                 }}
-              >
-                {backendQuestion}
-              </p>
+              />
             ) : (
               <h2
                 className="rectangle-title"
