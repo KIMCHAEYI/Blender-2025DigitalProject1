@@ -78,6 +78,7 @@
   border-radius: 8px;
 }
 
+
 /* 캔버스 래퍼: indicator 기준점 */
 .canvas-wrapper {
   position: relative;
@@ -240,5 +241,6 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  display: block; 
   filter: grayscale(10%);
 }
