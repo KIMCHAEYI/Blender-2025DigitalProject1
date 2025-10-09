@@ -23,46 +23,56 @@ export default function RotateResultIntro() {
       if (!sessionId) throw new Error("세션 ID가 없습니다.");
 
       console.log("📦 세션 전체 분석 요청:", sessionId);
+      console.log("요청 URL:", `${API_BASE}/api/analyze/session/${sessionId}`);
 
-      // 2️⃣ 전체 분석 요청
-      const res = await fetch(`${API_BASE}/api/analyze/session/${sessionId}`);
-      const allData = await res.json();
+      // 2️⃣ YOLO가 아직 저장 중일 수 있으므로 polling (최대 10초, 1초마다 재시도)
+      let retries = 0;
+      let allData = null;
+      while (retries < 10) {
+        console.log(`⏳ 대기중... (${retries + 1}/10)`);
 
-      console.log("🧠 세션 전체 분석 결과:", allData);
+        const res = await fetch(`${API_BASE}/api/analyze/session/${sessionId}`);
+        allData = await res.json();
 
-      if (!res.ok) throw new Error(allData.error || "서버 요청 실패");
+        // 응답이 성공이고 results가 비어있지 않으면 종료
+        if (res.ok && allData?.results && allData.results.length > 0) {
+          console.log("✅ 세션 전체 분석 완료:", allData);
+          break;
+        }
 
-      // 3️⃣ 결과 중 step2가 필요한 그림만 필터링
+        // 결과가 아직 비어있다면 1초 대기 후 재시도
+        await new Promise((r) => setTimeout(r, 1000));
+        retries++;
+      }
+
+      if (!allData || !allData.results || allData.results.length === 0) {
+        throw new Error("세션 분석 결과를 불러오지 못했습니다.");
+      }
+
+      // 3️⃣ 2단계가 필요한 그림만 필터링
       const step2Targets = allData.results
         .filter((r) => r.step === 2 || r.need_step2 === true)
         .map((r) => {
-          if (r.type.includes("person")) return "person"; // ✅ 남녀 구분 없이 person 통합 처리
+          if (r.type.includes("person")) return "person"; // ✅ 남녀 통합
           return r.type;
         });
 
-      // 중복 제거
       const uniqueStep2 = [...new Set(step2Targets)];
+      console.log("🎯 2단계 대상:", uniqueStep2);
 
-      // 4️⃣ 2단계가 필요한 경우 → 첫 번째 대상으로 이동
+      // 4️⃣ 2단계 대상이 있으면 해당 페이지로 이동
       if (uniqueStep2.length > 0) {
         const firstTargetType = uniqueStep2[0];
         const target = allData.results.find(
-          (r) => r.type === firstTargetType || r.subtype === firstTargetType // ✅ subtype도 함께 비교
+          (r) => r.type === firstTargetType || r.subtype === firstTargetType
         );
 
-        // ✅ 백엔드에서 받은 추가 질문, 이전 그림 경로 추출
         const backendQuestion =
           target?.analysis?.extraQuestion || target?.extraQuestion || "";
         const previousDrawing = target?.path || "";
 
-        // console.log("🎯 2단계 대상:", firstTargetType);
-        // console.log("💬 추가 질문:", backendQuestion);
-        // console.log("🖼 이전 그림 경로:", previousDrawing);
-
-        // 세션 저장 (다음 단계들용)
         sessionStorage.setItem("step2_targets", JSON.stringify(uniqueStep2));
 
-        // ✅ 2단계 페이지로 이동 (question + 그림 함께 전달)
         navigate(`/test/step2/${firstTargetType}`, {
           state: {
             backendQuestion,
@@ -70,12 +80,12 @@ export default function RotateResultIntro() {
           },
         });
       } else {
-        // 모두 1단계라면 바로 결과 페이지 이동
+        // 전부 1단계면 결과 페이지로 이동
         navigate("/result");
       }
     } catch (err) {
       console.error("❌ 전체 분석 실패:", err);
-      setError("세션 전체 분석 중 오류가 발생했습니다.");
+      setError("세션 분석 결과를 불러오지 못했습니다.");
     } finally {
       setLoading(false);
     }
@@ -100,7 +110,7 @@ export default function RotateResultIntro() {
       >
         {loading ? "분석 중..." : "화면을 돌렸어요!"}
       </button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
     </div>
   );
 }

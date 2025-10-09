@@ -1,4 +1,3 @@
-// src/components/CanvasTemplate.jsx
 import React, { useRef, useState, useEffect } from "react";
 import { Stage, Layer, Line, Rect } from "react-konva";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +22,27 @@ const resolveApiBase = () => {
   }
 };
 const API_BASE = resolveApiBase();
+
+// ===== YOLO 요청 큐 관리 =====
+const yoloQueue = [];
+let isYoloRunning = false;
+
+async function enqueueYoloRequest(taskFn) {
+  yoloQueue.push(taskFn);
+  if (isYoloRunning) return; // 이미 실행 중이면 대기열에 추가만
+
+  isYoloRunning = true;
+  while (yoloQueue.length > 0) {
+    const fn = yoloQueue.shift();
+    try {
+      await fn(); // 순차 실행
+    } catch (err) {
+      console.warn("⚠️ YOLO 요청 실패:", err);
+    }
+    await new Promise((r) => setTimeout(r, 500)); // 요청 간격 0.5초
+  }
+  isYoloRunning = false;
+}
 
 export default function CanvasTemplate({
   drawingType,
@@ -157,21 +177,16 @@ export default function CanvasTemplate({
       const imagePath = data.path || data.result?.path || data.file_path || "";
       const fileOnly = imagePath.split("/").pop();
 
-      // 3️⃣ YOLO 분석 요청
-      const analyze = async () =>
-        axios.get(`${API_BASE}/api/analyze`, {
-          params: { file: fileOnly, type: drawingType, session_id: sid },
-          timeout: 15000,
-        });
-
-      try {
-        console.log("🧠 YOLO 분석 요청:", fileOnly);
-        await analyze();
-      } catch {
-        console.warn("⚠️ YOLO 첫 시도 실패 → 재시도 중");
-        await new Promise((r) => setTimeout(r, 300));
-        await analyze();
-      }
+      // 3️⃣ YOLO 분석 요청 (큐에 순차 등록)
+      enqueueYoloRequest(() => {
+        console.log("🧠 YOLO 큐 실행:", fileOnly);
+        axios
+          .get(`${API_BASE}/api/analyze`, {
+            params: { file: fileOnly, type: drawingType, session_id: sid },
+          })
+          .then(() => console.log("✅ YOLO 분석 요청 완료:", fileOnly))
+          .catch((err) => console.warn("⚠️ YOLO 분석 실패:", err));
+      });
 
       // 4️⃣ 사용자 데이터 갱신
       setUserData((prev) => ({

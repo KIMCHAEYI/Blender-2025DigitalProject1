@@ -88,9 +88,9 @@ export default function ResultCard({ title, icon, sec, formatDuration }) {
           <ul className="object-list">
             {items.map((o, i) => (
               <li key={`${o.label}-${i}`}>
-                <span className="tick" aria-hidden>
+                {/* <span className="tick" aria-hidden>
                   ✅
-                </span>
+                </span> */}
                 <b>{o.label}</b>
                 {o.meaning && <div className="meaning">{o.meaning}</div>}
               </li>

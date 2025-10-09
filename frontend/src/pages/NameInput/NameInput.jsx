@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../../components/InputField";
 import { useUserContext } from "../../contexts/UserContext";
@@ -10,6 +10,18 @@ export default function NameInput() {
   const navigate = useNavigate();
   const { setUserData } = useUserContext();
   const canNext = name.trim().length > 0;
+
+  useEffect(() => {
+    const handleResize = () => {
+      // 키보드 닫힐 때 스크롤 복원
+      if (document.activeElement.tagName !== "INPUT") {
+        window.scrollTo(0, 0);
+        document.body.style.height = `${window.innerHeight}px`;
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleNext = () => {
     if (canNext) {

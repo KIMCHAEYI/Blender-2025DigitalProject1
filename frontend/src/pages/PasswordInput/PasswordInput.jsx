@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../../components/InputField";
@@ -13,7 +13,16 @@ export default function PasswordInput() {
   const { setUserData } = useUserContext();
 
   const canNext = password.trim().length > 0;
-
+  useEffect(() => {
+    const handleResize = () => {
+      // iPad에서 키보드 내려갈 때 화면이 위로 고정되는 현상 방지
+      if (document.activeElement.tagName !== "INPUT") {
+        window.scrollTo(0, 0);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const handleNext = () => {
     if (canNext) {
       setUserData((prev) => ({
