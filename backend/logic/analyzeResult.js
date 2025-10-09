@@ -129,52 +129,77 @@ for (const r of rulesForType) {
 }
 
   // 3) 행동 규칙 (기존)
-  const behaviorRules = ruleData.behavior || [];
   const behaviorAnalyses = [];
-  for (const r of behaviorRules) {
-    const val = r.field === "erase_count" ? eraseCount : resetCount;
-    if (val >= r.range[0] && val <= r.range[1]) {
-      behaviorAnalyses.push({
-        label: r.field === "erase_count" ? "지우기 사용" : "리셋 사용",
-        meaning: r.meaning,
-      });
+  // 🔹 지우기 해석
+  if (eraseCount === 0) {
+    behaviorAnalyses.push({
+      label: "지우기 사용",
+      meaning: "지우기 한 번의 시도로 그림을 완성한 모습에서 자신감과 안정된 정서를 엿볼 수 있습니다.",
+    });
+  } else if (eraseCount <= 2) {
+    behaviorAnalyses.push({
+      label: "지우기 사용",
+      meaning: "그림을 수정한 흔적이 적당히 관찰되며, 세밀한 자기조절과 완성도를 추구하는 태도가 보입니다.",
+    });
+  } else {
+    behaviorAnalyses.push({
+      label: "지우기 사용",
+      meaning: "지우는 횟수가 많아 신중하거나 불안정한 심리 상태가 일부 반영되었을 가능성이 있습니다.",
+    });
+  }
+
+  // 🔹 리셋 해석
+  if (resetCount === 0) {
+    behaviorAnalyses.push({
+      label: "리셋 사용",
+      meaning: "한 번도 새로 그리려 하지 않고 흐름을 유지하며 완성한 점은 계획성과 자기 확신을 보여줍니다.",
+    });
+  } else if (resetCount <= 2) {
+    behaviorAnalyses.push({
+      label: "리셋 사용",
+      meaning: "처음부터 다시 그린 횟수가 적당하여, 조정과 개선을 통해 완성도를 높이려는 노력이 엿보입니다.",
+    });
+  } else {
+    behaviorAnalyses.push({
+      label: "리셋 사용",
+      meaning: "여러 번 다시 그린 모습은 불안감이나 완벽주의적 경향을 시사할 수 있습니다.",
+    });
+  }
+
+
+  // 3-1) 펜 굵기 해석
+  const penAnalyses = [];
+  if (penUsage) {
+    const entries = Object.entries(penUsage);
+    if (entries.length > 0) {
+      const [mainThickness] = entries.sort((a, b) => b[1] - a[1])[0];
+      let meaning = "";
+
+      if (mainThickness === "thin") {
+        meaning = "가는 선을 주로 사용하여 섬세하고 신중한 성향을 보이며, 내면의 세부 표현에 집중하는 경향이 있습니다.";
+      } else if (mainThickness === "normal") {
+        meaning = "보통 굵기의 선을 주로 사용하여 안정적이고 조화로운 심리 상태를 반영합니다.";
+      } else if (mainThickness === "thick") {
+        meaning = "굵은 선을 주로 사용하여 자기표현이 강하고 에너지 넘치는 태도를 나타냅니다.";
+      }
+
+      penAnalyses.push({ label: "펜 굵기 사용", meaning });
     }
   }
 
-  // 3-1) 펜 굵기 해석 (신규)
-  const penAnalyses = [];
-  if (penUsage) {
-    // 예: penUsage = { thin: 12, normal: 30, thick: 5 }
-    const entries = Object.entries(penUsage);
-    if (entries.length > 0) {
-      const [mainThickness] = entries.sort((a, b) => b[1] - a[1])[0]; // 가장 많이 쓴 굵기
-      let meaning = "";
-      if (mainThickness === "thin") {
-        meaning = "가는 선을 주로 사용하여 섬세하고 신중한 성향을 보입니다.";
-      } else if (mainThickness === "normal") {
-        meaning = "보통 굵기를 주로 사용하여 안정적이고 균형 잡힌 성향을 보입니다.";
-      } else if (mainThickness === "thick") {
-        meaning = "굵은 선을 주로 사용하여 강한 자기표현 욕구와 에너지를 나타냅니다.";
-      }
-      penAnalyses.push({
-        label: "펜 굵기 사용",
-        meaning,
-      });
-    }
-  }
 
   // 4) step2 분기 + 조건부 질문
   let step = 1;
   let extraQuestion = null;
 
   if (
-  (drawingType === "house" && detectedObjects.length <= 15) ||
-  (drawingType === "tree" && detectedObjects.length <= 10) ||
+  (drawingType === "house" && detectedObjects.length <= 10) ||
+  (drawingType === "tree" && detectedObjects.length <= 7) ||
   (
     (drawingType === "person" ||
      drawingType === "person_male" ||
      drawingType === "person_female") &&
-    detectedObjects.length <= 10
+    detectedObjects.length <= 8
   )
 ) {
     step = 2;
@@ -241,12 +266,25 @@ for (const r of rulesForType) {
     }
   }
 
+  // ✅ 의미만 남기고 '해석 기준 없음'과 '-' 제거
+  const meaningOnlyAnalyses = uniqueAnalyses
+    .map(({ meaning }) => {
+      if (!meaning || meaning.includes("해석 기준 없음")) return null;
+      // 여러 줄 meaning 처리 시, 각 줄 앞의 '-' 제거
+      const cleaned = meaning
+        .split("\n")
+        .map(line => line.replace(/^-+\s*/, "").trim()) // '- ' 제거
+        .filter(Boolean)
+        .join("\n");
+      return cleaned.trim() ? { meaning: cleaned } : null;
+    })
+    .filter(Boolean);
+
   return {
     step,
     drawingType,
-    analysis: uniqueAnalyses,
+    analysis: meaningOnlyAnalyses, // ✅ meaning만 전달
     ...(extraQuestion && { extraQuestion }),
   };
 }
-
 module.exports = { analyzeYOLOResult, interpretYOLOResult };

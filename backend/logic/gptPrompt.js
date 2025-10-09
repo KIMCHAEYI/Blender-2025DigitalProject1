@@ -86,14 +86,61 @@ function safeParseJSON(s) {
 // ========= 1) 단일 그림 요약 =========
 async function summarizeDrawingForCounselor(draw, opts = {}) {
   const name = (opts.name || "").trim();
+  const userGender = String(opts.gender || "").toLowerCase();
+  const firstGenderOpt = String(opts.first_gender || "").toLowerCase();
+
   const type = draw?.type || "unknown";
   const subtype = draw?.result?.subtype || draw?.subtype || type;
-  const analysis = Array.isArray(draw?.result?.analysis)
+
+  // analysis 배열 안전 추출
+  const analysisArr = Array.isArray(draw?.result?.analysis)
     ? draw.result.analysis
+    : Array.isArray(draw?.analysis)
+    ? draw.analysis
     : [];
 
-  const bullets = analysis
-    .map((a) => `- ${a.meaning || ""}`.trim())
+  // 행동 수치 (없으면 0)
+  const eraseCount = Number(draw?.erase_count ?? opts.erase_count ?? 0);
+  const resetCount = Number(draw?.reset_count ?? opts.reset_count ?? 0);
+
+  // 1) 존재/미표현/행동 신호 정리
+  const PRESENT_EXCLUDE = new Set(["지우기 사용", "리셋 사용", "펜 굵기 사용"]);
+  const present = analysisArr.filter(
+    (a) => typeof a?.label === "string" && !a.label.includes("(미표현)") && !PRESENT_EXCLUDE.has(a.label)
+  );
+  const missing = analysisArr.filter((a) => typeof a?.label === "string" && a.label.includes("(미표현)"));
+  const behaviors = analysisArr
+    .filter((a) => ["지우기 사용", "리셋 사용", "펜 굵기 사용"].includes(a?.label))
+    .map((a) => `- ${a.meaning}`)
+    .join("\n");
+
+  // 사람 그림일 때만 성별 신호 반영
+  const isPerson = ["person", "person_male", "person_female"].some((t) => subtype.startsWith(t) || t === subtype);
+  const firstGender =
+    firstGenderOpt || String(draw?.first_gender || "").toLowerCase();
+
+  let genderNote = "";
+  if (isPerson && firstGender && userGender) {
+    genderNote =
+      firstGender === userGender
+        ? "먼저 선택한 성별이 본인과 같음 → 자기 동일시의 자연스러운 경향."
+        : "먼저 선택한 성별이 본인과 다름 → 성역할 동일시의 갈등 또는 특정 이성에 대한 주제의식.";
+  }
+
+  // 최종 bullet 재료(객체명 비노출: meaning만)
+  const meaningBullets = present
+    .map((a) => `- ${a?.meaning || ""}`.trim())
+    .filter(Boolean)
+    .join("\n");
+
+  // 신호 요약(모델이 간접 서술하도록 지시)
+  const signals = [
+    missing.length ? `누락 요소 ${missing.length}개(객체명 비공개)` : null,
+    `지우기 ${eraseCount}회`,
+    `리셋 ${resetCount}회`,
+    behaviors ? `행동 해석\n${behaviors}` : null,
+    genderNote || null,
+  ]
     .filter(Boolean)
     .join("\n");
 
@@ -104,50 +151,35 @@ async function summarizeDrawingForCounselor(draw, opts = {}) {
   const { choices } = await openai.chat.completions.create({
     model: process.env.OPENAI_MODEL || "gpt-4o-mini",
     temperature: 0.25,
-    max_tokens: 600,
+    max_tokens: 700,
     messages: [
       {
         role: "system",
         content:
-          "너는 HTP 검사 상담 보고서 작성자다. 아래 '근거 재료'는 내부 참고용이며, " +
-          "최종 요약에는 객체명/부분명/라벨(예: 창문, 문, 가지, 뿌리 등)이나 위치, 면적 수치 등을 절대 노출하지 마라. " +
-          "과장/단정 금지, 중복 제거, 자연스러운 한국어. 사진 예시처럼 따뜻하고 차분한 톤. 한 문단 6~10문장.",
+          "너는 HTP 상담 보고서 작성자다. " +
+          "최종 요약에는 객체명/부분명/좌표/면적 수치를 절대 노출하지 마라. " +
+          "과장/단정 금지, 중복 제거, 따뜻하고 차분한 한국어. 한 문단 6~9문장.",
       },
       {
         role: "user",
-        content: `대상 그림 유형: ${subtype}
-${openingRule}
-- 라벨/객체명을 직접 언급하거나 특정 요소에서 어떤 해석이 나왔는지 연결하지 마라.
-- 필요한 경우에만 ( ) 안에 아주 짧게 '전반적으로 드러나는 경향' 정도만 표기.
-- 임상명칭·진단 금지. 가설 어조 사용(가능성이 있다/시사한다 등).
-
-[근거 재료(내부 참고)]
-${bullets || "(없음)"}
-
-이 재료를 바탕으로 상담자에게 전달할 한 문단 요약을 작성하라.`,
+        content:
+          `대상 그림 유형: ${subtype}\n` +
+          `${openingRule}\n` +
+          "- '인식된 요소'는 직접 명칭을 말하지 말고, '세부가 충분/간결', '핵심 요소가 생략/강조' 같은 간접 표현을 사용하라.\n" +
+          "- 행동 신호(지우기/리셋/펜 굵기)는 서술 속에 부드럽게 녹여라.\n" +
+          "- 사람 그림일 경우, 먼저 선택한 성별 신호가 있다면 직접적인 ‘남성/여성’ 표현 없이, 자기 동일시나 역할 인식 등으로 간접 서술하라.\n" +
+          "- 임상명칭/진단 금지. 가설 어조 사용.\n\n" +
+          "[해석 근거(객체명 비노출)]\n" +
+          (meaningBullets || "(없음)") +
+          "\n\n[추가 신호]\n" +
+          (signals || "(없음)") +
+          "\n\n이 재료를 바탕으로 상담자에게 전달할 한 문단 요약을 작성하라.",
       },
     ],
   });
 
   const text = choices?.[0]?.message?.content?.trim() || "";
   return { summary: text };
-}
-
-async function interpretMultipleDrawings(drawings, opts = {}) {
-  if (!Array.isArray(drawings)) {
-    throw new Error("drawings must be an array");
-  }
-
-  const summaries = [];
-  for (const draw of drawings) {
-    const { summary } = await summarizeDrawingForCounselor(draw, opts);
-    const rawType = draw?.type || "unknown";
-    const subtype = draw?.result?.subtype || draw?.subtype || rawType;
-    const normType = keyOf(rawType, subtype);
-    summaries.push({ type: normType, summary });
-  }
-
-  return await synthesizeOverallFromDrawingSummaries(summaries, opts);
 }
 
 
@@ -190,13 +222,13 @@ async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
   // 성별 선택 해석 규칙
   let genderNote = "";
   if (firstGender && userGender) {
-    if (firstGender === userGender) {
+    if (isPerson && firstGender && userGender) {
       genderNote =
-        "먼저 그린 성별이 내담자 자신의 성별과 동일하므로, 자기 동일시가 자연스럽게 이루어지는 일반적인 양상을 반영한다.";
-    } else {
-      genderNote =
-        "먼저 그린 성별이 내담자의 성별과 달라, 성 역할 동일시에 갈등이 있거나, 현재 생활에서 특정 이성에 대해 큰 비중을 두고 있음을 시사한다. (긍정적이든 부정적이든 가능).";
+        firstGender === userGender
+          ? "먼저 선택한 성별이 본인과 같음 → 자기 동일시가 자연스럽게 이루어지는 일반적인 양상으로, 성별 자체를 언급하지 말고 간접적으로 표현하라."
+          : "먼저 선택한 성별이 본인과 다름 → 성역할 동일시나 이성에 대한 관심을 시사하지만, ‘남성/여성’ 등의 단어를 사용하지 말고 간접적으로 표현하라.";
     }
+
   }
 
   const { choices } = await openai.chat.completions.create({
@@ -292,7 +324,6 @@ ${rawAnalysis}`,
 }
 
 module.exports = {
-  interpretMultipleDrawings, // 기존 전체(analysis 직접) -> 전체 종합
   summarizeDrawingForCounselor, // 단일 그림 요약
   synthesizeOverallFromDrawingSummaries, // 그림별 요약 → 전체 종합
   refineColorAnalysis, // 색채 해석 

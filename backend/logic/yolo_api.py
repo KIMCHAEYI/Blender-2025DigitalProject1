@@ -80,27 +80,34 @@ def _infer_sync(model, img_bgr):
 
 @app.post("/analyze/{drawing_type}")
 async def analyze_drawing(drawing_type: str, image: UploadFile = File(...)):
+    import base64
+
     t0 = time.time()
     if drawing_type not in MODELS:
         return {"error": f"Unknown drawing type: {drawing_type}"}
 
-    # 1) 이미지 바이트 읽기
+    # 1️⃣ 이미지 읽기
     data = await image.read()
-    # 2) 바이트 -> numpy 배열 -> OpenCV BGR 이미지
     nparr = np.frombuffer(data, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     if img is None:
         return {"error": "Invalid image data."}
 
-    # 3) 추론(무겁기 때문에 스레드풀 사용)
+    # 2️⃣ YOLO 추론 (스레드풀로 실행)
     model = MODELS[drawing_type]
-    results = await run_in_threadpool(model, img) #수진
+    results = await run_in_threadpool(model, img)
     objects = await run_in_threadpool(_infer_sync, model, img)
-    
-    # ✅ bbox 이미지 저장 추가
-    rendered = results.render()[0]   # YOLO가 그린 bbox 이미지 (numpy BGR)
-    bbox_url = save_bbox_image(rendered, category=drawing_type)
 
-    # 로그: 총 처리 시간
+    # 3️⃣ YOLO bbox 시각화 이미지(base64로 변환)
+    rendered = results.render()[0]  # YOLO가 그린 bbox 이미지 (numpy BGR)
+    _, buffer = cv2.imencode(".png", rendered)
+    bbox_b64 = base64.b64encode(buffer).decode("utf-8")
+    bbox_url = f"data:image/png;base64,{bbox_b64}"
+
+    # 4️⃣ 로그 및 응답
     log.info(f"POST /analyze/{drawing_type} -> {len(objects)} objs in {time.time()-t0:.2f}s")
-    return {"type": drawing_type, "objects": objects, "bbox_url": bbox_url}
+    return {
+        "type": drawing_type,
+        "objects": objects,
+        "bbox_url": bbox_url
+    }

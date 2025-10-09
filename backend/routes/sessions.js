@@ -288,4 +288,36 @@ router.post("/upload", upload.single("image"), (req, res) => {
   }
 });
 
+// -----------------------
+// ✅ 9. 세션 ID로 검사 결과 조회 (ResultPage에서 사용)
+// -----------------------
+router.get("/:session_id", (req, res) => {
+  const { session_id } = req.params;
+
+  try {
+    if (!fs.existsSync(DB_FILE)) {
+      return res.status(404).json({ message: "DB 파일이 존재하지 않습니다." });
+    }
+
+    const db = JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
+
+    // 🔹 sessions.js에서는 newSession.id 로 저장했으므로 id로 찾아야 함
+    const session = db.find((s) => String(s.id) === String(session_id));
+
+    if (!session) {
+      return res.status(404).json({ message: "세션을 찾을 수 없습니다." });
+    }
+
+    // 🔹 비밀번호는 클라이언트로 절대 보내지 않음
+    const safeSession = { ...session };
+    delete safeSession.password;
+
+    res.status(200).json(safeSession);
+  } catch (err) {
+    console.error("❌ 세션 조회 실패:", err);
+    res.status(500).json({ message: "서버 오류로 세션 조회 실패" });
+  }
+});
+
+
 module.exports = router;

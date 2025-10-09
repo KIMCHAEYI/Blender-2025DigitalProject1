@@ -183,13 +183,24 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
         const dbA = readDB();
         const sA = dbA.find((s) => s.id === session_id);
         const name = (sA?.name || "").trim();
-        const { summary } = await summarizeDrawingForCounselor(
-          { type, result: { analysis, subtype: type } },
-          { name }
-        );
-
         const dA = sA?.drawings?.find((d) => d.id === drawingId);
+
         if (dA) {
+          const { summary } = await summarizeDrawingForCounselor(
+            {
+              type,
+              result: { analysis, subtype: type },
+              erase_count: Number(dA.erase_count) || 0,
+              reset_count: Number(dA.reset_count) || 0,
+              first_gender: sA?.first_gender || firstGender || null,
+            },
+            {
+              name,
+              gender: sA?.gender || null,
+              first_gender: sA?.first_gender || firstGender || null,
+            }
+          );
+
           dA.result.counselor_summary = summary;
           dA.updatedAt = new Date().toISOString();
           writeDB(dbA);
@@ -198,10 +209,10 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
         // 콘솔 확인(선택)
         console.log("\n[🖼 그림별 종합해석] type=", type);
         console.log("[🔍 객체별 해석]", analysis);
-        console.log(summary || "(없음)");
       } catch (e) {
         console.error("summarizeDrawingForCounselor 실패:", e?.message || e);
       }
+
 
       // 🔹 (새) 네 장이 모두 끝나면 전체 종합 생성
       try {
@@ -210,46 +221,47 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
         const doneDrawings = (sessionAfter?.drawings || []).filter(
           (d) => d.status === "done"
         );
-        const uniqueTypes = new Set(
-          doneDrawings.map((d) =>
-            d.type.startsWith("person") ? "person" : d.type
-          )
-        );
 
-        if (uniqueTypes.length === 4) {
-          const entries = doneDrawings.map((x) => ({
-            type: x.type,
-            summary: x.result?.counselor_summary || "",
+        // ✅ 타입별로 최신 그림만 추림
+        const latestByType = {};
+        for (const d of doneDrawings) {
+          latestByType[d.type] = d; // 같은 type이면 최신으로 덮어씀
+        }
+
+        // ✅ 4가지 타입 확인
+        const requiredTypes = ["house", "tree", "person_male", "person_female"];
+        const doneTypes = Object.keys(latestByType);
+        const allDone = requiredTypes.every((t) => doneTypes.includes(t));
+
+        if (allDone) {
+          const entries = requiredTypes.map((t) => ({
+            type: t,
+            summary: latestByType[t]?.result?.counselor_summary || "",
           }));
-          const name = (sessionAfter?.name || "").trim();
 
+          const name = (sessionAfter?.name || "").trim();
           const overall = await synthesizeOverallFromDrawingSummaries(entries, {
             name,
-            gender: sessionAfter.gender,       
-            first_gender: sessionAfter.first_gender,  
+            gender: sessionAfter.gender,
+            first_gender: sessionAfter.first_gender,
           });
 
           sessionAfter.summary_overall = overall;
           writeDB(dbAfter);
 
-          // 콘솔 출력
           console.log("\n================= 🧠 전체 종합(세션=" + session_id + ") =================");
           console.log(overall.overall_summary || "(없음)");
           console.log("🩺 진단 요약:", overall.diagnosis_summary || "(없음)");
           console.log("\n🖼 Per Drawing 요약 →", overall.per_drawing);
           console.log("=========================================================\n");
-
         } else {
-          console.log(
-            `[GPT 전체 종합 대기] 현재 완료 ${uniqueTypes.size}/4`
-          );
+          console.log(`[GPT 전체 종합 대기] 현재 완료 ${doneTypes.length}/4`);
         }
       } catch (e) {
-        console.error(
-          "synthesizeOverallFromDrawingSummaries 실패:",
-          e?.message || e
-        );
+        console.error("synthesizeOverallFromDrawingSummaries 실패:", e?.message || e);
       }
+
+
     } catch (err) {
       const db3 = readDB();
       const s3 = db3.find((s) => s.id === session_id);

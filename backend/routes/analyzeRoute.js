@@ -4,9 +4,15 @@ const path = require("path");
 const fs = require("fs");
 const { runYOLOAnalysis } = require("../logic/yoloRunner");
 const { interpretYOLOResult } = require("../logic/analyzeResult"); 
+const { summarizeDrawingForCounselor } = require("../logic/gptPrompt");
 
 const DB_FILE = path.join(__dirname, "../models/db.json");
 const router = express.Router();
+
+// ---------------------- 중복 분석 방지 로직 추가 ----------------------
+const inProgress = new Set();          // 현재 YOLO 분석 중인 파일들
+const yoloCache = new Map();           // 이미 분석된 결과 캐시
+// ---------------------------------------------------------------------
 
 router.get("/", async (req, res) => {
   const fileName = req.query.file;
@@ -17,150 +23,112 @@ router.get("/", async (req, res) => {
 
   const imagePath = path.join(__dirname, "../uploads", fileName);
 
+  // ✅ 중복 요청 차단
+  if (inProgress.has(imagePath)) {
+    console.log(`[SKIP] ${imagePath} 이미 분석 중`);
+    return res
+      .status(429)
+      .json({ message: "현재 분석 중입니다. 잠시 후 다시 시도하세요." });
+  }
+
+  // ✅ 캐시 재사용
+  if (yoloCache.has(imagePath)) {
+    console.log(`[CACHE] ${imagePath} 결과 재사용`);
+    return res.json(yoloCache.get(imagePath));
+  }
+
+  inProgress.add(imagePath); // 분석 시작
+  console.log(`[YOLO] 분석 시작: ${imagePath}`);
+
   try {
-    // YOLO 실행
     const typeForYolo =
       rawType === "person_male" || rawType === "person_female"
         ? "person"
         : rawType;
-    const yoloResult = await runYOLOAnalysis(imagePath, typeForYolo);
 
-    // 분석 결과 해석
+    const yoloResult = await runYOLOAnalysis(imagePath, typeForYolo);
     const analysis = interpretYOLOResult(yoloResult, typeForYolo);
 
-    // 🧩 2단계 판단 로직 통합 (step 값까지 반영)
     const missingObjects = analysis.missingObjects || [];
     const lowConfidence = analysis.lowConfidence || [];
 
-    // GPT 해석 결과에 step 값이 2라면 강제로 true 처리
     const hasStep2 = analysis.step === 2;
-    const needStep2 = hasStep2 || missingObjects.length > 0 || lowConfidence.length > 0;
-
-    // step2 대상 추출
+    const needStep2 =
+      hasStep2 || missingObjects.length > 0 || lowConfidence.length > 0;
     const step2Targets = needStep2 ? [typeForYolo] : [];
 
-    // 응답 확장
-    res.json({
+    const responseData = {
       objects: yoloResult.objects,
       analysis,
       subtype: rawType,
       need_step2: needStep2,
       targets: step2Targets,
       step: analysis.step,
-      question: analysis.question || null,  // ✅ 추가
-    });
+      question: analysis.question || null,
+      bbox_url: yoloResult.bbox_url || null,
+    };
 
+    // ✅ 결과 캐싱
+    yoloCache.set(imagePath, responseData);
+    res.json(responseData);
   } catch (err) {
     console.error("분석 실패:", err);
     res.status(500).json({ error: "YOLO 분석 실패", detail: err.message });
+  } finally {
+    // ✅ 반드시 해제
+    inProgress.delete(imagePath);
+    console.log(`[YOLO] 분석 완료: ${imagePath}`);
   }
 });
 
 // 모든 그림 한번에 분석
 router.get("/session/:session_id", async (req, res) => {
   const { session_id } = req.params;
+
+  // ① 세션 불러오기
   const db = JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
   const session = db.find((s) => s.id === session_id);
   if (!session) return res.status(404).json({ error: "세션 없음" });
 
   const results = [];
 
-  // 1️⃣ 모든 그림 YOLO + 해석 실행
+  // ② 모든 그림 순차적으로 YOLO + 해석 실행 (느리지 않게 안정적)
   for (const drawing of session.drawings) {
     const fileName = drawing.file_name || drawing.filename;
     if (!fileName) continue;
 
     const imgPath = path.join(__dirname, "../uploads", fileName);
+
     const yolo = await runYOLOAnalysis(imgPath, drawing.type);
     const analysis = interpretYOLOResult(yolo, drawing.type);
 
-    results.push({
-      type:
-        drawing.type === "person_male" || drawing.type === "person_female"
-          ? "person"
-          : drawing.type,
-      subtype: drawing.type, // 🔹 성별 보존
-      analysis,
-      path: drawing.path,
-      step: analysis.step,
-      question: analysis.question || null,
-    });
+    // 상담자 요약 생성 (세션 정보/행동정보 반영)
+    const { summary } = await summarizeDrawingForCounselor(
+      {
+        type: drawing.type,
+        result: { analysis: analysis.analysis, subtype: drawing.type },
+        erase_count: Number(drawing.erase_count) || 0,
+        reset_count: Number(drawing.reset_count) || 0,
+        first_gender: session.first_gender || null,
+      },
+      {
+        name: session.name,
+        gender: session.gender,
+        first_gender: session.first_gender || null,
+      }
+    );
   }
 
-  // 2️⃣ 사람 그림만 필터
-  const persons = results.filter((r) =>
-    r.subtype?.startsWith("person")
-  );
-
-  // 내부 함수: 둘 다 2단계일 때 선택 규칙
-  const pickPerson = (arr) => {
-    const [a, b] = arr;
-    const countA = a.analysis.analysis.length;
-    const countB = b.analysis.analysis.length;
-
-    if (countA < countB) return a;
-    if (countB < countA) return b;
-
-    // 객체 수 동일하면 랜덤
-    return Math.random() < 0.5 ? a : b;
-  };
-
-  // 3️⃣ 사람 2단계 판단 로직
-  let step2 = { person: false };
-  if (persons.length === 2) {
-    const steps = persons.map((p) => p.step);
-    if (steps.every((s) => s === 1)) {
-      step2 = { person: false };
-    } else if (steps.filter((s) => s === 2).length === 1) {
-      // 하나만 2단계
-      const selected = persons.find((p) => p.step === 2);
-      step2 = {
-        person: true,
-        target: selected.subtype,
-        image: selected.path,
-      };
-    } else if (steps.every((s) => s === 2)) {
-      // 둘 다 2 → pickPerson으로 선택
-      const selected = pickPerson(persons);
-      step2 = {
-        person: true,
-        target: selected.subtype,
-        image: selected.path,
-      };
-    }
-  } else if (persons.length === 1 && persons[0].step === 2) {
-    // 한쪽만 존재하고 2단계면
-    step2 = {
-      person: true,
-      target: persons[0].subtype,
-      image: persons[0].path,
-    };
-  }
-
-  // 4️⃣ 최종 응답 (house/tree도 2단계 포함)
-  const houseNeedStep2 = results.find((r) => r.type === "house" && r.step === 2);
-  const treeNeedStep2 = results.find((r) => r.type === "tree" && r.step === 2);
-
+  // ③ 결과 반환
   res.json({
     session_id,
     results,
-    step2: {
-      house: !!houseNeedStep2,
-      tree: !!treeNeedStep2,
-      person: step2.person,
-      target:
-        step2.target ||
-        houseNeedStep2?.type ||
-        treeNeedStep2?.type ||
-        null,
-      image:
-        step2.image ||
-        houseNeedStep2?.path ||
-        treeNeedStep2?.path ||
-        null,
-    },
+    overall_summary: session.overall_summary || null,
+    diagnosis_summary: session.diagnosis_summary || null,
   });
 });
+
+
 
 router.post("/", async (req, res) => {
   try {
@@ -204,26 +172,28 @@ router.post("/", async (req, res) => {
 // 🧠 전체 종합 해석 (그림 4개 결과 → GPT 종합)
 router.post("/overall", async (req, res) => {
   try {
-    const { drawings, name, gender, first_gender } = req.body;
+    const { drawings, name, gender, first_gender, session_id } = req.body;
 
     if (!Array.isArray(drawings) || drawings.length === 0) {
       return res.status(400).json({ error: "drawings 배열이 필요합니다." });
     }
 
-    // ✅ 추가: 터미널에서 성별 값 확인용 로그
-    // console.log("🎯 [성별 확인 - analyzeRoute]");
-    // console.log("사용자 성별(gender):", gender);
-    // console.log("먼저 그릴 성별(first_gender):", first_gender);
-    // console.log("--------------------------------------------");
-
-    // GPT로 전체 종합 생성
     const overall = await interpretMultipleDrawings(drawings, {
       name,
       gender,
       first_gender,
     });
 
-    console.log("✅ [GPT 전체 종합 결과]", overall);
+    // ✅ DB 업데이트
+    const db = JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
+    const session = db.find((s) => s.id === session_id);
+    if (session) {
+      session.overall_summary = overall.overall_summary;
+      session.diagnosis_summary = overall.diagnosis_summary;
+      fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+    }
+
+    console.log("✅ [GPT 전체 종합 결과 저장 완료]");
     res.json(overall);
   } catch (err) {
     console.error("[❌ 전체 종합 해석 실패]", err);
