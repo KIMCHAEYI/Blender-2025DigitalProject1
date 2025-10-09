@@ -50,8 +50,6 @@ function buildMessages(items, name) {
 요구 스키마:
 {
   "personalized_overall": string,   // 6~10문장. ${openingRule} 문장 내에서 근거는 (창문·문, 가지 등)처럼 간단히 괄호 표기.
-  "strengths": string[],            // 2~4개 강점. 각 항목 끝에 간단 근거 괄호.
-  "cautions": string[],             // 2~4개 유의/상담 시사점. 과장 금지, 필요한 경우만 가설로 표기.
   "per_drawing": {                  // 입력에 존재한 유형만 포함(없으면 생략 가능)
     "house"?: string,
     "tree"?: string,
@@ -87,7 +85,7 @@ function safeParseJSON(s) {
 /**
  * drawings: [{ type, result: { analysis:[{label,meaning}], subtype? } }, ...]
  * opts: { name?: string, model?, temperature?, max_tokens? }
- * return: { personalized_overall, strengths, cautions, per_drawing, raw }
+ * return: { personalized_overall, per_drawing, raw }
  */
 async function summarizeDrawingForCounselor(draw, opts = {}) {
   const name = (opts.name || "").trim();
@@ -156,10 +154,11 @@ async function interpretMultipleDrawings(drawings, opts = {}) {
   return await synthesizeOverallFromDrawingSummaries(summaries, opts);
 }
 
+
 // ========= 2) 그림별 요약들을 모아 전체 종합 =========
 // entries: Array<{ type, summary }>  // summary는 위 함수 결과
 // opts: { name?: string }
-// return: { personalized_overall, strengths, cautions, per_drawing }
+// return: { personalized_overall, per_drawing }
 async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
   const name = (opts.name || "").trim();
   const firstGender = opts.first_gender || null;
@@ -211,8 +210,6 @@ async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
 요구 스키마:
 {
   "personalized_overall": string,
-  "strengths": string[],
-  "cautions": string[],
   "per_drawing": {
     "house"?: string,
     "tree"?: string,
@@ -242,13 +239,17 @@ ${perList || "(없음)"}`,
     parsed = { personalized_overall: raw, per_drawing: perMap };
   }
 
+  const overall_summary = parsed.personalized_overall || "";
+
+  const diagnosis_summary = await generateDiagnosisSummary(overall_summary);
+
   return {
-    personalized_overall: parsed.personalized_overall || "",
-    strengths: Array.isArray(parsed.strengths) ? parsed.strengths : [],
-    cautions: Array.isArray(parsed.cautions) ? parsed.cautions : [],
+    diagnosis_summary,  // 🆕 전문가 진단 필요 여부
+    overall_summary,     // 기존 personalized_overall
     per_drawing: parsed.per_drawing || perMap,
   };
 }
+
 
 // ========= 3) 색채 해석 =========
 async function refineColorAnalysis(rawAnalysis) {
@@ -281,3 +282,39 @@ module.exports = {
   synthesizeOverallFromDrawingSummaries, // 그림별 요약 → 전체 종합
   refineColorAnalysis, // 색채 해석 
 };
+
+
+// ========= 4) 전문가 진단 필요 여부 =========
+
+async function generateDiagnosisSummary(overallText) {
+  if (!overallText?.trim()) return "분석 결과를 기반으로 한 진단이 필요합니다.";
+
+  try {
+    const { choices } = await openai.chat.completions.create({
+      model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+      temperature: 0.2,
+      max_tokens: 150,
+      messages: [
+        {
+          role: "system",
+          content:
+            "너는 HTP(집-나무-사람) 검사 결과를 바탕으로 '진단 필요 여부 요약'만 한 문장으로 작성하는 전문가다. " +
+            "아래 중 하나만 출력하라:\n" +
+            "- 전문가의 상담이 필요하지 않습니다.\n" +
+            "- 전문가와의 상담이 권장됩니다.\n" +
+            "- 전문가의 즉각적인 상담이 필요합니다.\n" +
+            "문장은 단 한 줄로만 출력하라. 이유나 근거는 작성하지 마라.",
+        },
+        {
+          role: "user",
+          content: `전체 해석문:\n${overallText}`,
+        },
+      ],
+    });
+
+    return choices?.[0]?.message?.content?.trim() || "전문가의 상담이 권장됩니다.";
+  } catch (err) {
+    console.error("❌ diagnosis_summary 생성 실패:", err.message);
+    return "전문가와의 상담이 권장됩니다.";
+  }
+}

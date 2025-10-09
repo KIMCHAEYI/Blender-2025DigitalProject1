@@ -1,9 +1,17 @@
 // backend/logic/analyzeResult.js
 const fs = require("fs");
 const path = require("path");
+const processedSessions = new Set();
 
 const RULES_FILE = path.join(__dirname, "../rules/object-evaluation-rules.json");
 const STEP2_FILE = path.join(__dirname, "../rules/step2-questions.json");
+
+// 중복 세션 처리 방지용
+function logOnce(session_id, message) {
+  if (processedSessions.has(session_id)) return;
+  processedSessions.add(session_id);
+  console.log(message);
+}
 
 // 규칙/질문 로드
 function loadJSON(p) {

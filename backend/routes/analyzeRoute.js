@@ -1,7 +1,9 @@
+const { interpretMultipleDrawings } = require("../logic/gptPrompt");
+
 const express = require("express");
 const path = require("path");
 const { runYOLOAnalysis } = require("../logic/yoloRunner");
-const { interpretYOLOResult } = require("../logic/analyzeResult"); // ✅ 변경
+const { interpretYOLOResult } = require("../logic/analyzeResult"); 
 
 const router = express.Router();
 
@@ -40,7 +42,7 @@ router.post("/", async (req, res) => {
       yoloResult,
       eraseCount = 0,
       resetCount = 0,
-      penUsage = null   // ✅ 추가
+      penUsage = null  
     } = req.body;
 
     if (!drawingType || !yoloResult) {
@@ -72,5 +74,28 @@ router.post("/", async (req, res) => {
   }
 });
 
+// 🧠 전체 종합 해석 (그림 4개 결과 → GPT 종합)
+router.post("/overall", async (req, res) => {
+  try {
+    const { drawings, name, gender, first_gender } = req.body;
+
+    if (!Array.isArray(drawings) || drawings.length === 0) {
+      return res.status(400).json({ error: "drawings 배열이 필요합니다." });
+    }
+
+    // GPT로 전체 종합 생성
+    const overall = await interpretMultipleDrawings(drawings, {
+      name,
+      gender,
+      first_gender,
+    });
+
+    console.log("✅ [GPT 전체 종합 결과]", overall);
+    res.json(overall);
+  } catch (err) {
+    console.error("[❌ 전체 종합 해석 실패]", err);
+    res.status(500).json({ error: "전체 종합 실패", detail: err.message });
+  }
+});
 
 module.exports = router;
