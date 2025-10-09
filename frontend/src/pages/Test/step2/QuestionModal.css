@@ -80,14 +80,14 @@
 }
 
 /* 백엔드 질문에 형광펜 */
-/*.highlight-text {
+.highlight-text {
   position: relative;
   display: inline-block;
   font-weight: 600;
   font-size: 1.05rem;
   line-height: 2.0;
   padding: 4px 8px;
-  background: linear-gradient(transparent 55%,  #fff9a8 55%,#fff59d 75%, transparent 75%); /* 형광펜 느낌
+  background: linear-gradient(transparent 55%,  #fff9a8 55%,#fff59d 75%, transparent 75%); /* 형광펜 느낌 */
   border-radius: 3px;
-}  */
+} 
  

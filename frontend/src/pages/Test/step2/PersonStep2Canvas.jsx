@@ -74,7 +74,7 @@ export default function PersonStep2Canvas() {
     );
   }
 
-  // ✅ CanvasTemplate 렌더링
+  // CanvasTemplate 렌더링
   return (
     <CanvasTemplate
       drawingType={drawingType}
