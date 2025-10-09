@@ -1,6 +1,9 @@
 /* ===== CanvasTemplate.css (replace / merge) ===== */
 /* 전체 페이지 구조 */
-.page-center.house-page {
+/* 모든 타입 페이지에 공통 적용 */
+.page-center.house-page,
+.page-center.tree-page,
+.page-center.person-page {
   height: 100svh;
   overflow: hidden;
   display: flex;
@@ -78,6 +81,7 @@
   border-radius: 8px;
 }
 
+
 /* 캔버스 래퍼: indicator 기준점 */
 .canvas-wrapper {
   position: relative;
@@ -85,17 +89,19 @@
   flex-direction: column;
   align-items: center;
   gap: 24px;
+  flex-shrink: 0;
 }
 
 /* 캔버스 */
 .drawing-canvas {
-  max-width: 100%;
-  height: auto;
-  background: #ffffff;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  width: 900px !important;
+  height: 600px !important;
+  flex-shrink: 0;
+  background: #fff;
   border: 2px solid #ccc;
   display: block;
 }
+
 .pen-stepper {
   display: flex;
   flex-direction: column;
@@ -116,10 +122,16 @@
   margin: 4px 0;
 }
 
-.icon-help {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
+.btn-toolbar.btn-help {
+  min-width: 90px;
+  min-height: 44px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-toolbar.btn-help:hover {
+  background: #e8eef7;
 }
 
 /* 진행 점: 캔버스 상단 좌측에 고정 */
@@ -206,3 +218,49 @@
   background-color: #e5e7eb;
   transform: scale(0.97);
 }
+
+/* 🎨 Step2 이전 그림 미리보기용 박스 */
+.preview-box {
+  position: absolute;
+  top: 18%;
+  right: 36px;
+  width: 110px;
+  height: 90px;
+  border: 3px solid #d8d8d8;
+  border-radius: 8px;
+  background: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0.6;
+  overflow: hidden;
+  z-index: 10; /* 캔버스 위에 표시 */
+  transition: all 0.25s ease;
+}
+
+.preview-box:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+/* 내부 이미지 */
+.preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block; 
+  filter: grayscale(10%);
+}
+
+/* 🎨 Step2 팔레트 - 왼쪽 배치용 */
+.palette-left {
+  position: absolute;
+  top: 40%;
+  left: 36px; /* 화면 왼쪽 여백 */
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  z-index: 15;
+}
+
