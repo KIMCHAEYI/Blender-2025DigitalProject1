@@ -150,11 +150,11 @@ for (const r of rulesForType) {
       const [mainThickness] = entries.sort((a, b) => b[1] - a[1])[0]; // 가장 많이 쓴 굵기
       let meaning = "";
       if (mainThickness === "thin") {
-        meaning = "✏️ 가는 선을 주로 사용하여 섬세하고 신중한 성향을 보입니다.";
+        meaning = "가는 선을 주로 사용하여 섬세하고 신중한 성향을 보입니다.";
       } else if (mainThickness === "normal") {
-        meaning = "🖊️ 보통 굵기를 주로 사용하여 안정적이고 균형 잡힌 성향을 보입니다.";
+        meaning = "보통 굵기를 주로 사용하여 안정적이고 균형 잡힌 성향을 보입니다.";
       } else if (mainThickness === "thick") {
-        meaning = "🖌️ 굵은 선을 주로 사용하여 강한 자기표현 욕구와 에너지를 나타냅니다.";
+        meaning = "굵은 선을 주로 사용하여 강한 자기표현 욕구와 에너지를 나타냅니다.";
       }
       penAnalyses.push({
         label: "펜 굵기 사용",

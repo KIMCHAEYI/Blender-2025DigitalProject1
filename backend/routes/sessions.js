@@ -251,4 +251,46 @@ router.post("/generate-pdf", async (req, res) => {
   }
 });
 
+// -----------------------
+// 🔹 먼저 그릴 성별(first_gender) 업데이트 10월 9일 추가
+// -----------------------
+router.post("/update-first-gender", (req, res) => {
+  const { session_id, first_gender } = req.body;
+
+  if (!session_id || !first_gender) {
+    return res
+      .status(400)
+      .json({ message: "session_id와 first_gender가 필요합니다." });
+  }
+
+  try {
+    if (!fs.existsSync(DB_FILE)) {
+      return res.status(404).json({ message: "DB 파일을 찾을 수 없습니다." });
+    }
+
+    const db = JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
+    const session = db.find((s) => s.id === session_id);
+
+    if (!session) {
+      return res.status(404).json({ message: "세션을 찾을 수 없습니다." });
+    }
+
+    // ✅ DB 업데이트
+    session.first_gender = first_gender;
+    session.updatedAt = new Date().toISOString();
+
+    fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+
+    console.log(`✅ [first_gender 업데이트 완료] ${session_id} → ${first_gender}`);
+    res.json({
+      message: "먼저 그릴 성별이 저장되었습니다.",
+      session_id,
+      first_gender,
+    });
+  } catch (err) {
+    console.error("❌ first_gender 업데이트 실패:", err.message);
+    res.status(500).json({ message: "서버 오류로 업데이트 실패" });
+  }
+});
+
 module.exports = router;

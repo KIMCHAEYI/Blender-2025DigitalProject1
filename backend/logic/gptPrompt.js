@@ -193,19 +193,22 @@ async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
   }
 
   const { choices } = await openai.chat.completions.create({
-    model: process.env.OPENAI_MODEL || "gpt-4o-mini",
-    temperature: 0.25,
-    max_tokens: 900,
-    messages: [
-      {
-        role: "system",
-        content:
-          "너는 HTP 검사 '전체 종합' 보고서 작성자다. 아래 입력은 그림별 종합 요약이다. " +
-          "최종 출력에는 객체명/라벨과 같은 구체 요소를 드러내지 마라. 과장/단정 금지. 중복 제거. 따뜻하고 상담자 친화적.",
-      },
-      {
-        role: "user",
-        content: `아래 그림별 종합 요약들을 근거로 전체 종합을 JSON으로만 작성하라.
+  model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+  temperature: 0.35,           // 🔹 약간 더 다양하게
+  max_tokens: 1500,            // 🔹 문장 수 늘릴 수 있게 토큰 여유 확보
+  messages: [
+    {
+      role: "system",
+      content:
+        "너는 HTP(집-나무-사람) 검사 종합 보고서를 작성하는 전문 상담가다. " +
+        "내담자의 그림별 요약을 바탕으로 한 **전체적인 성격, 정서, 대인관계, 심리적 특성**을 종합적으로 기술하라. " +
+        "객체명이나 라벨(창문, 문 등)은 절대 언급하지 말고, 따뜻하고 부드러운 톤을 유지하라. " +
+        "단정하거나 과장된 표현은 피하고, 문단을 길게 써서 충분히 설명하라. " +
+        "전체 글은 **12~18문장** 정도의 길이로 자연스럽게 연결된 문단 형태로 작성하라.",
+    },
+    {
+      role: "user",
+      content: `아래 그림별 종합 요약을 참고하여 전체 해석을 JSON으로 작성하라.
 
 요구 스키마:
 {
@@ -219,15 +222,15 @@ async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
 }
 
 주의:
-- 특정 객체/라벨/위치/수치와 연결짓는 표현 금지.
-- 중복을 합치고 자연스럽게 담아라.
+- 특정 객체명, 위치, 수치 언급 금지.
+- 중복된 의미는 자연스럽게 통합하라.
 - ${genderNote}
 
 [그림별 종합 요약]
 ${perList || "(없음)"}`,
-      },
-    ],
-  });
+    },
+  ],
+});
 
 
   const raw = choices?.[0]?.message?.content?.trim() || "{}";

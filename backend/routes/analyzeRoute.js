@@ -26,12 +26,15 @@ router.get("/", async (req, res) => {
     // 분석 결과 해석
     const analysis = interpretYOLOResult(yoloResult, typeForYolo);
 
-    // 🧩 2단계 판단 로직 통합
-    // 누락된 객체나 불완전 요소가 있으면 2단계 필요로 판단
+    // 🧩 2단계 판단 로직 통합 (step 값까지 반영)
     const missingObjects = analysis.missingObjects || [];
     const lowConfidence = analysis.lowConfidence || [];
-    const needStep2 = missingObjects.length > 0 || lowConfidence.length > 0;
 
+    // GPT 해석 결과에 step 값이 2라면 강제로 true 처리
+    const hasStep2 = analysis.step === 2;
+    const needStep2 = hasStep2 || missingObjects.length > 0 || lowConfidence.length > 0;
+
+    // step2 대상 추출
     const step2Targets = needStep2 ? [typeForYolo] : [];
 
     // 응답 확장
