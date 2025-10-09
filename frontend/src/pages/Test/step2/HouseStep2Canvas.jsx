@@ -5,18 +5,20 @@ import { useUserContext } from "../../../contexts/UserContext.jsx";
 
 export default function HouseStep2Canvas() {
   const { userData } = useUserContext();
+  const drawingType = "house"; // ✅ 명시적으로 정의 (중요)
   const [backendQuestion, setBackendQuestion] = useState("");
   const [previousDrawing, setPreviousDrawing] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // ✅ Step2 대상 목록 불러오기
   const step2Targets = JSON.parse(
     sessionStorage.getItem("step2_targets") || "[]"
   );
   const currentIndex = step2Targets.indexOf(drawingType);
   const nextTarget = step2Targets[currentIndex + 1];
-  const nextRoute = nextTarget ? `/test/step2/${nextTarget}` : "/result";
+  const nextRoute = nextTarget ? `/test/step2/${nextTarget}` : "/result"; // ✅ 다음 페이지 자동 결정
 
-  // 세션 ID 가져오기
+  // ✅ 세션 ID 가져오기
   const sessionId =
     userData?.session_id ||
     sessionStorage.getItem("session_id") ||
@@ -32,7 +34,7 @@ export default function HouseStep2Canvas() {
       try {
         // ① Step2 질문 불러오기
         const questionRes = await fetch(
-          `http://172.20.6.160:5000/api/step2/question?session_id=${sessionId}&type=house`
+          `http://172.20.6.160:5000/api/step2/question?session_id=${sessionId}&type=${drawingType}`
         );
         if (!questionRes.ok) throw new Error("질문 요청 실패");
         const questionData = await questionRes.json();
@@ -40,7 +42,7 @@ export default function HouseStep2Canvas() {
 
         // ② 이전 그림(1단계 결과) 불러오기
         const drawingRes = await fetch(
-          `http://172.20.6.160:5000/api/drawing/${sessionId}/house`
+          `http://172.20.6.160:5000/api/drawings/${sessionId}/${drawingType}`
         );
         if (!drawingRes.ok) throw new Error("이전 그림 요청 실패");
         const drawingData = await drawingRes.json();
@@ -56,7 +58,7 @@ export default function HouseStep2Canvas() {
     };
 
     fetchData();
-  }, [sessionId]);
+  }, [sessionId, drawingType]);
 
   //  예외 처리 (세션 없음 or 로딩 중)
   if (!sessionId) {
@@ -75,10 +77,11 @@ export default function HouseStep2Canvas() {
     );
   }
 
+  // ✅ CanvasTemplate 렌더링
   return (
     <CanvasTemplate
-      drawingType="house"
-      nextRoute="/test/step2/tree"
+      drawingType={drawingType}
+      nextRoute={nextRoute} // 자동 결정된 다음 라우트
       backendQuestion={backendQuestion}
       previousDrawing={previousDrawing}
       paletteEnabled={true} // Step2 기능 활성화

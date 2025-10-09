@@ -1,193 +1,231 @@
+// src/components/CanvasTemplate2.jsx
 import React, { useRef, useState } from "react";
-import { Stage, Layer, Line } from "react-konva";
+import { Stage, Layer, Line, Rect } from "react-konva";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUserContext } from "../contexts/UserContext.jsx";
-import { generateSafePngFileName } from "../utils/generateFileName.js";
-import { dataURLtoFile } from "../utils/dataURLtoFile";
+import Palette from "../pages/Test/step2/Palette.jsx";
+import QuestionModal from "../pages/Test/step2/QuestionModal.jsx";
+import { colorPalette } from "../utils/colorPalette.js";
 import "./CanvasTemplate.css";
 
-// ✅ 백엔드 주소 고정
-const API_BASE = "http://172.20.6.160:5000";
-
-export default function CanvasTemplate2({
-  drawingType = "house",
+export default function CanvasTemplate({
+  drawingType,
+  nextRoute,
+  previousDrawing,
+  paletteEnabled = false,
   backendQuestion = "",
-  previousDrawing = "",
 }) {
   const { userData } = useUserContext();
   const navigate = useNavigate();
+  const stageRef = useRef(null);
 
   const [lines, setLines] = useState([]);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const stageRef = useRef();
+  const [penSize, setPenSize] = useState(4);
 
-  const sessionId =
-    userData?.session_id ||
-    sessionStorage.getItem("session_id") ||
-    sessionStorage.getItem("user_id");
+  //  색 이름 기반으로 상태 관리
+  const colorKeys = Object.keys(colorPalette);
+  const [selectedColor, setSelectedColor] = useState("빨강");
 
-  const step2Targets = JSON.parse(
-    sessionStorage.getItem("step2_targets") || "[]"
-  );
-  const currentIndex = step2Targets.indexOf(drawingType);
-  const nextTarget = step2Targets[currentIndex + 1];
-  const nextRoute = nextTarget ? `/test/step2/${nextTarget}` : "/result";
+  const [showModal, setShowModal] = useState(paletteEnabled);
 
-  // ======= 분석 완료 대기 함수 =======
-  // ✅ 분석 완료 대기 + 실패 시 자동 진행 버전
-  async function waitForAnalysis(sessionId, type, navigateNext) {
-    const API_BASE = "http://172.20.6.160:5000";
-    let retries = 0;
+  const canvasWidth = 900;
+  const canvasHeight = 600;
 
-    console.log("🔍 분석 완료 대기 시작:", { sessionId, type });
-
-    while (retries < 15) {
-      try {
-        const res = await fetch(
-          `${API_BASE}/api/analyze/status?session_id=${sessionId}&type=${type}`
-        );
-        const data = await res.json();
-
-        if (data?.status === "ready" || data?.need_step2 !== undefined) {
-          console.log("✅ 분석 완료 감지:", data);
-          return true; // 완료됨
-        }
-
-        console.log(`⏳ 분석 대기중... (${retries + 1}/15)`);
-      } catch (err) {
-        console.warn("⚠️ 분석 상태 확인 실패:", err);
-      }
-
-      await new Promise((r) => setTimeout(r, 1000)); // 1초 대기
-      retries++;
-    }
-
-    // 15초(15회) 기다렸는데도 완료 신호가 없으면 자동 진행
-    console.warn("⚠️ 분석 완료 신호 없음 — 자동으로 다음 단계로 진행합니다.");
-    if (typeof navigateNext === "function") navigateNext(); // 안전하게 다음 단계로 이동
-    return false;
-  }
-
-  // ======= 저장 및 분석 완료 대기 =======
-  const handleSave = async () => {
-    if (!sessionId) {
-      alert("세션이 유효하지 않습니다.");
-      return;
-    }
-
+  const handleMouseDown = () => {
+    if (showModal) return;
     const stage = stageRef.current;
-    const dataURL = stage.toDataURL({ pixelRatio: 2 });
-    const file = dataURLtoFile(
-      dataURL,
-      generateSafePngFileName(sessionId, drawingType)
-    );
-
-    const formData = new FormData();
-    formData.append("session_id", sessionId);
-    formData.append("type", drawingType);
-    formData.append("drawing", file);
-
-    setSaving(true);
-    try {
-      const res = await axios.post(
-        `${API_BASE}/api/drawings/upload`,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      console.log("📦 서버 응답:", res.data);
-
-      // ✅ 응답에서 path, file_path, url, message 어떤 형태든 다 잡기
-      const uploadedPath =
-        res.data?.path ||
-        res.data?.file_path ||
-        res.data?.url ||
-        res.data?.savedPath ||
-        "";
-
-      // ✅ path가 없으면 우리가 직접 생성
-      const uploadedFile =
-        uploadedPath.split("/").pop() ||
-        generateSafePngFileName(sessionId, drawingType);
-
-      console.log("💾 업로드 파일명:", uploadedFile);
-
-      // ✅ 저장
-      sessionStorage.setItem("latest_file", uploadedFile);
-      sessionStorage.setItem("latest_type", drawingType);
-
-      // ✅ 반영 대기 후 다음 이동
-      await new Promise((r) => setTimeout(r, 300));
-      handleNext();
-    } catch (err) {
-      console.error("❌ 업로드 오류:", err);
-      alert("파일 업로드 중 오류가 발생했습니다.");
-    }
+    const pos = stage.getPointerPosition();
+    setIsDrawing(true);
+    const newLine = {
+      points: [pos.x, pos.y],
+      stroke: paletteEnabled
+        ? `rgb(${colorPalette[selectedColor].join(",")})` // 색 이름으로 접근
+        : "#111",
+      strokeWidth: penSize,
+      tension: 0.5,
+      lineCap: "round",
+    };
+    setLines((prev) => [...prev, newLine]);
   };
 
-  const handleNext = () => {
-    if (nextTarget) {
-      navigate(nextRoute);
+  const handleMouseMove = () => {
+    if (!isDrawing || showModal) return;
+    const stage = stageRef.current;
+    const pos = stage.getPointerPosition();
+    setLines((prev) => {
+      const last = prev[prev.length - 1];
+      if (!last) return prev;
+      const updated = { ...last, points: [...last.points, pos.x, pos.y] };
+      return [...prev.slice(0, -1), updated];
+    });
+  };
+
+  const handleMouseUp = () => setIsDrawing(false);
+  const handleUndo = () => setLines((prev) => prev.slice(0, -1));
+  const handleClear = () => setLines([]);
+
+  const handleNext = async () => {
+    if (paletteEnabled) {
+      try {
+        const stage = stageRef.current;
+        const dataURL = stage.toDataURL({ pixelRatio: 2 });
+        const blob = await (await fetch(dataURL)).blob();
+        const file = new File([blob], `${drawingType}_step2.png`, {
+          type: "image/png",
+        });
+        const formData = new FormData();
+        formData.append("session_id", userData.session_id);
+        formData.append("type", drawingType);
+        formData.append("image", file);
+        await axios.post(
+          "http://172.20.6.160:5000/api/step2/upload",
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+
+        navigate(nextRoute);
+      } catch (e) {
+        console.error(e);
+        alert("이미지 업로드 중 오류가 발생했습니다.");
+      }
     } else {
-      navigate("/result/rotate");
+      navigate(nextRoute);
     }
   };
 
   return (
-    <div className="canvas-page">
-      <h2 className="question-title">
-        {backendQuestion || "질문을 불러오는 중입니다..."}
-      </h2>
+    <>
+      {paletteEnabled && (
+        <QuestionModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          question={backendQuestion}
+        />
+      )}
 
-      <div className="canvas-wrapper">
-        {previousDrawing && (
-          <img src={previousDrawing} alt="이전 그림" className="prev-drawing" />
-        )}
-        <Stage
-          width={window.innerWidth}
-          height={window.innerHeight * 0.7}
-          ref={stageRef}
-          onMouseDown={(e) => {
-            setIsDrawing(true);
-            const pos = e.target.getStage().getPointerPosition();
-            setLines([...lines, { points: [pos.x, pos.y] }]);
-          }}
-          onMouseMove={(e) => {
-            if (!isDrawing) return;
-            const stage = e.target.getStage();
-            const point = stage.getPointerPosition();
-            let lastLine = lines[lines.length - 1];
-            lastLine.points = lastLine.points.concat([point.x, point.y]);
-            lines.splice(lines.length - 1, 1, lastLine);
-            setLines(lines.concat());
-          }}
-          onMouseUp={() => setIsDrawing(false)}
-        >
-          <Layer>
-            {lines.map((line, i) => (
-              <Line
-                key={i}
-                points={line.points}
-                stroke="#000"
-                strokeWidth={3}
-                tension={0.5}
-                lineCap="round"
-                lineJoin="round"
+      <div className={`page-center ${drawingType}-page`}>
+        {/* 상단/바디/캔버스 렌더는 기존 그대로 */}
+        <div className="canvas-header-row">
+          <div className="rectangle-header">
+            {paletteEnabled && backendQuestion ? (
+              <p className="step2-question">{backendQuestion}</p>
+            ) : (
+              <h2 className="rectangle-title">
+                {drawingType === "house"
+                  ? "집을 그려보세요"
+                  : drawingType === "tree"
+                  ? "나무를 그려보세요"
+                  : "사람을 그려보세요"}
+              </h2>
+            )}
+          </div>
+        </div>
+
+        <div className="canvas-body">
+          {/* 툴바 */}
+          <div className="toolbar">
+            <div className="pen-stepper">
+              <button onClick={() => setPenSize((p) => Math.min(p + 2, 10))}>
+                <img src="/assets/+.png" alt="굵기 증가" width={32} />
+              </button>
+              <div
+                style={{
+                  width: penSize * 1.5,
+                  height: penSize * 1.5,
+                  borderRadius: "50%",
+                  background: "#111",
+                }}
               />
-            ))}
-          </Layer>
-        </Stage>
-      </div>
+              <button onClick={() => setPenSize((p) => Math.max(p - 2, 2))}>
+                <img src="/assets/-.png" alt="굵기 감소" width={32} />
+              </button>
+            </div>
+            <button className="btn-toolbar" onClick={handleUndo}>
+              ↩️ 되돌리기
+            </button>
+            <button className="btn-toolbar" onClick={handleClear}>
+              🗑 처음부터
+            </button>
+          </div>
 
-      <button
-        className="btn-base btn-primary"
-        onClick={handleSave}
-        disabled={saving}
-      >
-        {saving ? "저장 및 분석 중..." : "저장하고 다음으로 →"}
-      </button>
-    </div>
+          {/* 캔버스 */}
+          <div className="canvas-wrapper">
+            <Stage
+              ref={stageRef}
+              width={canvasWidth}
+              height={canvasHeight}
+              className="drawing-canvas"
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+            >
+              <Layer>
+                <Rect width={canvasWidth} height={canvasHeight} fill="white" />
+                {lines.map((line, i) => (
+                  <Line
+                    key={i}
+                    points={line.points}
+                    stroke={line.stroke}
+                    strokeWidth={line.strokeWidth}
+                    tension={0.5}
+                    lineCap="round"
+                  />
+                ))}
+              </Layer>
+            </Stage>
+          </div>
+
+          {/* 미리보기 & 팔레트 */}
+          {paletteEnabled && (
+            <>
+              <div
+                className="preview-box"
+                style={{
+                  top: drawingType === "house" ? "45%" : "55%",
+                  left: "calc(50% + 550px)",
+                  transform: "translateY(-180%)",
+                  width: drawingType === "house" ? "220px" : "180px",
+                  height: drawingType === "house" ? "150px" : "220px",
+                }}
+              >
+                {previousDrawing && (
+                  <div className="preview-box">
+                    <img src={previousDrawing} alt="이전 그림" />
+                  </div>
+                )}
+              </div>
+
+              <div
+                className="palette-right"
+                style={{
+                  top: "50%",
+                  left: "calc(50% + 550px)",
+                  transform: "translateY(-20%)",
+                }}
+              >
+                <Palette
+                  selectedColor={selectedColor}
+                  onSelectColor={setSelectedColor}
+                />
+              </div>
+            </>
+          )}
+        </div>
+
+        <div className="footer-buttons-row">
+          <button
+            className="btn-base btn-nextred"
+            onClick={() => navigate("/")}
+          >
+            검사 종료
+          </button>
+          <button className="btn-base btn-nextblue" onClick={handleNext}>
+            다음으로
+          </button>
+        </div>
+      </div>
+    </>
   );
 }

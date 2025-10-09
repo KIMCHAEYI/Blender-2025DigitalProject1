@@ -228,11 +228,11 @@ export default function CanvasTemplate({
         data.result?.id ||
         null;
 
-      const uploadedFile = imagePath?.split("/").pop() || file.name || fileName;
-      sessionStorage.setItem("latest_file", uploadedFile);
-      sessionStorage.setItem("latest_type", drawingType);
-      console.log("💾 latest_file 저장됨:", uploadedFile);
-      console.log("💾 latest_type 저장됨:", drawingType);
+      // const uploadedFile = imagePath?.split("/").pop() || file.name || fileName;
+      // sessionStorage.setItem("latest_file", uploadedFile);
+      // sessionStorage.setItem("latest_type", drawingType);
+      // console.log("💾 latest_file 저장됨:", uploadedFile);
+      // console.log("💾 latest_type 저장됨:", drawingType);
 
       await new Promise((r) => setTimeout(r, 300));
 

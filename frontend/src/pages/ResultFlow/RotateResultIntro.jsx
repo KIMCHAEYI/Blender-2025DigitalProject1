@@ -1,4 +1,3 @@
-// src/pages/Result/RotateResultIntro.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Result.css";
@@ -11,76 +10,50 @@ export default function RotateResultIntro() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  console.log("📂 RotateResultIntro 시작");
-  console.log("📂 latest_file:", sessionStorage.getItem("latest_file"));
-  console.log("📂 latest_type:", sessionStorage.getItem("latest_type"));
-  console.log("📂 session_id:", sessionStorage.getItem("session_id"));
-
   const handleClick = async () => {
     setLoading(true);
     setError("");
 
     try {
-      // 세션 및 파일 정보 가져오기
-      const fileName = sessionStorage.getItem("latest_file")?.split("/").pop();
-      const drawingType =
-        sessionStorage.getItem("latest_type")?.toLowerCase() || "house";
+      // 1️⃣ 세션 ID 확인
+      const sessionId =
+        sessionStorage.getItem("session_id") ||
+        sessionStorage.getItem("user_id");
 
-      if (!fileName) throw new Error("업로드된 그림 파일이 없습니다.");
+      if (!sessionId) throw new Error("세션 ID가 없습니다.");
 
-      console.log(
-        "📤 요청:",
-        `${API_BASE}/api/analyze?file=${fileName}&type=${drawingType}`
-      );
+      console.log("📦 세션 전체 분석 요청:", sessionId);
 
-      const res = await fetch(
-        `${API_BASE}/api/analyze?file=${fileName}&type=${drawingType}`
-      );
-      const data = await res.json();
+      // 2️⃣ 전체 분석 요청
+      const res = await fetch(`${API_BASE}/api/analyze/session/${sessionId}`);
+      const allData = await res.json();
 
-      console.log("📥 응답 원본:", data);
+      console.log("🧠 세션 전체 분석 결과:", allData);
 
-      if (!res.ok) throw new Error(data.error || "서버 요청 실패");
+      if (!res.ok) throw new Error(allData.error || "서버 요청 실패");
 
-      // ✅ need_step2, targets 추출
-      const needStep2 =
-        data.need_step2 ?? data.needStep2 ?? data.step2_needed ?? false;
-      const targets =
-        data.targets ?? data.target ?? (data.type ? [data.type] : []) ?? [];
+      // 3️⃣ 결과 중 step2가 필요한 그림만 필터링 (step === 2 또는 need_step2 === true)
+      const step2Targets = allData.results
+        .filter((r) => r.step === 2 || r.need_step2 === true)
+        .map((r) => {
+          if (r.type.includes("person")) return "person"; // ✅ 남녀 구분 없이 person 통합 처리
+          return r.type;
+        });
 
-      console.log("🧩 needStep2:", needStep2, "| targets:", targets);
+      // 중복 제거
+      const uniqueStep2 = [...new Set(step2Targets)];
 
-      // ✅ 🔥 분석 결과 누적 저장 및 전체 출력
-      const prevAnalyzes = JSON.parse(
-        sessionStorage.getItem("analyzeResults") || "{}"
-      );
-      const updatedAnalyzes = {
-        ...prevAnalyzes,
-        [drawingType]: {
-          need_step2: needStep2,
-          objects: data.objects?.length || 0,
-          subtype: data.subtype,
-        },
-      };
-      sessionStorage.setItem("analyzeResults", JSON.stringify(updatedAnalyzes));
-
-      console.log("📊 전체 분석 상태 누적:");
-      Object.entries(updatedAnalyzes).forEach(([key, val]) => {
-        console.log(
-          `🔹 ${key} → need_step2: ${val.need_step2}, objects: ${val.objects}, subtype: ${val.subtype}`
-        );
-      });
-
-      // ✅ 2단계 분기
-      if (needStep2 && targets.length > 0) {
-        sessionStorage.setItem("step2_targets", JSON.stringify(targets));
-        navigate(`/test/step2/${targets[0]}`);
+      // 4️⃣ 2단계가 필요한 경우 → 첫 번째 대상으로 이동
+      if (step2Targets.length > 0) {
+        sessionStorage.setItem("step2_targets", JSON.stringify(step2Targets));
+        navigate(`/test/step2/${step2Targets[0]}`);
       } else {
+        // 모두 1단계라면 바로 결과 페이지 이동
         navigate("/result");
       }
     } catch (err) {
-      console.error("❌ 2단계 판단 실패:", err);
-      setError("2단계 진행 여부를 확인할 수 없습니다.");
+      console.error("❌ 전체 분석 실패:", err);
+      setError("세션 전체 분석 중 오류가 발생했습니다.");
     } finally {
       setLoading(false);
     }

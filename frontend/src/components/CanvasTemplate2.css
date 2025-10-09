@@ -42,7 +42,7 @@
   margin: 0;
 }
 
-/* 본문 영역: 중앙 정렬 */
+/* 본문 */
 .canvas-body {
   flex: 1;
   padding: 0;
@@ -52,7 +52,7 @@
   box-sizing: border-box;
 }
 
-/* 툴바: 화면 왼쪽 가운데에 고정 */
+/* 툴바 */
 .toolbar {
   position: fixed;
   top: 50%;
@@ -60,6 +60,9 @@
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
+  justify-content: center; /* 세로 중앙 정렬 */
+  align-items: center; /* 가로 중앙 정렬 */
+  height: 100%; /* 툴바가 화면 전체 높이를 기준으로 함 */
   gap: 12px;
   z-index: 200;
 }
@@ -93,31 +96,42 @@
   border: 2px solid #ccc;
   display: block;
 }
+.pen-stepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.pen-stepper button {
+  background: transparent; /* 배경 제거 */
+  border: none; /* 테두리 제거 */
+  box-shadow: none; /* 그림자 제거 */
+  padding: 0; /* 내부 여백 제거 */
+
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 4px 0;
+}
 
 .btn-toolbar.btn-help {
   min-width: 90px;
   min-height: 44px;
-  border-radius: 999px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 30px;
-  gap: 6px;
 }
 .btn-toolbar.btn-help:hover {
   background: #e8eef7;
-}
-.btn-toolbar.btn-help:active {
-  transform: translateY(1px);
 }
 
 /* 진행 점: 캔버스 상단 좌측에 고정 */
 .progress-indicator.static-overlay {
   position: absolute;
-  top: -170px;
+  top: -25px;
   left: 20;
   display: flex;
   gap: 8px;
@@ -162,14 +176,12 @@
 }
 .modal-buttons {
   display: flex;
-  justify-content: center; /* 가운데로 */
+  justify-content: center;
   align-items: center;
-  gap: 12px; /* 버튼 사이 간격 */
+  gap: 12px;
   margin-top: 20px;
-  flex-wrap: nowrap; /* 줄바꿈 방지 */
+  flex-wrap: nowrap;
 }
-
-/* 버튼을 가변 폭, 인라인 플렉스로 */
 .modal-button {
   display: inline-flex;
   justify-content: center;
@@ -199,4 +211,34 @@
 .modal-button.cancel:active {
   background-color: #e5e7eb;
   transform: scale(0.97);
+}
+
+/* 🎨 Step2 이전 그림 미리보기용 박스 */
+.preview-box {
+  position: absolute;
+  top: 18%;
+  right: 36px;
+  width: 110px;
+  height: 90px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0.6;
+  overflow: hidden;
+  z-index: 10; /* 캔버스 위에 표시 */
+  transition: all 0.25s ease;
+}
+
+.preview-box:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+/* 내부 이미지 */
+.preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: grayscale(10%);
 }
