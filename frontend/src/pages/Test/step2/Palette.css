@@ -1,0 +1,33 @@
+.palette-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.palette-row-vertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.color-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.color-dot:hover {
+  transform: scale(1.1);
+  border-color: #bbb;
+}
+
+.color-dot.active {
+  transform: scale(1.25);
+  border: 3px solid #3b5bdb;
+  box-shadow: 0 0 8px rgba(59, 91, 219, 0.5);
+}

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE = "http://172.20.12.234:5000";
+const API_BASE = "http://172.20.6.160:5000";
 
 /** 절대/상대 URL 합성 */
 export const toAbsUrl = (path) => {

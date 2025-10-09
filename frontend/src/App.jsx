@@ -21,6 +21,8 @@ import PersonIntro from "./pages/Test/Person/PersonIntro";
 import PersonCanvasMale from "./pages/Test/Person/PersonCanvasMale";
 import PersonCanvasFemale from "./pages/Test/Person/PersonCanvasFemale";
 
+import Step2Routes from "./pages/Test/step2/Step2Routes.jsx";
+
 import RotateResultIntro from "./pages/ResultFlow/RotateResultIntro";
 import VoiceQuestion from "./pages/ResultFlow/VoiceQuestion";
 import LoadingResult from "./pages/ResultFlow/LoadingResult";
@@ -54,6 +56,7 @@ export default function App() {
           path="/test/person/canvas-female"
           element={<PersonCanvasFemale />}
         />
+        <Route path="/test/step2/*" element={<Step2Routes />} />
 
         <Route path="/result/rotate" element={<RotateResultIntro />} />
         <Route path="/result/question" element={<VoiceQuestion />} />

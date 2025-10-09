@@ -9,7 +9,6 @@ export default function Complete() {
   const { userData, setUserData } = useUserContext();
   const navigate = useNavigate();
 
-  // ▶ 버튼에 주의를 끄는 힌트 애니메이션 on/off
   const [hint, setHint] = useState(false);
   useEffect(() => {
     const t = setTimeout(() => setHint(true), 800); // 페이지 뜨고 0.8s 후 시작
@@ -22,7 +21,6 @@ export default function Complete() {
       stopHint();
       console.log("보내는 데이터 (원본 userData):", userData);
 
-      // ✅ 서버에는 절대 drawings 안 보내고 필요한 값만 전송
       const sessionRes = await axios.post("/api/sessions/start", {
         name: userData.name,
         birth: userData.birth,
@@ -37,9 +35,7 @@ export default function Complete() {
         setUserData((prev) => ({ ...prev, session_id: sid }));
         sessionStorage.setItem("session_id", sid);
       }
-
-      //alert("정보가 성공적으로 저장되었습니다!");
-      navigate("/test/house/intro"); // 이후 캔버스에서 session_id를 사용
+      navigate("/test/house/intro");
     } catch (err) {
       console.error("요청 실패:", err);
       alert("처리에 실패했어요 😢 다시 시도해 주세요.");
