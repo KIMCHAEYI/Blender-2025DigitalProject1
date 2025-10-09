@@ -21,7 +21,7 @@ app.use(
   })
 );
 
-app.use("/api/step2", step2Route);
+app.use("/api/step2", require("./routes/step2Route"));
 
 app.use(express.json());
 

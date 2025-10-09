@@ -137,14 +137,30 @@ router.get("/session/:session_id", async (req, res) => {
     };
   }
 
-  // 4️⃣ 최종 응답
+  // 4️⃣ 최종 응답 (house/tree도 2단계 포함)
+  const houseNeedStep2 = results.find((r) => r.type === "house" && r.step === 2);
+  const treeNeedStep2 = results.find((r) => r.type === "tree" && r.step === 2);
+
   res.json({
     session_id,
     results,
-    step2, // ✅ { person: true/false, target, image }
+    step2: {
+      house: !!houseNeedStep2,
+      tree: !!treeNeedStep2,
+      person: step2.person,
+      target:
+        step2.target ||
+        houseNeedStep2?.type ||
+        treeNeedStep2?.type ||
+        null,
+      image:
+        step2.image ||
+        houseNeedStep2?.path ||
+        treeNeedStep2?.path ||
+        null,
+    },
   });
 });
-
 
 router.post("/", async (req, res) => {
   try {

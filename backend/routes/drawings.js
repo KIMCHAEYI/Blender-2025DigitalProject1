@@ -210,8 +210,13 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
         const doneDrawings = (sessionAfter?.drawings || []).filter(
           (d) => d.status === "done"
         );
+        const uniqueTypes = new Set(
+          doneDrawings.map((d) =>
+            d.type.startsWith("person") ? "person" : d.type
+          )
+        );
 
-        if (doneDrawings.length === 4) {
+        if (uniqueTypes.length === 4) {
           const entries = doneDrawings.map((x) => ({
             type: x.type,
             summary: x.result?.counselor_summary || "",
@@ -236,7 +241,7 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
 
         } else {
           console.log(
-            `[GPT 전체 종합 대기] 현재 완료 ${doneDrawings.length}/4`
+            `[GPT 전체 종합 대기] 현재 완료 ${uniqueTypes.size}/4`
           );
         }
       } catch (e) {
@@ -304,6 +309,48 @@ router.get("/:sessionId/:drawingId/debug", (req, res) => {
   );
   if (!drawing) return res.status(404).json({ message: "그림 없음" });
   res.json(drawing);
+});
+
+// ✅ 6) [NEW] Step2용: 특정 세션에서 type별 그림 찾기
+router.get("/:session_id/:type", (req, res) => {
+  try {
+    const { session_id, type } = req.params;
+    const db = readDB();
+    const session = db.find((s) => String(s.id) === String(session_id));
+
+    if (!session) {
+      return res.status(404).json({ error: "세션을 찾을 수 없습니다." });
+    }
+
+    // type (house/tree/person 등)에 맞는 그림 찾기
+    const drawings = session.drawings || [];
+    const found = drawings.find((d) => {
+      if (type === "person") {
+        return (
+          d.type === "person" ||
+          d.type === "person_male" ||
+          d.type === "person_female"
+        );
+      }
+      // house나 tree 등은 정확히 일치하는 것만 반환
+      return d.type === type;
+    });
+
+
+    if (!found) {
+      return res.status(404).json({ error: "해당 타입의 그림을 찾을 수 없습니다." });
+    }
+
+    res.json({
+      image: found.path || found.result?.image,
+      type: found.type,
+      drawing_id: found.id,
+      status: found.status,
+    });
+  } catch (err) {
+    console.error("❌ [GET /:session_id/:type] 오류:", err);
+    res.status(500).json({ error: "서버 내부 오류" });
+  }
 });
 
 module.exports = router;

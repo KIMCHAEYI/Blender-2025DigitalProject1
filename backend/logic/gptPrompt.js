@@ -1,7 +1,11 @@
 // backend/logic/gptPrompt.js 
 require("dotenv").config();
 const OpenAI = require("openai");
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+let openai;
+(async () => {
+  openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+})();
 
 const keyOf = (type, subtype) => {
   if (type === "person") {
@@ -79,6 +83,7 @@ function safeParseJSON(s) {
   }
 }
 
+// ========= 1) 단일 그림 요약 =========
 async function summarizeDrawingForCounselor(draw, opts = {}) {
   const name = (opts.name || "").trim();
   const type = draw?.type || "unknown";
@@ -148,9 +153,23 @@ async function interpretMultipleDrawings(drawings, opts = {}) {
 
 // ========= 2) 그림별 요약들을 모아 전체 종합 =========
 async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
+  
+  // 성별 문자열을 통일하는 헬퍼 추가
+  function normalizeGender(gender) {
+    if (!gender) return "";
+    if (typeof gender !== "string") return gender;
+    if (gender.includes("male")) return "male";
+    if (gender.includes("female")) return "female";
+    return gender.trim().toLowerCase();
+  }
+  
   const name = (opts.name || "").trim();
-  const firstGender = opts.first_gender || null;
-  const userGender = opts.gender || null;  
+
+  // 성별 통일 후 비교하도록 수정
+  const firstGender = normalizeGender(opts.first_gender);
+  const userGender = normalizeGender(opts.gender);
+  // const firstGender = opts.first_gender || null;
+  // const userGender = opts.gender || null;  
 
   const perMap = {};
   for (const e of entries) {
@@ -182,25 +201,30 @@ async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
 
   const { choices } = await openai.chat.completions.create({
   model: process.env.OPENAI_MODEL || "gpt-4o-mini",
-  temperature: 0.35,           
-  max_tokens: 1500,           
+  temperature: 0.35,
+  max_tokens: 2000,   // ✅ 길이 충분히 확보 (기존 1500 → 2000)
   messages: [
     {
       role: "system",
       content:
         "너는 HTP(집-나무-사람) 검사 종합 보고서를 작성하는 전문 상담가다. " +
-        "내담자의 그림별 요약을 바탕으로 한 **전체적인 성격, 정서, 대인관계, 심리적 특성**을 종합적으로 기술하라. " +
-        "객체명이나 라벨(창문, 문 등)은 절대 언급하지 말고, 따뜻하고 부드러운 톤을 유지하라. " +
-        "단정하거나 과장된 표현은 피하고, 문단을 길게 써서 충분히 설명하라. " +
-        "전체 글은 **12~18문장** 정도의 길이로 자연스럽게 연결된 문단 형태로 작성하라.",
+        "내담자가 그린 4개의 그림(집, 나무, 사람, 추가그림)을 기반으로 " +
+        "성격, 정서, 대인관계, 심리적 특성을 종합적으로 해석하라. " +
+        "다음 요소를 반드시 통합 반영해야 한다:\n" +
+        "- 각 그림별 주요 해석 요약\n" +
+        "- 먼저 그린 성별(first_gender)과 내담자 성별의 관계 해석\n" +
+        "- 그림 과정에서의 펜 굵기, 지우기 횟수, 새로 그리기 횟수에 따른 성향 해석\n\n" +
+        "보고서는 따뜻하고 객관적인 톤으로 작성하되, 단정이나 병리적 표현은 피한다. " +
+        "객체명(창문, 문 등)을 직접 언급하지 말고, 심리적 의미를 중심으로 설명하라. " +
+        "결과는 200~300자 분량의 한 문단으로 작성하라.",
     },
     {
       role: "user",
-      content: `아래 그림별 종합 요약을 참고하여 전체 해석을 JSON으로 작성하라.
+      content: `아래 그림별 종합 요약 및 행동정보를 바탕으로 전체 해석을 JSON으로 작성하라.
 
 요구 스키마:
 {
-  "personalized_overall": string,
+  "personalized_overall": string,  // 200~300자 내외
   "per_drawing": {
     "house"?: string,
     "tree"?: string,
