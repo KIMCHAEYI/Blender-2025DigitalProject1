@@ -1,25 +1,9 @@
-/* ===== 기본 레이아웃 ===== */
 .home-container {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   padding: 20px;
-
-  background: linear-gradient(
-      to bottom,
-      #ffffff 0%,
-      #edf4ff 20%,
-      #94aed9 70%,
-      #77a1eb 100%
-    ),
-    radial-gradient(
-      circle at 70% 20%,
-      rgba(236, 72, 153, 0.25),
-      transparent 60%
-    ),
-    radial-gradient(circle at 30% 80%, rgba(139, 92, 246, 0.2), transparent 65%);
-  background-blend-mode: screen;
 }
 
 .home-header {
@@ -34,28 +18,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
-  margin: 30px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .contact {
-  width: 70px;
+  width: 90px;
 }
 
 .home-header .inquiry:hover {
   transform: translateY(-2px);
-  box-shadow: 30 1px 3px rgba(0, 0, 0, 0.18);
 }
 
 .home-header .inquiry:active {
   transform: translateY(0);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
 }
 
 /* ===== Hero ===== */

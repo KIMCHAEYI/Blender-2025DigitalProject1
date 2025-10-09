@@ -47,9 +47,9 @@ export default function Home() {
               className="mongle-logo"
             />
             <br />
-            <p className="main-subtitle">
+            <h1 className="main-subtitle">
               집, 나무, 사람을 그리면 몽글이 당신의 마음 이야기를 전해줘요.
-            </p>
+            </h1>
 
             <p className="main-description">
               집, 나무, 사람을 그리면, 몽글이 그림을 살펴보고 궁금한 걸
