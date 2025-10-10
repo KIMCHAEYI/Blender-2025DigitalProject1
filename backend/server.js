@@ -35,10 +35,6 @@ app.use("/api/drawings", drawingsRouter);  // 그림 업로드
 app.use("/api/color-analyze", colorRoute); // ✅ 2단계 색상 분석 추가 (올바른 위치)
 app.use("/api/step2", step2Route); // ✅ CORS 적용 이후 등록
 
-//[MODIFY] Report PDF 라우터 연결 (새 파일)
-const reportRouter = require("./routes/report"); // [MODIFY] add
-app.use("/api/report", reportRouter);            // [MODIFY] add
-
 // ✅ 서버 실행
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);

@@ -2,9 +2,8 @@ import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../contexts/UserContext";
 import ResultCard from "../../components/ResultCard";
-// import { downloadPdf } from "../../utils/pdfUtils";
+import { downloadPdf } from "../../utils/pdfUtils";
 import axios from "axios";
-import { downloadProReport } from "../../utils/reportUtils"; // [MODIFY] 추가
 
 import "./ResultPage.css";
 
@@ -101,10 +100,6 @@ export default function ResultPage() {
   const { userData, setUserData } = useUserContext();
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState(false);
-  const sessionId = //여기부터 수진 추가
-    userData?.session_id ||
-    sessionStorage.getItem("session_id") ||
-    sessionStorage.getItem("user_id"); //여기까지 수진 추가
 
   useEffect(() => {
     const userId = userData?.session_id || sessionStorage.getItem("user_id");
@@ -217,7 +212,7 @@ export default function ResultPage() {
 
       {/* FAB */}
       <div className="fab">
-        {/* <button 수진이가 주석처리함
+        <button 수진이가 주석처리함
           className="fab-btn"
           onClick={() =>
             downloadPdf({
@@ -235,16 +230,8 @@ export default function ResultPage() {
           disabled={downloading}
         >
           📄 요약 PDF
-        </button> */}
-        {/* [MODIFY] HTML→PDF 대신 Python(ReportLab) PDF로 교체 */}
-        <button
-        className="fab-btn"
-        onClick={() => downloadProReport({ sessionId, setDownloading })}
-        disabled={downloading}
-        >
-        📊 정밀 리포트 PDF
         </button>
-        {/* <button
+        <button
           className="fab-btn"
           onClick={() =>
             downloadPdf({
@@ -262,7 +249,7 @@ export default function ResultPage() {
           disabled={downloading}
         >
           🔎 상세 PDF
-        </button> */}
+        </button>
         <button
           className="fab-btn"
           onClick={() => downloadProReport({ sessionId, setDownloading })} // [SWITCH] Python ReportLab 호출
