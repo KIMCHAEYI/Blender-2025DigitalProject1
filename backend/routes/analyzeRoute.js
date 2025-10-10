@@ -1,4 +1,4 @@
-const { interpretMultipleDrawings } = require("../logic/gptPrompt");
+const { synthesizeOverallFromDrawingSummaries } = require("../logic/gptPrompt");
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
@@ -16,7 +16,6 @@ const yoloCache = new Map();           // 이미 분석된 결과 캐시
 
 router.get("/session/:session_id", async (req, res) => {
   const { session_id } = req.params;
-
   const db = JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
   const session = db.find((s) => s.id === session_id);
   if (!session) return res.status(404).json({ error: "세션 없음" });
@@ -118,11 +117,12 @@ router.post("/overall", async (req, res) => {
       return res.status(400).json({ error: "drawings 배열이 필요합니다." });
     }
 
-    const overall = await interpretMultipleDrawings(drawings, {
+    const overall = await synthesizeOverallFromDrawingSummaries(drawings, {
       name,
       gender,
       first_gender,
     });
+
 
     // ✅ DB 업데이트
     const db = JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));

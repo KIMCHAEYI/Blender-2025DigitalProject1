@@ -364,3 +364,5 @@ async function generateDiagnosisSummary(overallText) {
     return "전문가와의 상담이 권장됩니다.";
   }
 }
+
+// module.exports = interpretMultipleDrawings;
