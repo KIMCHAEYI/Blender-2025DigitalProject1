@@ -1,22 +1,27 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+// src/pages/Test/Tree/TreeCanvas.jsx
+import React, { useState } from "react";
+import CanvasTemplate from "../../../components/CanvasTemplate";
+import { useIntroAudio } from "../../../hooks/useIntroAudio.js"; // 추가
 
-export default function TreeIntro() {
-  const navigate = useNavigate();
+export default function TreeCanvas() {
+  const [audioEnded, setAudioEnded] = useState(false);
+
+  // 🎧 페이지 진입 시 “나무를 그려주세요!” 자동재생
+  useIntroAudio("step1.draw_tree", () => setAudioEnded(true));
+
+   const handleNext = () => {
+    navigate("/test/tree/canvas");
+  };
+
 
   return (
-    <div className="page-center intro-page portrait">
-      <h2 className="question">
-        <span className="highlight">나무</span>를 그려주세요
-      </h2>
-
-      <button
-        type="primary"
-        className="btn-base btn-next"
-        onClick={() => navigate("/test/tree/canvas")}
-      >
-        알겠어요
-      </button>
-    </div>
+    <CanvasTemplate
+      drawingType="tree"
+      title="나무"
+      nextRoute="/test/person/intro"
+      currentStep={2}
+      // 음성 끝나야 그리기 시작 가능하도록 전달
+      audioEnded={audioEnded}
+    />
   );
 }

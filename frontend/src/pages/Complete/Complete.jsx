@@ -1,26 +1,53 @@
-import React, { useState, useEffect } from "react";
+// src/pages/Complete/Complete.jsx
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../../components/Button";
 import { useUserContext } from "../../contexts/UserContext";
+import { useVoice } from "../../contexts/VoiceContext.jsx";
+import { AUDIO } from "../../tts/AudioManifest.js";
 import "./Complete.css";
 
 export default function Complete() {
   const { userData, setUserData } = useUserContext();
+  const { voice, play, isPlaying } = useVoice();
   const navigate = useNavigate();
 
-  const [hint, setHint] = useState(false);
+  const [canClick, setCanClick] = useState(false);
+  const hasPlayedRef = useRef(false); // 재생 여부 추적
+
+  //  페이지 로드 시 자동 재생 (단 1회)
   useEffect(() => {
-    const t = setTimeout(() => setHint(true), 800); // 페이지 뜨고 0.8s 후 시작
-    return () => clearTimeout(t);
-  }, []);
-  const stopHint = () => setHint(false);
+    if (hasPlayedRef.current) return; // 이미 재생됐다면 종료
+    hasPlayedRef.current = true;
+
+    if (!voice) {
+      console.warn("⚠️ 캐릭터(voice)가 아직 선택되지 않았습니다.");
+      setCanClick(true);
+      return;
+    }
+
+    const src = AUDIO["step1.start_exam"]?.[voice];
+    if (!src) {
+      console.warn("❌ 음성 파일을 찾을 수 없습니다:", voice);
+      setCanClick(true);
+      return;
+    }
+
+    console.log("🎧 자동재생 시도:", src);
+    play({
+      src,
+      onEnded: () => {
+        console.log("✅ 음성 재생 완료 — 버튼 활성화");
+        setCanClick(true);
+      },
+    });
+  }, [voice, play]);
 
   const handleSubmit = async () => {
-    try {
-      stopHint();
-      console.log("보내는 데이터 (원본 userData):", userData);
+    if (!canClick || isPlaying) return;
 
+    try {
       const sessionRes = await axios.post("/api/sessions/start", {
         name: userData.name,
         birth: userData.birth,
@@ -28,13 +55,12 @@ export default function Complete() {
         password: userData.password,
       });
 
-      console.log("세션 저장 응답:", sessionRes.data);
-
       const sid = sessionRes.data?.session_id;
       if (sid) {
         setUserData((prev) => ({ ...prev, session_id: sid }));
         sessionStorage.setItem("session_id", sid);
       }
+
       navigate("/test/house/intro");
     } catch (err) {
       console.error("요청 실패:", err);
@@ -51,14 +77,9 @@ export default function Complete() {
         마음을 편하게 먹고, 차분히 그림을 그려주세요.
       </p>
 
-      <div onMouseEnter={stopHint} onFocus={stopHint}>
-        <Button
-          className={`button-finish ${hint ? "cta-pulse" : ""}`}
-          onClick={handleSubmit}
-        >
-          검사 시작하기
-        </Button>
-      </div>
+      <Button onClick={handleSubmit} disabled={!canClick || isPlaying}>
+        검사 시작하기
+      </Button>
     </div>
   );
 }

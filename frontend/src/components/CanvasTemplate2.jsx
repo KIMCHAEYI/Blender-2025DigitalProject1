@@ -28,8 +28,9 @@ export default function CanvasTemplate({
   const [selectedColor, setSelectedColor] = useState("빨강");
   const [showModal, setShowModal] = useState(paletteEnabled);
 
-  const canvasWidth = 900;
-  const canvasHeight = 600;
+  // ✅ 2단계 전용 캔버스 크기 (항상 가로형)
+  const step2CanvasWidth = 900;
+  const step2CanvasHeight = 600;
 
   // ✏️ 그림 그리기
   const handleMouseDown = () => {
@@ -192,15 +193,19 @@ export default function CanvasTemplate({
           <div className="canvas-wrapper">
             <Stage
               ref={stageRef}
-              width={canvasWidth}
-              height={canvasHeight}
+              width={step2CanvasWidth}
+              height={step2CanvasHeight}
               className="drawing-canvas"
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
             >
               <Layer>
-                <Rect width={canvasWidth} height={canvasHeight} fill="white" />
+                <Rect
+                  width={step2CanvasWidth}
+                  height={step2CanvasHeight}
+                  fill="white"
+                />
                 {lines.map((line, i) => (
                   <Line
                     key={i}

@@ -94,8 +94,6 @@
 
 /* 캔버스 */
 .drawing-canvas {
-  width: 900px !important;
-  height: 600px !important;
   flex-shrink: 0;
   background: #fff;
   border: 2px solid #ccc;
