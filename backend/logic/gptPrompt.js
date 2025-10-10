@@ -121,10 +121,11 @@ async function summarizeDrawingForCounselor(draw, opts = {}) {
 
   let genderNote = "";
   if (isPerson && firstGender && userGender) {
-    genderNote =
-      firstGender === userGender
-        ? "먼저 선택한 성별이 본인과 같음 → 자기 동일시의 자연스러운 경향."
-        : "먼저 선택한 성별이 본인과 다름 → 성역할 동일시의 갈등 또는 특정 이성에 대한 주제의식.";
+    if (firstGender !== userGender) {
+      genderNote = "먼저 선택한 성별이 본인과 다름 → 성역할 동일시의 갈등 또는 특정 이성에 대한 주제의식.";
+    } else {
+      genderNote = ""; 
+    }
   }
 
   // 최종 bullet 재료(객체명 비노출: meaning만)
@@ -150,7 +151,7 @@ async function summarizeDrawingForCounselor(draw, opts = {}) {
 
   const { choices } = await openai.chat.completions.create({
     model: process.env.OPENAI_MODEL || "gpt-4o-mini",
-    temperature: 0.25,
+    temperature: 0.45,
     max_tokens: 700,
     messages: [
       {
@@ -158,7 +159,12 @@ async function summarizeDrawingForCounselor(draw, opts = {}) {
         content:
           "너는 HTP 상담 보고서 작성자다. " +
           "최종 요약에는 객체명/부분명/좌표/면적 수치를 절대 노출하지 마라. " +
-          "과장/단정 금지, 중복 제거, 따뜻하고 차분한 한국어. 한 문단 6~9문장.",
+          "과장/단정 금지, 중복 제거, 따뜻하고 차분한 한국어를 사용하되, " +
+          "그림 유형에 따라 문체 구조를 달리 구성하라. " +
+          "- 집: 따뜻한 공간과 정서적 안정감 중심으로 묘사\n" +
+          "- 나무: 성장과 내면 에너지 중심으로 서술\n" +
+          "- 사람: 자기 표현, 자아 동일시 중심으로 서술\n" +
+          "한 문단이지만 문장 길이와 어미를 다양하게 하여, 반복적 패턴처럼 들리지 않게 하라.",
       },
       {
         role: "user",
@@ -222,14 +228,13 @@ async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
   // 성별 선택 해석 규칙
   let genderNote = "";
   if (firstGender && userGender) {
-    if (isPerson && firstGender && userGender) {
-      genderNote =
-        firstGender === userGender
-          ? "먼저 선택한 성별이 본인과 같음 → 자기 동일시가 자연스럽게 이루어지는 일반적인 양상으로, 성별 자체를 언급하지 말고 간접적으로 표현하라."
-          : "먼저 선택한 성별이 본인과 다름 → 성역할 동일시나 이성에 대한 관심을 시사하지만, ‘남성/여성’ 등의 단어를 사용하지 말고 간접적으로 표현하라.";
+    if (firstGender === userGender) {
+      genderNote = "먼저 선택한 성별이 본인과 같음 → 자기 동일시가 자연스럽게 이루어지는 일반적인 양상으로, 이 내용은 별도로 서술하지 않아도 됨.";
+    } else {
+      genderNote = "먼저 선택한 성별이 본인과 다름 → 이성에 대한 관심이나 역할 인식의 변화를 시사하되, 직접적으로 드러내지 않게 요약하라.";
     }
-
   }
+
 
   const { choices } = await openai.chat.completions.create({
   model: process.env.OPENAI_MODEL || "gpt-4o-mini",
@@ -303,17 +308,20 @@ async function refineColorAnalysis(rawAnalysis) {
   const { choices } = await openai.chat.completions.create({
     model: process.env.OPENAI_MODEL || "gpt-4o-mini",
     temperature: 0.3,
-    max_tokens: 300,
+    max_tokens: 200,
     messages: [
       {
         role: "system",
         content:
-          "너는 HTP 검사 색채 해석을 상담 보고서 톤으로 자연스럽게 다듬는 역할이다. " +
-          "중복을 줄이고, 따뜻하고 차분한 한국어 문장으로 정리하라. 단정적인 표현은 피하라.",
+          "너는 아동 HTP 검사 보고서 편집자다. " +
+          "색채 해석 문장을 자연스럽고 짧게 다듬어라. " +
+          "문장은 3~5문장 이내로 요약하며, '2단계 그림에서는~'으로 시작하라. " +
+          "핵심 의미만 남기고 반복·장황한 표현은 제거하라. " +
+          "문체는 따뜻하고 부드럽게 유지하되 단정은 피하라.",
       },
       {
         role: "user",
-        content: `아래 색채 해석 초안을 더 자연스럽게 다듬어줘.
+        content: `아래 색채 해석 초안을 간결하고 자연스럽게 다듬어줘.
 [초안]
 ${rawAnalysis}`,
       },
@@ -323,15 +331,8 @@ ${rawAnalysis}`,
   return choices?.[0]?.message?.content?.trim() || rawAnalysis;
 }
 
-module.exports = {
-  summarizeDrawingForCounselor, // 단일 그림 요약
-  synthesizeOverallFromDrawingSummaries, // 그림별 요약 → 전체 종합
-  refineColorAnalysis, // 색채 해석 
-};
-
 
 // ========= 4) 전문가 진단 필요 여부 =========
-
 async function generateDiagnosisSummary(overallText) {
   if (!overallText?.trim()) return "분석 결과를 기반으로 한 진단이 필요합니다.";
 
@@ -346,9 +347,9 @@ async function generateDiagnosisSummary(overallText) {
           content:
             "너는 HTP(집-나무-사람) 검사 결과를 바탕으로 '진단 필요 여부 요약'만 한 문장으로 작성하는 전문가다. " +
             "아래 중 하나만 출력하라:\n" +
-            "- 전문가의 상담이 필요하지 않습니다.\n" +
-            "- 전문가와의 상담이 권장됩니다.\n" +
-            "- 전문가의 즉각적인 상담이 필요합니다.\n" +
+            "- 전반적으로 안정적인 상태로 보입니다.\n" +
+            "- 필요에 따라 전문가의 상담을 받아보시면 도움이 될 수 있습니다.\n" +
+            "- 심리적인 불안 신호가 보여, 전문가의 상담을 권장드립니다.\n" +
             "문장은 단 한 줄로만 출력하라. 이유나 근거는 작성하지 마라.",
         },
         {
@@ -358,9 +359,17 @@ async function generateDiagnosisSummary(overallText) {
       ],
     });
 
-    return choices?.[0]?.message?.content?.trim() || "전문가의 상담이 권장됩니다.";
+    return choices?.[0]?.message?.content?.trim() || "전문가의 상담을 받아보시면 도움이 될 수 있습니다.";
   } catch (err) {
     console.error("❌ diagnosis_summary 생성 실패:", err.message);
-    return "전문가와의 상담이 권장됩니다.";
+    return "전문가의 상담을 받아보시면 도움이 될 수 있습니다.";
   }
 }
+
+// ✅ 모든 함수 export 통합
+module.exports = {
+  summarizeDrawingForCounselor,
+  synthesizeOverallFromDrawingSummaries,
+  refineColorAnalysis,
+  generateDiagnosisSummary,
+};

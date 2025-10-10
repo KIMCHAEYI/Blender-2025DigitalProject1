@@ -1,4 +1,4 @@
-const { interpretMultipleDrawings } = require("../logic/gptPrompt");
+const { synthesizeOverallFromDrawingSummaries } = require("../logic/gptPrompt");
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
@@ -16,7 +16,6 @@ const yoloCache = new Map();           // 이미 분석된 결과 캐시
 
 router.get("/session/:session_id", async (req, res) => {
   const { session_id } = req.params;
-
   const db = JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
   const session = db.find((s) => s.id === session_id);
   if (!session) return res.status(404).json({ error: "세션 없음" });
@@ -77,14 +76,16 @@ router.post("/", async (req, res) => {
       yoloResult,
       eraseCount = 0,
       resetCount = 0,
-      penUsage = null  
+      penUsage = null,
+      name,
+      gender,
+      first_gender,
     } = req.body;
 
     if (!drawingType || !yoloResult) {
       return res.status(400).json({ error: "drawingType과 yoloResult가 필요합니다" });
     }
 
-    // penUsage는 JSON 문자열일 수도 있으니 파싱 시도
     let parsedPenUsage = penUsage;
     if (typeof penUsage === "string") {
       try {
@@ -94,15 +95,31 @@ router.post("/", async (req, res) => {
       }
     }
 
+    // 1️⃣ YOLO 해석
     const analysis = interpretYOLOResult(
       yoloResult,
       drawingType,
       eraseCount,
       resetCount,
-      parsedPenUsage  // ✅ 여기서 전달
+      parsedPenUsage
     );
 
-    res.json({ analysis });
+    // 2️⃣ GPT 해석 (지우기/리셋 횟수 반영)
+    const gptSummary = await summarizeDrawingForCounselor(
+      {
+        type: drawingType,
+        result: { analysis },
+        erase_count: eraseCount,
+        reset_count: resetCount,
+      },
+      { name, gender, first_gender }
+    );
+
+    // 3️⃣ 결과 반환
+    res.json({
+      analysis,
+      counselor_summary: gptSummary.summary,
+    });
   } catch (err) {
     console.error("POST 분석 실패:", err);
     res.status(500).json({ error: "분석 실패", detail: err.message });
@@ -118,11 +135,12 @@ router.post("/overall", async (req, res) => {
       return res.status(400).json({ error: "drawings 배열이 필요합니다." });
     }
 
-    const overall = await interpretMultipleDrawings(drawings, {
+    const overall = await synthesizeOverallFromDrawingSummaries(drawings, {
       name,
       gender,
       first_gender,
     });
+
 
     // ✅ DB 업데이트
     const db = JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));

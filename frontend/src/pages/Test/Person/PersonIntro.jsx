@@ -11,9 +11,13 @@ export default function PersonIntro() {
   useIntroAudio("step1.select_gender", () => setAudioEnded(true));
 
   const handleSelect = (gender) => {
+<<<<<<< HEAD
     if (!audioEnded) return; // 음성이 끝나야 선택 가능 (선택사항)
 
     localStorage.setItem("firstGender", gender);
+=======
+    sessionStorage.setItem("first_gender", gender);
+>>>>>>> 6d8b2d44bbf295e2ec03766ea2cd5f1b56dbf9f2
 
     if (gender === "male") {
       navigate("/test/person/canvas-male");

@@ -77,9 +77,20 @@ export default function Complete() {
         마음을 편하게 먹고, 차분히 그림을 그려주세요.
       </p>
 
+<<<<<<< HEAD
       <Button onClick={handleSubmit} disabled={!canClick || isPlaying}>
         검사 시작하기
       </Button>
+=======
+      <div onMouseEnter={stopHint} onFocus={stopHint}>
+        <Button
+          className={`btn-nextblue ${hint ? "cta-pulse" : ""}`}
+          onClick={handleSubmit}
+        >
+          검사 시작하기
+        </Button>
+      </div>
+>>>>>>> 6d8b2d44bbf295e2ec03766ea2cd5f1b56dbf9f2
     </div>
   );
 }

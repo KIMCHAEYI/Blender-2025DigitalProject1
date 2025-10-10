@@ -112,7 +112,7 @@ export default function CanvasTemplate({
         const colorData = await colorRes.json();
         console.log("🎨 색채 분석 결과:", colorData);
 
-        alert("색채 분석이 완료되었습니다!");
+        //alert("색채 분석이 완료되었습니다!");
         navigate(nextRoute);
       } catch (e) {
         console.error("❌ 2단계 업로드/분석 오류:", e);

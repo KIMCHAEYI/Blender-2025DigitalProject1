@@ -233,7 +233,7 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
         const doneTypes = Object.keys(latestByType);
         const allDone = requiredTypes.every((t) => doneTypes.includes(t));
 
-        if (allDone) {
+        if (allDone && !sessionAfter.summary_overall) {
           const entries = requiredTypes.map((t) => ({
             type: t,
             summary: latestByType[t]?.result?.counselor_summary || "",
@@ -249,11 +249,9 @@ router.post("/upload", upload.single("drawing"), (req, res) => {
           sessionAfter.summary_overall = overall;
           writeDB(dbAfter);
 
-          console.log("\n================= 🧠 전체 종합(세션=" + session_id + ") =================");
-          console.log(overall.overall_summary || "(없음)");
-          console.log("🩺 진단 요약:", overall.diagnosis_summary || "(없음)");
-          console.log("\n🖼 Per Drawing 요약 →", overall.per_drawing);
-          console.log("=========================================================\n");
+          console.log("\n✅ [GPT 전체 종합 결과 최초 생성 완료]");
+        } else if (allDone) {
+          console.log("⏩ 이미 summary_overall 존재 — 종합 재생성 생략");
         } else {
           console.log(`[GPT 전체 종합 대기] 현재 완료 ${doneTypes.length}/4`);
         }

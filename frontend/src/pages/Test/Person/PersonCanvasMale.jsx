@@ -5,7 +5,7 @@ const A4_WIDTH = 794;
 const A4_HEIGHT = 1123;
 
 export default function PersonCanvasMale() {
-  const firstGender = localStorage.getItem("firstGender");
+  const firstGender = sessionStorage.getItem("first_gender");
   const nextRoute =
     firstGender === "male"
       ? "/test/person/canvas-female" // 남자 먼저 그리면 → 여자
