@@ -150,7 +150,7 @@ async function summarizeDrawingForCounselor(draw, opts = {}) {
 
   const { choices } = await openai.chat.completions.create({
     model: process.env.OPENAI_MODEL || "gpt-4o-mini",
-    temperature: 0.25,
+    temperature: 0.45,
     max_tokens: 700,
     messages: [
       {
@@ -158,7 +158,12 @@ async function summarizeDrawingForCounselor(draw, opts = {}) {
         content:
           "너는 HTP 상담 보고서 작성자다. " +
           "최종 요약에는 객체명/부분명/좌표/면적 수치를 절대 노출하지 마라. " +
-          "과장/단정 금지, 중복 제거, 따뜻하고 차분한 한국어. 한 문단 6~9문장.",
+          "과장/단정 금지, 중복 제거, 따뜻하고 차분한 한국어를 사용하되, " +
+          "그림 유형에 따라 문체 구조를 달리 구성하라. " +
+          "- 집: 따뜻한 공간과 정서적 안정감 중심으로 묘사\n" +
+          "- 나무: 성장과 내면 에너지 중심으로 서술\n" +
+          "- 사람: 자기 표현, 자아 동일시 중심으로 서술\n" +
+          "한 문단이지만 문장 길이와 어미를 다양하게 하여, 반복적 패턴처럼 들리지 않게 하라.",
       },
       {
         role: "user",
@@ -303,17 +308,20 @@ async function refineColorAnalysis(rawAnalysis) {
   const { choices } = await openai.chat.completions.create({
     model: process.env.OPENAI_MODEL || "gpt-4o-mini",
     temperature: 0.3,
-    max_tokens: 300,
+    max_tokens: 200,
     messages: [
       {
         role: "system",
         content:
-          "너는 HTP 검사 색채 해석을 상담 보고서 톤으로 자연스럽게 다듬는 역할이다. " +
-          "중복을 줄이고, 따뜻하고 차분한 한국어 문장으로 정리하라. 단정적인 표현은 피하라.",
+          "너는 아동 HTP 검사 보고서 편집자다. " +
+          "색채 해석 문장을 자연스럽고 짧게 다듬어라. " +
+          "문장은 3~5문장 이내로 요약하며, '2단계 그림에서는~'으로 시작하라. " +
+          "핵심 의미만 남기고 반복·장황한 표현은 제거하라. " +
+          "문체는 따뜻하고 부드럽게 유지하되 단정은 피하라.",
       },
       {
         role: "user",
-        content: `아래 색채 해석 초안을 더 자연스럽게 다듬어줘.
+        content: `아래 색채 해석 초안을 간결하고 자연스럽게 다듬어줘.
 [초안]
 ${rawAnalysis}`,
       },
@@ -323,15 +331,8 @@ ${rawAnalysis}`,
   return choices?.[0]?.message?.content?.trim() || rawAnalysis;
 }
 
-module.exports = {
-  summarizeDrawingForCounselor, // 단일 그림 요약
-  synthesizeOverallFromDrawingSummaries, // 그림별 요약 → 전체 종합
-  refineColorAnalysis, // 색채 해석 
-};
-
 
 // ========= 4) 전문가 진단 필요 여부 =========
-
 async function generateDiagnosisSummary(overallText) {
   if (!overallText?.trim()) return "분석 결과를 기반으로 한 진단이 필요합니다.";
 
@@ -365,4 +366,10 @@ async function generateDiagnosisSummary(overallText) {
   }
 }
 
-// module.exports = interpretMultipleDrawings;
+// ✅ 모든 함수 export 통합
+module.exports = {
+  summarizeDrawingForCounselor,
+  synthesizeOverallFromDrawingSummaries,
+  refineColorAnalysis,
+  generateDiagnosisSummary,
+};
