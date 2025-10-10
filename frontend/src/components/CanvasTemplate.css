@@ -5,7 +5,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: #edf3ff;
+  /* background: #edf3ff; */
 }
 
 /* 헤더 고정 영역 */
@@ -74,7 +74,7 @@
 
 .toolbar .selected {
   border: 2px solid #3e70c7;
-  background-color: #e0f4ff;
+  /* background-color: #e0f4ff; */
   border-radius: 8px;
 }
 
@@ -104,16 +104,27 @@
 }
 
 .pen-stepper button {
-  background: transparent; /* 배경 제거 */
-  border: none; /* 테두리 제거 */
-  box-shadow: none; /* 그림자 제거 */
-  padding: 0; /* 내부 여백 제거 */
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
 
   width: 36px;
   height: 36px;
   font-size: 20px;
   cursor: pointer;
   margin: 4px 0;
+}
+
+.icon-plus {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+.icon-minus {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
 }
 
 .icon-oneback {
@@ -134,15 +145,17 @@
   object-fit: contain;
 }
 
-/* 진행 점: 캔버스 상단 좌측에 고정 */
+/* 진행 점: 캔버스 좌측 상단 기준 고정 */
 .progress-indicator.static-overlay {
   position: absolute;
-  top: -25px;
-  left: 20;
+  top: -120px; /* 🔹 캔버스 내부 위쪽 여백 */
+  left: 30px; /* 🔹 좌측 여백 */
   display: flex;
   gap: 8px;
   z-index: 10;
+  pointer-events: none; /* 클릭 방해 방지 */
 }
+
 .dot {
   width: 16px;
   height: 16px;
@@ -176,7 +189,10 @@
 }
 .modal-content {
   background: white;
-  padding: 24px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  padding-left: 60px;
+  padding-right: 60px;
   border-radius: 16px;
   text-align: center;
 }

@@ -61,7 +61,9 @@ export default function CanvasTemplate({
   const [isDrawing, setIsDrawing] = useState(false);
   const levels = [2, 4, 8];
   const [penSize, setPenSize] = useState(levels[1]);
-  const [canvasWidth, setCanvasWidth] = useState(1123);
+  const [canvasWidth, setCanvasWidth] = useState(
+    drawingType === "house" ? 1123 : 794
+  );
   const [eraseCount, setEraseCount] = useState(0);
   const [resetCount, setResetCount] = useState(0);
 
@@ -96,10 +98,10 @@ export default function CanvasTemplate({
 
   // 가이드 최초 표시
   useEffect(() => {
-    const seen = localStorage.getItem("seenToolbarGuideV2");
+    const seen = sessionStorage.getItem("seenToolbarGuideV2");
     if (!seen) {
       setShowGuide(true);
-      localStorage.setItem("seenToolbarGuideV2", "true");
+      sessionStorage.setItem("seenToolbarGuideV2", "true");
     }
   }, []);
 
@@ -111,20 +113,23 @@ export default function CanvasTemplate({
       const toolbarW = toolbarRef.current?.getBoundingClientRect().width || 0;
       const footerRect = footerRef.current?.getBoundingClientRect();
       const footerH = footerRect?.height || 0;
+
       const screenW = window.innerWidth;
       const screenH = window.innerHeight;
-      const H_GUTTER = 24;
-      const V_GUTTER = 24;
-      const availW = Math.max(0, screenW - toolbarW - H_GUTTER * 2);
-      const availH = Math.max(0, screenH - headerH - footerH - V_GUTTER * 2);
+
+      // 🔽 여백(툴바·푸터) 외에도 화면 비율 기준으로 살짝 축소
+      const availW = (screenW - toolbarW) * 0.8; // 전체 너비의 80%
+      const availH = (screenH - headerH - footerH) * 0.75; // 전체 높이의 75%
+
       const widthIfHeightLimited = availH * aspect;
       setCanvasWidth(Math.floor(Math.min(availW, widthIfHeightLimited)));
     };
+
     measureAndSet();
     const ro = new ResizeObserver(measureAndSet);
     ro.observe(document.body);
     return () => ro.disconnect();
-  }, [BASE_WIDTH, BASE_HEIGHT]);
+  }, [BASE_WIDTH, BASE_HEIGHT, drawingType]);
 
   // 버튼 이벤트
   const handleCancelClick = () => setShowCancelModal(true);
@@ -164,6 +169,10 @@ export default function CanvasTemplate({
         String(Math.floor((Date.now() - startTime) / 1000))
       );
       formData.append("penUsage", JSON.stringify(penUsageHistory));
+      formData.append(
+        "first_gender",
+        userData?.first_gender || sessionStorage.getItem("first_gender")
+      );
 
       console.log("📤 업로드 시작:", drawingType);
       const uploadRes = await axios.post(
@@ -177,18 +186,7 @@ export default function CanvasTemplate({
       const imagePath = data.path || data.result?.path || data.file_path || "";
       const fileOnly = imagePath.split("/").pop();
 
-      // 3️⃣ YOLO 분석 요청 (큐에 순차 등록)
-      enqueueYoloRequest(() => {
-        console.log("🧠 YOLO 큐 실행:", fileOnly);
-        axios
-          .get(`${API_BASE}/api/analyze`, {
-            params: { file: fileOnly, type: drawingType, session_id: sid },
-          })
-          .then(() => console.log("✅ YOLO 분석 요청 완료:", fileOnly))
-          .catch((err) => console.warn("⚠️ YOLO 분석 실패:", err));
-      });
-
-      // 4️⃣ 사용자 데이터 갱신
+      // 4️⃣ 사용자 데이터 갱신 후 전체 해석 판단
       setUserData((prev) => ({
         ...(prev || {}),
         session_id: sid,
@@ -203,7 +201,29 @@ export default function CanvasTemplate({
         },
       }));
 
-      // 5️⃣ 다음 페이지 이동
+      // ✅ 모든 그림 4종류 업로드가 완료된 경우 한 번만 요청
+      const allTypes = ["house", "tree", "person_male", "person_female"];
+      const drawings = userData?.drawings || {};
+      const uploadedTypes = [
+        ...new Set([...Object.keys(drawings), drawingType]),
+      ];
+      const isAllUploaded = allTypes.every((t) => uploadedTypes.includes(t));
+
+      if (isAllUploaded && !sessionStorage.getItem("overallRequested")) {
+        sessionStorage.setItem("overallRequested", "true");
+        console.log("✅ 모든 그림 업로드 완료 → 종합 해석 1회만 요청 시작");
+
+        axios
+          .post(`${API_BASE}/api/analyze/overall`, { session_id: sid })
+          .then((res) => {
+            console.log("✅ 전체 종합 해석 완료:", res.data);
+          })
+          .catch((err) => {
+            console.error("❌ 전체 해석 요청 실패:", err);
+          });
+      }
+
+      // 6️⃣ 다음 페이지 이동
       if (nextRoute && nextRoute.includes("step2")) navigate("/result/rotate");
       else if (nextRoute) navigate(nextRoute);
       else navigate("/result/rotate");
@@ -244,8 +264,19 @@ export default function CanvasTemplate({
   };
 
   const handleMouseUp = () => setIsDrawing(false);
-  const handleUndo = () => setLines((p) => p.slice(0, -1));
-  const handleClear = () => setLines([]);
+  // 되돌리기 (지우기 1회)
+  const handleUndo = () => {
+    setLines((p) => p.slice(0, -1));
+    setEraseCount((prev) => prev + 1); // ✅ 지우기 횟수 카운트
+    console.log("🧽 지우기 횟수:", eraseCount + 1);
+  };
+
+  // 처음부터 (리셋 1회)
+  const handleClear = () => {
+    setLines([]);
+    setResetCount((prev) => prev + 1); // ✅ 리셋 횟수 카운트
+    console.log("🧼 리셋 횟수:", resetCount + 1);
+  };
 
   const scale = canvasWidth / BASE_WIDTH;
 
@@ -262,18 +293,18 @@ export default function CanvasTemplate({
       <div className="canvas-body" ref={wrapperRef}>
         <div className="toolbar" ref={toolbarRef}>
           <div className="pen-stepper">
-            <button onClick={increasePen} title="굵기 늘리기">
-              <img
-                src="/assets/+.png"
-                alt="굵기 늘리기"
-                width={45}
-                height={45}
-              />
-            </button>
+            <img
+              className="icon-plus"
+              src="/images/+.png"
+              onClick={increasePen}
+              alt="굵기 늘리기"
+              width={45}
+              height={45}
+            />
             <div
               style={{
-                width: 45,
-                height: 45,
+                width: 50,
+                height: 50,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -282,21 +313,21 @@ export default function CanvasTemplate({
             >
               <div
                 style={{
-                  width: penSize * 1.5,
-                  height: penSize * 1.5,
+                  width: penSize * 2,
+                  height: penSize * 2,
                   borderRadius: "50%",
                   background: "#111",
                 }}
               />
             </div>
-            <button onClick={decreasePen} title="굵기 줄이기">
-              <img
-                src="/assets/-.png"
-                alt="굵기 줄이기"
-                width={45}
-                height={45}
-              />
-            </button>
+            <img
+              className="icon-minus"
+              src="/images/-.png"
+              onClick={decreasePen}
+              alt="굵기 줄이기"
+              width={45}
+              height={45}
+            />
           </div>
 
           <img
@@ -328,40 +359,41 @@ export default function CanvasTemplate({
               />
             ))}
           </div>
-
-          <Stage
-            width={canvasWidth}
-            height={(canvasWidth * BASE_HEIGHT) / BASE_WIDTH}
-            scale={{ x: scale, y: scale }}
-            className="drawing-canvas"
-            ref={stageRef}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onTouchStart={handleMouseDown}
-            onTouchMove={handleMouseMove}
-            onTouchEnd={handleMouseUp}
-          >
-            <Layer>
-              <Rect
-                x={0}
-                y={0}
-                width={BASE_WIDTH}
-                height={BASE_HEIGHT}
-                fill="white"
-              />
-              {lines.map((line, i) => (
-                <Line
-                  key={i}
-                  points={line.points}
-                  stroke={line.stroke}
-                  strokeWidth={line.strokeWidth}
-                  tension={0.5}
-                  lineCap="round"
+          <div className="canvas-stage">
+            <Stage
+              width={canvasWidth}
+              height={(canvasWidth * BASE_HEIGHT) / BASE_WIDTH}
+              scale={{ x: scale, y: scale }}
+              className="drawing-canvas"
+              ref={stageRef}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onTouchStart={handleMouseDown}
+              onTouchMove={handleMouseMove}
+              onTouchEnd={handleMouseUp}
+            >
+              <Layer>
+                <Rect
+                  x={0}
+                  y={0}
+                  width={BASE_WIDTH}
+                  height={BASE_HEIGHT}
+                  fill="white"
                 />
-              ))}
-            </Layer>
-          </Stage>
+                {lines.map((line, i) => (
+                  <Line
+                    key={i}
+                    points={line.points}
+                    stroke={line.stroke}
+                    strokeWidth={line.strokeWidth}
+                    tension={0.5}
+                    lineCap="round"
+                  />
+                ))}
+              </Layer>
+            </Stage>
+          </div>
         </div>
       </div>
 
@@ -438,11 +470,11 @@ export default function CanvasTemplate({
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>✨ 그림 도구 사용법</h3>
             <ul style={{ textAlign: "left", padding: "0 1rem" }}>
-              <li>✏️ 굵기: 얇게 / 중간 / 굵게</li>
-              <li>↩️ 되돌리기</li>
-              <li>🗑 처음부터</li>
-              <li>👉 다 그렸으면 다음 버튼!</li>
-              <li>🟥 그만두면 처음부터 다시 시작!</li>
+              <li>➕/➖ : '펜 굵기'를 조정할 수 있어요!</li>
+              <li>↩️ : 한 획 되돌리기</li>
+              <li>🗑 : 처음부터 다시 그리기</li>
+              <li>🟦 : 다 그렸으면 '다음으로'를 눌러요!</li>
+              <li>🟥 : 검사를 그만두고 싶을 때 눌러요!</li>
             </ul>
             <button
               className="modal-button confirm"

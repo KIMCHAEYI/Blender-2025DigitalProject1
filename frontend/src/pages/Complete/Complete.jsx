@@ -53,7 +53,7 @@ export default function Complete() {
 
       <div onMouseEnter={stopHint} onFocus={stopHint}>
         <Button
-          className={`button-finish ${hint ? "cta-pulse" : ""}`}
+          className={`btn-nextblue ${hint ? "cta-pulse" : ""}`}
           onClick={handleSubmit}
         >
           검사 시작하기

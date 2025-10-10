@@ -10,7 +10,7 @@
   align-items: center;
   min-height: 100vh;
   text-align: center;
-  background: #f5f8ff; /* 은은한 배경 */
+  /* background: #f5f8ff; 은은한 배경 */
   padding: 20px;
   box-sizing: border-box;
 }

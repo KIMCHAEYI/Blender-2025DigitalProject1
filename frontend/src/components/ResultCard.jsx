@@ -78,6 +78,7 @@ export default function ResultCard({ title, icon, sec, formatDuration }) {
         <div className="counselor-summary">
           <h4>전반적인 설명</h4>
           <p>{sec.counselor_summary}</p>
+          <p className="color-analysis"> {sec.colorAnalysis.refined} </p>
         </div>
       )}
 
@@ -88,9 +89,6 @@ export default function ResultCard({ title, icon, sec, formatDuration }) {
           <ul className="object-list">
             {items.map((o, i) => (
               <li key={`${o.label}-${i}`}>
-                {/* <span className="tick" aria-hidden>
-                  ✅
-                </span> */}
                 <b>{o.label}</b>
                 {o.meaning && <div className="meaning">{o.meaning}</div>}
               </li>
