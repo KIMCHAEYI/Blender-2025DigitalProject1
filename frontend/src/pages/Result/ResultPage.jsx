@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../contexts/UserContext";
 import ResultCard from "../../components/ResultCard";
-import { downloadPdf } from "../../utils/pdfUtils";
+// import { downloadPdf } from "../../utils/pdfUtils";
 import axios from "axios";
 import { downloadProReport } from "../../utils/reportUtils"; // [MODIFY] 추가
 
@@ -244,7 +244,7 @@ export default function ResultPage() {
         >
         📊 정밀 리포트 PDF
         </button>
-        <button
+        {/* <button
           className="fab-btn"
           onClick={() =>
             downloadPdf({
@@ -262,6 +262,13 @@ export default function ResultPage() {
           disabled={downloading}
         >
           🔎 상세 PDF
+        </button> */}
+        <button
+          className="fab-btn"
+          onClick={() => downloadProReport({ sessionId, setDownloading })} // [SWITCH] Python ReportLab 호출
+          disabled={downloading}
+        >
+          🔎 정밀 리포트 PDF
         </button>
         <button className="fab-btn" onClick={() => navigate("/")}>
           🏠 홈화면으로
