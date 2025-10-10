@@ -11,6 +11,11 @@ export default function HouseIntro() {
   // ✅ 페이지 진입 시 자동으로 “집을 그려주세요!” 재생
   useIntroAudio("step1.draw_house", () => setCanClick(true));
 
+  // ✅ 다음 단계로 이동하는 함수 추가
+  const handleNext = () => {
+    navigate("/test/house/canvas"); // 실제 그림 그리기 페이지 경로
+  };
+
   return (
     <div className="page-center intro-page">
       <h2 className="question">
