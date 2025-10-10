@@ -121,10 +121,11 @@ async function summarizeDrawingForCounselor(draw, opts = {}) {
 
   let genderNote = "";
   if (isPerson && firstGender && userGender) {
-    genderNote =
-      firstGender === userGender
-        ? "먼저 선택한 성별이 본인과 같음 → 자기 동일시의 자연스러운 경향."
-        : "먼저 선택한 성별이 본인과 다름 → 성역할 동일시의 갈등 또는 특정 이성에 대한 주제의식.";
+    if (firstGender !== userGender) {
+      genderNote = "먼저 선택한 성별이 본인과 다름 → 성역할 동일시의 갈등 또는 특정 이성에 대한 주제의식.";
+    } else {
+      genderNote = ""; 
+    }
   }
 
   // 최종 bullet 재료(객체명 비노출: meaning만)
@@ -227,14 +228,13 @@ async function synthesizeOverallFromDrawingSummaries(entries, opts = {}) {
   // 성별 선택 해석 규칙
   let genderNote = "";
   if (firstGender && userGender) {
-    if (isPerson && firstGender && userGender) {
-      genderNote =
-        firstGender === userGender
-          ? "먼저 선택한 성별이 본인과 같음 → 자기 동일시가 자연스럽게 이루어지는 일반적인 양상으로, 성별 자체를 언급하지 말고 간접적으로 표현하라."
-          : "먼저 선택한 성별이 본인과 다름 → 성역할 동일시나 이성에 대한 관심을 시사하지만, ‘남성/여성’ 등의 단어를 사용하지 말고 간접적으로 표현하라.";
+    if (firstGender === userGender) {
+      genderNote = "먼저 선택한 성별이 본인과 같음 → 자기 동일시가 자연스럽게 이루어지는 일반적인 양상으로, 이 내용은 별도로 서술하지 않아도 됨.";
+    } else {
+      genderNote = "먼저 선택한 성별이 본인과 다름 → 이성에 대한 관심이나 역할 인식의 변화를 시사하되, 직접적으로 드러내지 않게 요약하라.";
     }
-
   }
+
 
   const { choices } = await openai.chat.completions.create({
   model: process.env.OPENAI_MODEL || "gpt-4o-mini",
@@ -347,9 +347,9 @@ async function generateDiagnosisSummary(overallText) {
           content:
             "너는 HTP(집-나무-사람) 검사 결과를 바탕으로 '진단 필요 여부 요약'만 한 문장으로 작성하는 전문가다. " +
             "아래 중 하나만 출력하라:\n" +
-            "- 전문가의 상담이 필요하지 않습니다.\n" +
-            "- 전문가와의 상담이 권장됩니다.\n" +
-            "- 전문가의 즉각적인 상담이 필요합니다.\n" +
+            "- 전반적으로 안정적인 상태로 보입니다.\n" +
+            "- 필요에 따라 전문가의 상담을 받아보시면 도움이 될 수 있습니다.\n" +
+            "- 심리적인 불안 신호가 보여, 전문가의 상담을 권장드립니다.\n" +
             "문장은 단 한 줄로만 출력하라. 이유나 근거는 작성하지 마라.",
         },
         {
@@ -359,10 +359,10 @@ async function generateDiagnosisSummary(overallText) {
       ],
     });
 
-    return choices?.[0]?.message?.content?.trim() || "전문가의 상담이 권장됩니다.";
+    return choices?.[0]?.message?.content?.trim() || "전문가의 상담을 받아보시면 도움이 될 수 있습니다.";
   } catch (err) {
     console.error("❌ diagnosis_summary 생성 실패:", err.message);
-    return "전문가와의 상담이 권장됩니다.";
+    return "전문가의 상담을 받아보시면 도움이 될 수 있습니다.";
   }
 }
 

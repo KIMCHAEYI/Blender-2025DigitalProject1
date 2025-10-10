@@ -102,9 +102,12 @@ export default function ResultPage() {
   const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
-    const userId = userData?.session_id || sessionStorage.getItem("user_id");
-    if (!userId) {
-      console.warn("❌ user_id 없음, 로그인 필요");
+    const sessionId =
+      userData?.session_id ||
+      sessionStorage.getItem("session_id") ||
+      sessionStorage.getItem("latest_session_id");
+    if (!sessionId) {
+      console.warn("❌ session_id 없음, 로그인 필요");
       setLoading(false);
       return;
     }
@@ -114,15 +117,16 @@ export default function ResultPage() {
       `${window.location.protocol}//${window.location.hostname}:5000`;
 
     axios
-      .get(`${API_BASE}/api/sessions/${userId}`)
+      .get(`${API_BASE}/api/sessions/${sessionId}`)
       .then((res) => {
         const data = res.data;
-        setUserData((prev) => ({
-          ...(prev || {}),
-          ...data, // 전체 사용자 정보 갱신
-        }));
+        const overall_summary = data.summary_overall?.overall_summary || "";
+        const diagnosis_summary = data.summary_overall?.diagnosis_summary || "";
+
+        setOverall({ overall_summary, diagnosis_summary });
+        setUserData((prev) => ({ ...(prev || {}), ...data }));
       })
-      .catch((err) => console.error("❌ 사용자 데이터 불러오기 실패:", err))
+      .catch((err) => console.error("❌ 세션 데이터 불러오기 실패:", err))
       .finally(() => setLoading(false));
   }, []);
 
@@ -167,7 +171,7 @@ export default function ResultPage() {
       {/* 진단 카드 */}
       <section className="diagnosis-card">
         <div className="diagnosis-text">
-          {safeUser.diagnosis_summary || "(진단 내용 준비 중)"}
+          {overall.diagnosis_summary || "(진단 내용 준비 중)"}
         </div>
       </section>
 
@@ -175,7 +179,7 @@ export default function ResultPage() {
       <section className="overall-card">
         <h2>📝 종합 해석</h2>
         <p style={{ whiteSpace: "pre-line" }}>
-          {safeUser.overall_summary || "(해석 준비 중)"}
+          {overall.overall_summary || "(아직 분석 중입니다...)"}
         </p>
       </section>
 

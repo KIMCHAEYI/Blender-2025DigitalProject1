@@ -6,7 +6,7 @@ export default function PersonIntro() {
   const navigate = useNavigate();
 
   const handleSelect = (gender) => {
-    localStorage.setItem("firstGender", gender);
+    sessionStorage.setItem("first_gender", gender);
 
     if (gender === "male") {
       navigate("/test/person/canvas-male");

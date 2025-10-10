@@ -2,7 +2,7 @@ import React from "react";
 import CanvasTemplate from "../../../components/CanvasTemplate";
 
 export default function PersonCanvasFemale() {
-  const firstGender = localStorage.getItem("firstGender");
+  const firstGender = sessionStorage.getItem("first_gender");
   const nextRoute =
     firstGender === "female"
       ? "/test/person/canvas-male" // 여자 먼저 그리면 → 남자
