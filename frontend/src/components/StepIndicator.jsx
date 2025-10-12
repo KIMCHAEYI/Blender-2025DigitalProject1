@@ -1,11 +1,6 @@
 import React from "react";
 import styles from "./StepIndicator.module.css";
 
-/**
- * StepIndicator
- * 진행 단계 표시 컴포넌트
- * variant="kids" : 아동 친화형 (이모지/애니메이션 포함)
- */
 export default function StepIndicator({
   current = 1,
   total = 5,

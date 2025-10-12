@@ -22,7 +22,7 @@ export default function HouseIntro() {
         <span className="highlight">집</span>을 그려주세요
       </h2>
       <button
-        className="btn-base btn-next"
+        className="btn-base btn-nextblue"
         onClick={handleNext}
         disabled={!canClick}
       >

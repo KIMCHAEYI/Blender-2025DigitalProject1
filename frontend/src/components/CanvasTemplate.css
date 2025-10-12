@@ -5,7 +5,6 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  /* background: #edf3ff; */
 }
 
 /* 헤더 고정 영역 */
@@ -38,7 +37,7 @@
 .rectangle-title {
   font-weight: bold;
   font-size: 20px;
-  color: #333;
+  color: var(--text-black);
   margin: 0;
 }
 
@@ -51,33 +50,64 @@
   align-items: center;
   box-sizing: border-box;
 }
-
-/* 툴바 */
+/* ===== 툴바 ===== */
 .toolbar {
   position: fixed;
   top: 50%;
-  left: 24px;
+  left: 20px;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  justify-content: center; /* 세로 중앙 정렬 */
-  align-items: center; /* 가로 중앙 정렬 */
-  height: 100%; /* 툴바가 화면 전체 높이를 기준으로 함 */
-  gap: 12px;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 10px;
+  border-radius: 16px;
   z-index: 200;
 }
-
-.toolbar button,
-.toolbar .btn-toolbar {
-  border-radius: 8px;
+.pen-size-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+  margin: 8px 0;
 }
 
-.toolbar .selected {
-  border: 2px solid #3e70c7;
-  /* background-color: #e0f4ff; */
-  border-radius: 8px;
+.pen-size-circle {
+  border-radius: 50%;
+  background: var(--text-black);
+  margin-bottom: 4px;
 }
 
+.pen-size-label {
+  font-size: 14px;
+  color: var(--text-black);
+  font-weight: 500;
+}
+
+.icon-plus,
+.icon-minus,
+.icon-oneback,
+.icon-trash,
+.icon-help {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  background: white;
+  padding: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  object-fit: contain;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.icon-plus:hover,
+.icon-minus:hover,
+.icon-oneback:hover,
+.icon-trash:hover,
+.icon-help:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
 /* 캔버스 래퍼: indicator 기준점 */
 .canvas-wrapper {
   position: relative;
@@ -116,44 +146,26 @@
   margin: 4px 0;
 }
 
-.icon-plus {
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
-}
-.icon-minus {
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
-}
-
-.icon-oneback {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-}
-
-.icon-trash {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-}
-
-.icon-help {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-}
-
-/* 진행 점: 캔버스 좌측 상단 기준 고정 */
+/* 기본 공통 스타일 */
 .progress-indicator.static-overlay {
   position: absolute;
-  top: -120px; /* 🔹 캔버스 내부 위쪽 여백 */
-  left: 30px; /* 🔹 좌측 여백 */
   display: flex;
   gap: 8px;
   z-index: 10;
-  pointer-events: none; /* 클릭 방해 방지 */
+  pointer-events: none;
+}
+
+/* 🟦 세로형 (tree, person 등) */
+.progress-indicator.static-overlay.vertical {
+  top: -210px;
+  left: 30px;
+}
+
+/* 🟨 가로형 (house 등) */
+.progress-indicator.static-overlay.horizontal {
+  top: -30px; /* 살짝 아래 */
+  left: 10%; /* 가운데 정렬 */
+  transform: translateX(-50%); /* 중앙 기준 정렬 */
 }
 
 .dot {
@@ -164,13 +176,13 @@
   background: #ffffff;
 }
 .dot.active {
-  background: #3b5bdb;
+  background: var(--text-blue);
 }
 
 /* 하단 버튼: 화면 우측 하단에 고정 */
 .footer-buttons-row {
   position: fixed;
-  bottom: calc(24px + env(safe-area-inset-bottom, 0));
+  bottom: calc(10px + env(safe-area-inset-bottom, 0));
   right: 24px;
   display: flex;
   gap: 12px;
@@ -214,19 +226,19 @@
   height: 40px;
 }
 .modal-button.confirm {
-  background-color: #3b82f6;
+  background-color: var(--text-lightblue);
   color: white;
   padding: 8px 16px;
   border-radius: 10px;
   border: none;
 }
 .modal-button.confirm:active {
-  background-color: #2563eb;
+  background-color: var(--text-blue);
   transform: scale(0.97);
 }
 .modal-button.cancel {
   background-color: #d8d8d8;
-  color: black;
+  color: var(--text-black);
   padding: 8px 16px;
   border-radius: 8px;
   border: none;

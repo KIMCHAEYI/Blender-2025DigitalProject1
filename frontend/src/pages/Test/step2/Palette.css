@@ -13,8 +13,8 @@
 }
 
 .color-dot {
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
   border-radius: 6px;
   cursor: pointer;
   border: 2px solid transparent;
@@ -29,5 +29,4 @@
 .color-dot.active {
   transform: scale(1.25);
   border: 3px solid #3b5bdb;
-  box-shadow: 0 0 8px rgba(59, 91, 219, 0.5);
 }

@@ -24,8 +24,14 @@
 }
 
 :root {
+  --text-black: #212121;
+  --text-lightblue: #3b82f6;
+  --text-blue: #3e70c7;
+  --text-blueshadow: #2f4b84;
+  --text-red: #dd2929;
+  --text-redshadow: #9e1f1f;
+
   font-family: "Pretendard", sans-serif;
-  color: #42413f;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -62,6 +68,9 @@ body {
       #d6e4ff 100%
     );
   background-blend-mode: screen;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 /* ---------- 텍스트 스타일 ---------- */
@@ -69,8 +78,8 @@ body {
 /* 일반 본문 설명문 → Pretendard */
 body,
 p,
-span,
 li,
+span,
 .description {
   font-family: "Pretendard", sans-serif;
 }

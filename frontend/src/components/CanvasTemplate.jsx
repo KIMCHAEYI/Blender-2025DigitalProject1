@@ -11,14 +11,14 @@ import "./CanvasTemplate.css";
 const resolveApiBase = () => {
   let raw = (import.meta?.env?.VITE_API_BASE ?? "").trim();
   if (!raw || raw === "undefined" || raw === "null" || raw === "") {
-    raw = "http://172.20.6.160:5000"; // ✅ 기본값
+    raw = "http://172.20.14.232:5000"; // ✅ 기본값
   }
   if (!/^https?:\/\//i.test(raw)) raw = `http://${raw}`;
   try {
     const u = new URL(raw);
     return `${u.protocol}//${u.host}`;
   } catch {
-    return "http://172.20.6.160:5000";
+    return "http://172.20.14.232:5000";
   }
 };
 const API_BASE = resolveApiBase();
@@ -291,6 +291,7 @@ export default function CanvasTemplate({
 
       {/* 바디 */}
       <div className="canvas-body" ref={wrapperRef}>
+        {/* 툴바 */}
         <div className="toolbar" ref={toolbarRef}>
           <div className="pen-stepper">
             <img
@@ -301,24 +302,14 @@ export default function CanvasTemplate({
               width={45}
               height={45}
             />
-            <div
-              style={{
-                width: 50,
-                height: 50,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "8px 0",
-              }}
-            >
+            <div className="pen-size-display">
               <div
-                style={{
-                  width: penSize * 2,
-                  height: penSize * 2,
-                  borderRadius: "50%",
-                  background: "#111",
-                }}
+                className="pen-size-circle"
+                style={{ width: penSize * 2, height: penSize * 2 }}
               />
+              <span className="pen-size-label">
+                {penSize === 2 ? "얇게" : penSize === 4 ? "중간" : "굵게"}
+              </span>
             </div>
             <img
               className="icon-minus"
@@ -350,8 +341,13 @@ export default function CanvasTemplate({
           />
         </div>
 
+        {/* 캔버스 */}
         <div className="canvas-wrapper">
-          <div className="progress-indicator static-overlay">
+          <div
+            className={`progress-indicator static-overlay ${
+              isHorizontal ? "horizontal" : "vertical"
+            }`}
+          >
             {Array.from({ length: totalSteps }).map((_, i) => (
               <span
                 key={i}
@@ -359,6 +355,7 @@ export default function CanvasTemplate({
               />
             ))}
           </div>
+
           <div className="canvas-stage">
             <Stage
               width={canvasWidth}
@@ -469,7 +466,7 @@ export default function CanvasTemplate({
         <div className="modal-overlay" onClick={() => setShowGuide(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>✨ 그림 도구 사용법</h3>
-            <ul style={{ textAlign: "left", padding: "0 1rem" }}>
+            <ul className="modal-guide">
               <li>➕/➖ : '펜 굵기'를 조정할 수 있어요!</li>
               <li>↩️ : 한 획 되돌리기</li>
               <li>🗑 : 처음부터 다시 그리기</li>

@@ -77,6 +77,6 @@
 }
 
 .highlight {
-  color: #a9c6f6;
+  color: var(--text-blue);
   font-weight: 700;
 }

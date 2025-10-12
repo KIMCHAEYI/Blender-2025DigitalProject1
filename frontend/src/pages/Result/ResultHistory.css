@@ -4,10 +4,11 @@
   margin: 0 auto;
   text-align: center;
   overflow: auto; /* margin collapse 방지 */
-}
-
-.highlight {
-  color: #3b5bdb;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ✅ 중앙 정렬 */
+  justify-content: center;
+  min-height: 100vh; /* ✅ 화면 높이 기준 세로 중앙 정렬 */
 }
 
 .result-card-box {
@@ -20,30 +21,23 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  align-items: flex-start;
+  align-items: center; /* ✅ 왼쪽 → 중앙 */
+  justify-content: center; /* ✅ 세로 가운데 */
+  text-align: center; /* ✅ 내부 텍스트 중앙 */
+  width: 100%;
+  max-width: 600px; /* ✅ 카드 폭 제한 (너무 넓지 않게) */
 }
 
 .result-card.single-card {
-  text-align: left;
+  text-align: center; /* ✅ 텍스트 중앙 정렬 */
   width: 100%;
-}
-
-.result-card h3 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
-.result-card p {
-  font-size: 1rem;
-  color: #333;
 }
 
 .result-card-buttons {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: center; /* ✅ 버튼 중앙 정렬 */
   width: 100%;
 }
 
@@ -58,56 +52,8 @@
   min-width: 160px;
 }
 
-.btn-detail {
-  background-color: #3b5bdb;
-  border: 2px solid #ffffff;
-  color: #ffffff;
-}
-
-.btn-download {
-  background-color: #333;
-  color: white;
-}
-
-.btn-detail:hover {
-  background-color: #f1f1f1;
-}
-
-.btn-download:hover {
-  background-color: #111;
-}
-
 .button-wrap {
   margin-top: 24px;
-}
-
-.btn-gohome {
-  padding: 12px 24px;
-  font-size: 1rem;
-  color: #000;
-  border-radius: 8px;
-  border: 2px solid #000;
-  background: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-gohome:hover {
-  background: #f5f5f5;
-}
-
-/* 📱 반응형: 작은 화면에서는 버튼 세로 배치 */
-@media (max-width: 100px) {
-  .result-card-buttons {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .result-card-buttons button {
-    width: 100%;
-  }
-
-  .result-card.single-card {
-    text-align: center;
-  }
+  display: flex;
+  justify-content: center;
 }

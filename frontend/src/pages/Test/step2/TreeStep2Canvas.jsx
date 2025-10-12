@@ -33,7 +33,7 @@ export default function TreeStep2Canvas() {
       try {
         // ① 질문 불러오기
         const qRes = await fetch(
-          `http://172.20.6.160:5000/api/step2/question?session_id=${sessionId}&type=${drawingType}`
+          `http://172.20.14.232:5000/api/step2/question?session_id=${sessionId}&type=${drawingType}`
         );
         if (!qRes.ok) throw new Error("질문 요청 실패");
         const questionData = await qRes.json();
@@ -41,7 +41,7 @@ export default function TreeStep2Canvas() {
 
         // ② 이전 그림 불러오기
         const dRes = await fetch(
-          `http://172.20.6.160:5000/api/drawings/${sessionId}/${drawingType}`
+          `http://172.20.14.232:5000/api/drawings/${sessionId}/${drawingType}`
         );
         if (!dRes.ok) throw new Error("이전 그림 요청 실패");
         const dData = await dRes.json();

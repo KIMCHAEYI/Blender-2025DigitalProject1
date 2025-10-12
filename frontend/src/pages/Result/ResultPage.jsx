@@ -2,8 +2,8 @@ import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../contexts/UserContext";
 import ResultCard from "../../components/ResultCard";
-import { downloadPdf } from "../../utils/pdfUtils";
 import axios from "axios";
+import { downloadPdf } from "../../utils/pdfUtils.js";
 
 import "./ResultPage.css";
 
@@ -40,7 +40,6 @@ const mapSubtype = (s) => {
   return null;
 };
 
-/** normalize */
 const normalizeDrawings = (raw = []) => {
   const out = {};
   const list = Array.isArray(raw) ? raw : Object.values(raw);
@@ -56,9 +55,23 @@ const normalizeDrawings = (raw = []) => {
   };
 
   for (const item of list) {
-    const key = item.type || item._key || "unknown";
-    const res = item.result || {};
+    const filePath = item.path || "";
 
+    // ✅ 2단계 또는 보충 그림 제외
+    if (
+      filePath.includes("step2") ||
+      filePath.includes("add") ||
+      filePath.includes("_2") ||
+      filePath.includes("보충")
+    ) {
+      console.log("🧩 2단계 이미지 제외:", filePath);
+      continue;
+    }
+
+    const key = item.type || item._key || "unknown";
+    if (out[key]) continue; // ✅ 이미 1단계가 있으면 덮어쓰지 않음
+
+    const res = item.result || {};
     out[key] = {
       ...item,
       type: key,
@@ -85,7 +98,9 @@ const sortTypes = (types) => {
     person_female: 4,
     person: 5,
   };
-  return [...types].sort((a, b) => (order[a] || 99) - (order[b] || 99));
+  return [...types]
+    .filter((t) => t in order) // ✅ 'person' 등 불필요한 key 제거
+    .sort((a, b) => (order[a] || 99) - (order[b] || 99));
 };
 
 /** duration format */
@@ -100,6 +115,11 @@ export default function ResultPage() {
   const { userData, setUserData } = useUserContext();
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState(false);
+  const sessionId = //여기부터 수진 추가
+    userData?.session_id ||
+    sessionStorage.getItem("session_id") ||
+    sessionStorage.getItem("user_id"); //여기까지 수진 추가
+  const [overall, setOverall] = useState({});
 
   useEffect(() => {
     const sessionId =
@@ -216,7 +236,7 @@ export default function ResultPage() {
 
       {/* FAB */}
       <div className="fab">
-        <button 수진이가 주석처리함
+        <button
           className="fab-btn"
           onClick={() =>
             downloadPdf({
@@ -253,13 +273,6 @@ export default function ResultPage() {
           disabled={downloading}
         >
           🔎 상세 PDF
-        </button>
-        <button
-          className="fab-btn"
-          onClick={() => downloadProReport({ sessionId, setDownloading })} // [SWITCH] Python ReportLab 호출
-          disabled={downloading}
-        >
-          🔎 정밀 리포트 PDF
         </button>
         <button className="fab-btn" onClick={() => navigate("/")}>
           🏠 홈화면으로

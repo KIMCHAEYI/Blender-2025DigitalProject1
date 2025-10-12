@@ -8,10 +8,11 @@ export default function NextButton({
   className = "btn-primary",
   ...rest
 }) {
+  const buttonClass = `${className} ${enabled ? "" : "disabled"}`;
+
   return (
     <Button
-      type="primary"
-      className={className}
+      className={buttonClass}
       onClick={enabled ? onClick : undefined}
       disabled={!enabled}
       aria-disabled={!enabled}
