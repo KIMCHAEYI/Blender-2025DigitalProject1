@@ -162,7 +162,12 @@ export default function ResultHistory() {
       <div className="result-card-box">
         <div className="result-card single-card">
           <h3>
-            검사일: {new Date(safeUser.created_at).toLocaleDateString("ko-KR")}
+            검사일:{" "}
+            {safeUser.createdAt
+              ? new Date(safeUser.createdAt).toLocaleDateString("ko-KR")
+              : safeUser.created_at
+              ? new Date(safeUser.created_at).toLocaleDateString("ko-KR")
+              : "(날짜 정보 없음)"}
           </h3>
           <p>{overall.diagnosis_summary || "(진단 내용 준비 중)"}</p>
         </div>

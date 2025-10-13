@@ -57,3 +57,28 @@
   display: flex;
   justify-content: center;
 }
+
+.btn-gohome {
+  display: inline-block;
+  background-color: #3f3f3f; /* 진한 회색 */
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  border: none;
+  border-radius: 16px;
+  padding: 18px 60px;
+  box-shadow: 0 6px #1f1f1f; /* 아래 그림자 */
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-gohome:hover {
+  background-color: #4b4b4b;
+  transform: translateY(2px);
+  box-shadow: 0 4px #1f1f1f;
+}
+
+.btn-gohome:active {
+  transform: translateY(6px);
+  box-shadow: 0 0 #1f1f1f;
+}
