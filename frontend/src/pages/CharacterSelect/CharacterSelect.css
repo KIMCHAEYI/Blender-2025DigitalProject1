@@ -40,6 +40,14 @@
   transform: scale(1.03);
 }
 
+.sub-text {
+  font-size: 17px;
+  color: #4a4a4a;
+  margin-top: 0.4rem;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
 .character-emoji {
   font-size: 48px;
   margin-bottom: 8px;
@@ -107,7 +115,9 @@
 }
 
 @keyframes blink {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     opacity: 0.2;
     transform: scale(0.8);
   }
@@ -116,5 +126,3 @@
     transform: scale(1.1);
   }
 }
-
-

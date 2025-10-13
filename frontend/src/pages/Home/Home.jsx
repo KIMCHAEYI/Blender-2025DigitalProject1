@@ -1,3 +1,5 @@
+frontend - src - components - home - home.jsx;
+
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import "./Home.css";
@@ -52,9 +54,9 @@ export default function Home() {
             </h1>
 
             <p className="main-description">
-              집, 나무, 사람 그림을 그려주세요. 몽글이 당신의 마음을 살펴보고 궁금한 걸
-              물어봐요. 그 대답을 또 다른 그림으로 표현하면, 몽글이 AI로 분석해서
-              마음 속 이야기를 즐겁고 안전하게 전해줍니다.
+              집, 나무, 사람 그림을 그려주세요. 몽글이 당신의 마음을 살펴보고
+              궁금한 걸 물어봐요. 그 대답을 또 다른 그림으로 표현하면, 몽글이
+              AI로 분석해서 마음 속 이야기를 즐겁고 안전하게 전해줍니다.
             </p>
 
             <div className="button-group">
@@ -71,6 +73,11 @@ export default function Home() {
                 지난 검사 결과 보기
               </button>
             </div>
+
+            {/* 개인정보 수집 추가 문구 */}
+            <p className="consent-text">
+              ※ 검사 진행을 위해 필요한 개인정보가 수집됩니다.
+            </p>
           </div>
 
           <div className="visual-section" aria-hidden></div>
@@ -116,9 +123,9 @@ export default function Home() {
             </p>
             <br />
             <div className="pill2">🛠 AI 분석</div>
-            몽글의 데이터 기반 해석 알고리즘이 무의식적 표현을 탐지하여, 
-            이를 확인·보완할 수 있는 주제를 자동 설계합니다. 
-            아이는 말 대신 그림으로 응답하며 자신의 마음을 자연스럽게 표현해요.
+            몽글의 데이터 기반 해석 알고리즘이 무의식적 표현을 탐지하여, 이를
+            확인·보완할 수 있는 주제를 자동 설계합니다. 아이는 말 대신 그림으로
+            응답하며 자신의 마음을 자연스럽게 표현해요.
           </li>
           <li>
             <span className="step-num">STEP 3</span>

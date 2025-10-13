@@ -107,6 +107,14 @@
   margin: 0 auto 28px;
 }
 
+.consent-text {
+  font-size: 0.9rem;
+  color: #4a4a4a;
+  margin-top: 0.8rem;
+  text-align: center;
+  line-height: 1.4;
+}
+
 /* CTA 버튼 */
 .button-group {
   display: flex;

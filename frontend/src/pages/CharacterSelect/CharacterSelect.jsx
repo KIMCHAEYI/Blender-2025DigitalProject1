@@ -1,3 +1,5 @@
+frontend - src - components - pages - characterselect.jsx;
+
 // src/pages/CharacterSelect/CharacterSelect.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -49,6 +51,9 @@ export default function CharacterSelect() {
       <h2 className="question">
         <span className="highlight">캐릭터</span>를 골라주세요
       </h2>
+      <p className="sub-text">
+        🔊 소리를 키워주세요! 그림 여정에 몽이와 그리가 함께할 거예요.
+      </p>
 
       <div className="character-grid">
         {characters.map((ch) => (
