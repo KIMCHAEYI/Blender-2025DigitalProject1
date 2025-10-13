@@ -134,7 +134,7 @@ for (const r of rulesForType) {
   if (eraseCount === 0) {
     behaviorAnalyses.push({
       label: "지우기 사용",
-      meaning: "지우기 한 번의 시도로 그림을 완성한 모습에서 자신감과 안정된 정서를 엿볼 수 있습니다.",
+      meaning: "지우기 사용 없이 그림을 완성한 모습에서 자신감과 안정된 정서를 엿볼 수 있습니다.",
     });
   } else if (eraseCount <= 2) {
     behaviorAnalyses.push({
