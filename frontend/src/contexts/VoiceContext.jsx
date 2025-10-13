@@ -33,7 +33,9 @@ export function VoiceProvider({ children }) {
     }
 
     try {
-      const audio = new Audio(src);
+      const safeSrc = encodeURI(src);
+      const audio = new Audio(safeSrc);
+      
       audioRef.current = audio;
       lastSrcRef.current = src;
       setIsPlaying(true);

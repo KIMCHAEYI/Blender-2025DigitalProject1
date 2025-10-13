@@ -16,7 +16,7 @@ export default function RotateResultIntro() {
   const [error, setError] = useState("");
   const [audioEnded, setAudioEnded] = useState(false);
 
-  // ✅ 1️⃣ 페이지 진입 시 자동재생: "화면을 가로로 돌려주세요"
+  // 1️. 페이지 진입 시 자동재생: "화면을 가로로 돌려주세요"
   useEffect(() => {
     const src = AUDIO["common.rotate_horizontal"]?.[voice];
     if (src) {
@@ -33,7 +33,7 @@ export default function RotateResultIntro() {
     }
   }, [voice]);
 
-  // ✅ 2️⃣ 버튼 클릭 시: "AI 분석 중입니다" 재생 → 끝나면 handleAnalyze 실행
+  // 2️. 버튼 클릭 시: "AI 분석 중입니다" 재생 → 끝나면 handleAnalyze 실행
   const handleClick = async () => {
     if (isPlaying || loading) return; // 중복 방지
     setLoading(true);

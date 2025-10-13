@@ -4,12 +4,12 @@ import { useUserContext } from "../../../contexts/UserContext.jsx";
 
 export default function PersonStep2Canvas() {
   const { userData } = useUserContext();
-  const drawingType = "person"; // ✅ person으로 고정 (남녀 구분은 백엔드 판단)
+  const drawingType = "person"; // person으로 고정 (남녀 구분은 백엔드 판단)
   const [backendQuestion, setBackendQuestion] = useState("");
   const [previousDrawing, setPreviousDrawing] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // ✅ 2단계 대상 목록 가져오기
+  // 2단계 대상 목록 가져오기
   const step2Targets = JSON.parse(
     sessionStorage.getItem("step2_targets") || "[]"
   );
@@ -17,7 +17,7 @@ export default function PersonStep2Canvas() {
   const nextTarget = step2Targets[currentIndex + 1];
   const nextRoute = nextTarget ? `/test/step2/${nextTarget}` : "/result";
 
-  // ✅ 세션 ID 가져오기
+  // 세션 ID 가져오기
   const sessionId =
     userData?.session_id ||
     sessionStorage.getItem("session_id") ||

@@ -62,11 +62,11 @@ export const AUDIO = {
     gree: "/audio/gree/AI가 분석 중이에요 잠시만 기다려 주세요!.mp3",
   },
   "common.rotate_horizontal": {
-    mongi: "/audio/mongi/화면을 가로로 돌려주세요!.mp3",
+    mongi: "/audio/mongi/화면을 가로로 돌려주세요.mp3",
     gree: "/audio/gree/화면을 가로로 돌려주세요!.mp3",
   },
   "common.rotate_vertical": {
-    mongi: "/audio/mongi/화면을 세로로 돌려주세요!.mp3",
+    mongi: "/audio/mongi/화면을 세로로 돌려주세요.mp3",
     gree: "/audio/gree/화면을 세로로 돌려주세요!.mp3",
   },
 };

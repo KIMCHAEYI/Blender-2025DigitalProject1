@@ -5,20 +5,20 @@ import { useUserContext } from "../../../contexts/UserContext.jsx";
 
 export default function HouseStep2Canvas() {
   const { userData } = useUserContext();
-  const drawingType = "house"; // ✅ 명시적으로 정의 (중요)
+  const drawingType = "house"; //  명시적으로 정의 (중요)
   const [backendQuestion, setBackendQuestion] = useState("");
   const [previousDrawing, setPreviousDrawing] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // ✅ Step2 대상 목록 불러오기
+  //  Step2 대상 목록 불러오기
   const step2Targets = JSON.parse(
     sessionStorage.getItem("step2_targets") || "[]"
   );
   const currentIndex = step2Targets.indexOf(drawingType);
   const nextTarget = step2Targets[currentIndex + 1];
-  const nextRoute = nextTarget ? `/test/step2/${nextTarget}` : "/result"; // ✅ 다음 페이지 자동 결정
+  const nextRoute = nextTarget ? `/test/step2/${nextTarget}` : "/result"; // 다음 페이지 자동 결정
 
-  // ✅ 세션 ID 가져오기
+  //  세션 ID 가져오기
   const sessionId =
     userData?.session_id ||
     sessionStorage.getItem("session_id") ||

@@ -1,12 +1,16 @@
-// src/pages/Test/step2/QuestionModal.jsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./QuestionModal.css";
+import { useIntroAudio } from "../../../hooks/useIntroAudio.js";
 
 export default function QuestionModal({ isOpen, onClose, question }) {
+  const [audioEnded, setAudioEnded] = useState(false);
+
+  // ✅ 항상 컴포넌트 최상단에서 Hook 호출
+  useIntroAudio("step2.check_question", () => setAudioEnded(true));
+
   if (!isOpen) return null;
 
   const fallbackQuestion = "1단계 그림을 바탕으로, 추가로 그림을 그려볼까요?";
-
   const handleOverlayClick = (e) => e.stopPropagation();
 
   const decodeString = (str) => {
@@ -15,7 +19,6 @@ export default function QuestionModal({ isOpen, onClose, question }) {
       const unicodeDecoded = str.replace(/\\u[\dA-F]{4}/gi, (match) =>
         String.fromCharCode(parseInt(match.replace("\\u", ""), 16))
       );
-
       const textarea = document.createElement("textarea");
       textarea.innerHTML = unicodeDecoded;
       return textarea.value;
@@ -25,7 +28,6 @@ export default function QuestionModal({ isOpen, onClose, question }) {
     }
   };
 
-  // 실제 변환된 질문
   const formattedQuestion = decodeString(question || fallbackQuestion);
 
   return (
@@ -46,7 +48,11 @@ export default function QuestionModal({ isOpen, onClose, question }) {
           <li>🟥 : 검사를 그만두고 싶을 때 눌러요!</li>
         </ul>
 
-        <button className="modal-button confirm" onClick={onClose}>
+        <button
+          className="modal-button confirm"
+          onClick={onClose}
+          disabled={!audioEnded} // ✅ 오디오 끝나야 활성화
+        >
           알겠어요!
         </button>
       </div>
