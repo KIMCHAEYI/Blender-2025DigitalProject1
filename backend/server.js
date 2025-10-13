@@ -9,8 +9,8 @@ const drawingsRouter = require("./routes/drawings");
 const colorRoute = require("./routes/colorRoute");
 const step2Route = require("./routes/step2Route"); 
 
-const app = express();
-const PORT = 5000;
+const app = express(); 
+const PORT = 5000; 
 
 // CORS 설정
 app.use(

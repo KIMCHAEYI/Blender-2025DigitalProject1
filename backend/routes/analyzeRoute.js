@@ -72,6 +72,7 @@ router.get("/session/:session_id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const {
+      session_id,
       drawingType,
       yoloResult,
       eraseCount = 0,
@@ -82,40 +83,54 @@ router.post("/", async (req, res) => {
       first_gender,
     } = req.body;
 
-    if (!drawingType || !yoloResult) {
-      return res.status(400).json({ error: "drawingType과 yoloResult가 필요합니다" });
+    if (!session_id || !drawingType || !yoloResult) {
+      return res
+        .status(400)
+        .json({ error: "session_id, drawingType, yoloResult가 필요합니다." });
     }
 
-    let parsedPenUsage = penUsage;
-    if (typeof penUsage === "string") {
-      try {
-        parsedPenUsage = JSON.parse(penUsage);
-      } catch {
-        parsedPenUsage = null;
-      }
-    }
-
-    // 1️⃣ YOLO 해석
+    // YOLO + GPT 해석
     const analysis = interpretYOLOResult(
       yoloResult,
       drawingType,
       eraseCount,
       resetCount,
-      parsedPenUsage
+      penUsage
     );
 
-    // 2️⃣ GPT 해석 (지우기/리셋 횟수 반영)
     const gptSummary = await summarizeDrawingForCounselor(
-      {
-        type: drawingType,
-        result: { analysis },
-        erase_count: eraseCount,
-        reset_count: resetCount,
-      },
+      { type: drawingType, result: { analysis } },
       { name, gender, first_gender }
     );
 
-    // 3️⃣ 결과 반환
+    // ✅ DB에 반영
+    const db = JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
+    const session = db.find((s) => s.id === session_id);
+    if (session) {
+      const target = session.drawings.find((d) => d.type === drawingType);
+      if (target) {
+        target.result = {
+          analysis,
+          counselor_summary: gptSummary.summary,
+        };
+      }
+
+      // ✅ 요기서 전체 그림 다 분석되었으면 자동으로 종합 해석 생성
+      if (session.drawings.every(d => d.result && d.result.analysis)) {
+        const overall = await synthesizeOverallFromDrawingSummaries(session.drawings, {
+          name: session.name,
+          gender: session.gender,
+          first_gender: session.first_gender,
+        });
+        session.overall_summary = overall.overall_summary;
+        session.diagnosis_summary = overall.diagnosis_summary;
+        console.log(`✅ [자동 GPT 종합 완료] ${session_id}`);
+      }
+
+      fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+    }
+
+    // ✅ 응답 반환
     res.json({
       analysis,
       counselor_summary: gptSummary.summary,
@@ -126,34 +141,39 @@ router.post("/", async (req, res) => {
   }
 });
 
+
+
 // 🧠 전체 종합 해석 (그림 4개 결과 → GPT 종합)
 router.post("/overall", async (req, res) => {
   try {
-    const { drawings, name, gender, first_gender, session_id } = req.body;
+    const { session_id, name, gender, first_gender } = req.body;
 
-    if (!Array.isArray(drawings) || drawings.length === 0) {
-      return res.status(400).json({ error: "drawings 배열이 필요합니다." });
+    // ✅ session_id로 DB에서 그림 불러오기
+    const db = JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
+    const session = db.find((s) => s.id === session_id);
+    if (!session) {
+      return res.status(404).json({ error: "세션을 찾을 수 없습니다." });
     }
 
+    const drawings = Object.values(session.drawings || []);
+    if (!drawings.length) {
+      return res.status(400).json({ error: "그림 데이터가 없습니다." });
+    }
+
+    // ✅ GPT 종합 요청
     const overall = await synthesizeOverallFromDrawingSummaries(drawings, {
       name,
       gender,
       first_gender,
     });
 
+    // ✅ 결과 DB에 저장
+    session.overall_summary = overall.overall_summary;
+    session.diagnosis_summary = overall.diagnosis_summary;
 
-    // ✅ DB 업데이트
-    const db = JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
-    const session = db.find((s) => s.id === session_id);
-    if (session) {
-      session.overall_summary = overall.overall_summary;
-      session.diagnosis_summary = overall.diagnosis_summary;
-      fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
-    }
+    fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
 
-    console.log("✅ [GPT 종합 결과 저장됨]", overall);
-
-    console.log("✅ [GPT 전체 종합 결과 저장 완료]");
+    console.log("✅ [GPT 종합 결과 저장 완료]", session_id);
     res.json(overall);
   } catch (err) {
     console.error("[❌ 전체 종합 해석 실패]", err);

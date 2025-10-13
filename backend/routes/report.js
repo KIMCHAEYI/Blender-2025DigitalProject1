@@ -64,10 +64,15 @@ router.post("/generate", async (req, res) => {
     const payload = buildReportPayload(session);
     payload._out_pdf = outPdfAbs;
 
-    const py = spawn(process.env.PYTHON_BIN || "python", [PY_FILE], {
+// ✅ 수정된 버전 (Python 절대경로 지정)
+    const py = spawn(
+    "C:/Users/82103/Desktop/Blender_2025DigitalProject1/.venv/Scripts/python.exe",
+    [PY_FILE],
+    {
         stdio: ["pipe", "pipe", "pipe"],
-    });
-
+    }
+    );
+    
     let pyErr = "";
     let pyOut = "";
     py.stdout.on("data", (d) => (pyOut += d.toString()));
