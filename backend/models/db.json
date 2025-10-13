@@ -7277,5 +7277,15 @@
         "person_woman": "세부적인 요소들이 충분히 드러나면서도, 핵심적인 부분은 다소 생략된 듯한 느낌을 주었습니다. 이는 자기 동일시의 갈등을 내포하고 있으며, 개인적인 역할 인식이 강조됩니다."
       }
     }
+  },
+  {
+    "id": "1760381626622",
+    "name": "ㅇㄹㅇ",
+    "gender": "여자",
+    "birth": "2007-12-17",
+    "password": "$2b$10$YYVl9x7i1VJX1VYAfwTmt.DvLHpAD6.1TDfd.0u2W2tzqg5sta3fy",
+    "first_gender": null,
+    "createdAt": "2025-10-13T18:53:46.627Z",
+    "drawings": []
   }
 ]
