@@ -1,0 +1,87 @@
+/* 공통 버튼 베이스 */
+.btn-base {
+  display: flex;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  font-family: "BMJUA", "Pretendard", sans-serif;
+  font-size: 22px; /* 글자 큼직하게 */
+  font-weight: 700;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 20px 36px; /* 손가락 터치 충분한 크기 */
+  border-radius: 16px;
+  min-width: 220px;
+  min-height: 70px; /* 태블릿 터치 기준 */
+}
+
+/* 검정 기본 버튼 */
+.btn-primary {
+  @extend .btn-base;
+  background-color: #42413f;
+  color: white;
+  margin-top: 32px;
+  box-shadow: 0 6px 0 #212121;
+}
+/* 검정 기본 버튼 비활성화 */
+.btn-primary.disabled {
+  background-color: #aaa;
+  color: #f0f0f0;
+  box-shadow: 0 6px 0 #aaa;
+}
+
+.btn-primary:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #2c2b29;
+}
+
+/* input 버튼 */
+.btn-secondary {
+  @extend .btn-base;
+  background-color: #fff;
+  border: 3px solid #42413f;
+  color: black;
+  font-size: 20px;
+  min-width: 180px;
+  min-height: 64px;
+}
+
+/* 작은 next 버튼 (필요하다면) */
+.btn-next {
+  @extend .btn-base;
+  background-color: #42413f;
+  color: white;
+  min-width: 180px;
+  min-height: 64px;
+  border-radius: 14px;
+}
+
+/* 파란색 큰 버튼 */
+.btn-nextblue {
+  @extend .btn-base;
+  background: var(--text-blue);
+  color: #fff;
+  border: 4px solid #ffffff;
+  border-radius: 50px;
+  box-shadow: 0 6px 0 var(--text-blueshadow);
+}
+
+.btn-nextblue:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--text-blueshadow);
+}
+
+/* 빨간색 버튼 */
+.btn-nextred {
+  @extend .btn-base;
+  background: var(--text-red);
+  color: white;
+  font-size: 20px;
+  border-radius: 20px;
+  box-shadow: 0 6px 0 var(--text-redshadow);
+}
+
+.btn-nextred:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--text-redshadow);
+}

@@ -1,0 +1,41 @@
+# Node.js
+node_modules/
+uploads/
+models/db.json
+
+# React
+frontend/node_modules/
+frontend/build/
+
+# 기타
+.env
+
+# 환경 변수 파일
+.env
+
+# Node.js 관련 무시
+node_modules/
+dist/
+*.log
+
+# 시스템 파일
+.DS_Store
+Thumbs.db
+
+# pt 파일 무시
+*.pt
+
+# Python 관련
+__pycache__/
+*.pyc
+
+/yolov5/
+
+# 컴파일된 파이썬 캐시 파일 제외 Blender-2025DigitalProject1/
+
+backend/logic/__pycache__/
+
+# 추적에서 제거
+git rm --cached backend/logic/__pycache__/yolo_api.cpython-313.pyc
+
+Blender-2025DigitalProject1/

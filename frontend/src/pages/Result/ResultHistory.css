@@ -1,0 +1,84 @@
+.result-history {
+  padding: 24px;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+  overflow: auto; /* margin collapse 방지 */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ✅ 중앙 정렬 */
+  justify-content: center;
+  min-height: 100vh; /* ✅ 화면 높이 기준 세로 중앙 정렬 */
+}
+
+.result-card-box {
+  margin-top: 40px;
+  background-color: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center; /* ✅ 왼쪽 → 중앙 */
+  justify-content: center; /* ✅ 세로 가운데 */
+  text-align: center; /* ✅ 내부 텍스트 중앙 */
+  width: 100%;
+  max-width: 600px; /* ✅ 카드 폭 제한 (너무 넓지 않게) */
+}
+
+.result-card.single-card {
+  text-align: center; /* ✅ 텍스트 중앙 정렬 */
+  width: 100%;
+}
+
+.result-card-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center; /* ✅ 버튼 중앙 정렬 */
+  width: 100%;
+}
+
+.result-card-buttons button {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 14px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 160px;
+}
+
+.button-wrap {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-gohome {
+  display: inline-block;
+  background-color: #3f3f3f; /* 진한 회색 */
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  border: none;
+  border-radius: 16px;
+  padding: 18px 60px;
+  box-shadow: 0 6px #1f1f1f; /* 아래 그림자 */
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-gohome:hover {
+  background-color: #4b4b4b;
+  transform: translateY(2px);
+  box-shadow: 0 4px #1f1f1f;
+}
+
+.btn-gohome:active {
+  transform: translateY(6px);
+  box-shadow: 0 0 #1f1f1f;
+}

@@ -1,0 +1,109 @@
+/* === Kids stepper === */
+.kidsWrap {
+  --si-primary: #5ea2c2;
+  --si-node: 64px;
+  --si-gap: 16px;
+  --si-conn: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px 0 24px;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.kids {
+  display: flex;
+  align-items: center;
+  gap: var(--si-gap);
+}
+.kidDot {
+  width: var(--si-node);
+  height: var(--si-node);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  color: #1f2937;
+  font-weight: 800;
+  font-size: 20px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12), inset 0 0 0 2px #e5e7eb;
+  transition: all 0.25s ease;
+}
+.kidDotDone {
+  background: radial-gradient(
+    circle at 30% 30%,
+    #fff 0,
+    #fef3c7 45%,
+    #fde68a 100%
+  );
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+.kidDotActive {
+  outline: 5px solid color-mix(in oklab, var(--si-primary) 40%, transparent);
+  outline-offset: 4px;
+  animation: kid-bounce 1s ease-in-out infinite alternate;
+  background: #dcf8fc;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12),
+    inset 0 0 0 2px color-mix(in oklab, var(--si-primary) 65%, #e5e7eb);
+}
+.kidEmoji {
+  font-size: 26px;
+  transform: translateY(-1px);
+}
+.connectorKids {
+  width: var(--si-conn);
+  height: 10px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+  background: #e2e8f0;
+}
+.connectorKidsDone {
+  background: linear-gradient(90deg, var(--si-primary), #60a5fa);
+  box-shadow: none;
+}
+@keyframes kid-bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-4px);
+  }
+}
+
+.label {
+  display: inline-block;
+  background-color: #e8f0fe;
+  color: #1a73e8;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 4px 12px;
+  margin-left: 4px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 태블릿 최적화 */
+@media (max-width: 820px) {
+  .kidsWrap {
+    --si-node: 60px;
+    --si-conn: 48px;
+    --si-gap: 14px;
+  }
+  .kidDot {
+    font-size: 18px;
+  }
+  .kidEmoji {
+    font-size: 24px;
+  }
+}
+
+/* 모션 배려 */
+@media (prefers-reduced-motion: reduce) {
+  .line > i,
+  .topline > i {
+    transition: none;
+  }
+}

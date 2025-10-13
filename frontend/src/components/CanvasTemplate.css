@@ -1,0 +1,249 @@
+/* ===== CanvasTemplate.css (replace / merge) ===== */
+/* 전체 페이지 구조 */
+.page-center.house-page {
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 헤더 고정 영역 */
+.canvas-header-row {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  z-index: 100;
+  pointer-events: none;
+}
+.rectangle-header {
+  pointer-events: auto;
+  background: white;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 500px;
+}
+.rectangle-title {
+  font-weight: bold;
+  font-size: 20px;
+  color: var(--text-black);
+  margin: 0;
+}
+
+/* 본문 */
+.canvas-body {
+  flex: 1;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+/* ===== 툴바 ===== */
+.toolbar {
+  position: fixed;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 10px;
+  border-radius: 16px;
+  z-index: 200;
+}
+.pen-size-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+  margin: 8px 0;
+}
+
+.pen-size-circle {
+  border-radius: 50%;
+  background: var(--text-black);
+  margin-bottom: 4px;
+}
+
+.pen-size-label {
+  font-size: 14px;
+  color: var(--text-black);
+  font-weight: 500;
+}
+
+.icon-plus,
+.icon-minus,
+.icon-oneback,
+.icon-trash,
+.icon-help {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  background: white;
+  padding: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  object-fit: contain;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.icon-plus:hover,
+.icon-minus:hover,
+.icon-oneback:hover,
+.icon-trash:hover,
+.icon-help:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+/* 캔버스 래퍼: indicator 기준점 */
+.canvas-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* 캔버스 */
+.drawing-canvas {
+  max-width: 100%;
+  height: auto;
+  background: #ffffff;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  border: 2px solid #ccc;
+  display: block;
+}
+.pen-stepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.pen-stepper button {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 4px 0;
+}
+
+/* 기본 공통 스타일 */
+.progress-indicator.static-overlay {
+  position: absolute;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* 🟦 세로형 (tree, person 등) */
+.progress-indicator.static-overlay.vertical {
+  top: -210px;
+  left: 30px;
+}
+
+/* 🟨 가로형 (house 등) */
+.progress-indicator.static-overlay.horizontal {
+  top: -30px; /* 살짝 아래 */
+  left: 10%; /* 가운데 정렬 */
+  transform: translateX(-50%); /* 중앙 기준 정렬 */
+}
+
+.dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+  background: #ffffff;
+}
+.dot.active {
+  background: var(--text-blue);
+}
+
+/* 하단 버튼: 화면 우측 하단에 고정 */
+.footer-buttons-row {
+  position: fixed;
+  bottom: calc(10px + env(safe-area-inset-bottom, 0));
+  right: 24px;
+  display: flex;
+  gap: 12px;
+  z-index: 300;
+}
+
+/* 모달 공통 */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.modal-content {
+  background: white;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  padding-left: 60px;
+  padding-right: 60px;
+  border-radius: 16px;
+  text-align: center;
+}
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: nowrap;
+}
+.modal-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 18px;
+  border-radius: 10px;
+  width: 250px;
+  height: 40px;
+}
+.modal-button.confirm {
+  background-color: var(--text-lightblue);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+}
+.modal-button.confirm:active {
+  background-color: var(--text-blue);
+  transform: scale(0.97);
+}
+.modal-button.cancel {
+  background-color: #d8d8d8;
+  color: var(--text-black);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+}
+.modal-button.cancel:active {
+  background-color: #e5e7eb;
+  transform: scale(0.97);
+}

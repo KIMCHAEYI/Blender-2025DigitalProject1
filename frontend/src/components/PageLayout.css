@@ -1,0 +1,49 @@
+.page-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 100dvh;
+  transition: height 0.2s ease;
+  overflow-x: hidden;
+}
+
+/* Safari 15 이하 호환 */
+@supports not (height: 100dvh) {
+  .page-layout {
+    min-height: 100vh;
+  }
+}
+
+.page-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 16px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.page-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.content-inner {
+  width: 100%;
+  max-width: 720px;
+  text-align: center;
+}
+
+.page-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 50;
+  padding: 20px 0 50px;
+  display: flex;
+  justify-content: center;
+}
