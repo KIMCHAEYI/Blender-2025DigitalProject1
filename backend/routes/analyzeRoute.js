@@ -3,15 +3,15 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const { runYOLOAnalysis } = require("../logic/yoloRunner");
-const { interpretYOLOResult } = require("../logic/analyzeResult"); 
+const { interpretYOLOResult } = require("../logic/analyzeResult");
 const { summarizeDrawingForCounselor } = require("../logic/gptPrompt");
 
 const DB_FILE = path.join(__dirname, "../models/db.json");
 const router = express.Router();
 
 // ---------------------- 중복 분석 방지 로직 추가 ----------------------
-const inProgress = new Set();          // 현재 YOLO 분석 중인 파일들
-const yoloCache = new Map();           // 이미 분석된 결과 캐시
+const inProgress = new Set(); // 현재 YOLO 분석 중인 파일들
+const yoloCache = new Map(); // 이미 분석된 결과 캐시
 // ---------------------------------------------------------------------
 
 router.get("/session/:session_id", async (req, res) => {
@@ -68,7 +68,6 @@ router.get("/session/:session_id", async (req, res) => {
   });
 });
 
-
 router.post("/", async (req, res) => {
   try {
     const {
@@ -85,7 +84,9 @@ router.post("/", async (req, res) => {
 
     if (!session_id || !drawingType || !yoloResult) {
       return res
+
         .status(400)
+
         .json({ error: "session_id, drawingType, yoloResult가 필요합니다." });
     }
 
@@ -116,12 +117,15 @@ router.post("/", async (req, res) => {
       }
 
       // ✅ 요기서 전체 그림 다 분석되었으면 자동으로 종합 해석 생성
-      if (session.drawings.every(d => d.result && d.result.analysis)) {
-        const overall = await synthesizeOverallFromDrawingSummaries(session.drawings, {
-          name: session.name,
-          gender: session.gender,
-          first_gender: session.first_gender,
-        });
+      if (session.drawings.every((d) => d.result && d.result.analysis)) {
+        const overall = await synthesizeOverallFromDrawingSummaries(
+          session.drawings,
+          {
+            name: session.name,
+            gender: session.gender,
+            first_gender: session.first_gender,
+          }
+        );
         session.overall_summary = overall.overall_summary;
         session.diagnosis_summary = overall.diagnosis_summary;
         console.log(`✅ [자동 GPT 종합 완료] ${session_id}`);
@@ -140,8 +144,6 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: "분석 실패", detail: err.message });
   }
 });
-
-
 
 // 🧠 전체 종합 해석 (그림 4개 결과 → GPT 종합)
 router.post("/overall", async (req, res) => {
@@ -210,6 +212,5 @@ router.get("/status", async (req, res) => {
     res.status(500).json({ error: "status check failed" });
   }
 });
-
 
 module.exports = router;
