@@ -122,6 +122,10 @@ export default function ResultPage() {
   const [overall, setOverall] = useState({});
 
   useEffect(() => {
+    console.log("📦 ResultPage 데이터:", userData);
+  }, []);
+
+  useEffect(() => {
     const sessionId =
       userData?.session_id ||
       sessionStorage.getItem("session_id") ||

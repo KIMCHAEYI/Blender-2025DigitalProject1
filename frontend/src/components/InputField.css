@@ -1,12 +1,36 @@
 /* src/components/InputField.css */
 
+.input-field-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 기본 인풋 */
 .input-field {
-  width: 220px;
+  width: 240px;
   height: 60px;
-  border-radius: 10px;
   font-size: 20px;
-  border: 3px solid var(--text-black);
-  appearance: none;
+  border: 3px solid #42413f;
+  border-radius: 10px;
+  padding: 0 40px 0 12px; /* 오른쪽 여백 확보 */
+  box-sizing: border-box;
   background-color: #fff;
   text-align: center;
+}
+
+/* 아이콘 */
+.input-icon {
+  position: absolute;
+  right: 12px;
+  cursor: pointer;
+  color: #42413f;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon:hover {
+  opacity: 0.7;
 }

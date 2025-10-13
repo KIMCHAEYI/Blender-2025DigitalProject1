@@ -7,12 +7,12 @@ export default defineConfig({
     host: true,
     proxy: {
       "/api": {
-        target: "http://172.30.1.71:5000",
+        target: "http://10.62.90.68:5000",
         changeOrigin: true,
         secure: false,
       },
       "/uploads": {
-        target: "http://172.30.1.71:5000",
+        target: "http://10.62.90.68:5000",
         changeOrigin: true,
         secure: false,
       },

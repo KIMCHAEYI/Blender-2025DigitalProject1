@@ -11,14 +11,14 @@ import "./CanvasTemplate.css";
 const resolveApiBase = () => {
   let raw = (import.meta?.env?.VITE_API_BASE ?? "").trim();
   if (!raw || raw === "undefined" || raw === "null" || raw === "") {
-    raw = "http://172.30.1.71:5000"; // ✅ 기본값
+    raw = "http://10.62.90.68:5000"; // ✅ 기본값
   }
   if (!/^https?:\/\//i.test(raw)) raw = `http://${raw}`;
   try {
     const u = new URL(raw);
     return `${u.protocol}//${u.host}`;
   } catch {
-    return "http://172.30.1.71:5000";
+    return "http://10.62.90.68:5000";
   }
 };
 const API_BASE = resolveApiBase();
@@ -213,8 +213,24 @@ export default function CanvasTemplate({
         sessionStorage.setItem("overallRequested", "true");
         console.log("✅ 모든 그림 업로드 완료 → 종합 해석 1회만 요청 시작");
 
+        const sid =
+          userData?.session_id ||
+          sessionStorage.getItem("session_id") ||
+          sessionStorage.getItem("user_id") ||
+          sessionStorage.getItem("latest_session_id");
+
+        if (!sid) {
+          console.error("❌ session_id 없음: 전체 해석 요청 중단");
+          return;
+        }
+
         axios
-          .post(`${API_BASE}/api/analyze/overall`, { session_id: sid })
+          .post(`${API_BASE}/api/analyze/overall`, {
+            session_id: sessionId,
+            name: userData?.name,
+            gender: userData?.gender,
+            first_gender: userData?.first_gender,
+          })
           .then((res) => {
             console.log("✅ 전체 종합 해석 완료:", res.data);
           })

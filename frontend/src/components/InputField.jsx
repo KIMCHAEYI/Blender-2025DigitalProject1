@@ -4,19 +4,23 @@ import "./InputField.css";
 export default function InputField({
   value,
   onChange,
-  placeholder = "",
+  placeholder,
   type = "text",
   className = "",
-  ...props
+  rightIcon, // 👈 추가
+  ...rest
 }) {
   return (
-    <input
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      className={`input-field ${className}`}
-      {...props}
-    />
+    <div className="input-field-wrapper">
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className={`input-field ${className}`}
+        {...rest}
+      />
+      {rightIcon && <div className="input-icon">{rightIcon}</div>}
+    </div>
   );
 }

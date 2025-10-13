@@ -101,7 +101,7 @@ export default function CanvasTemplate2({
         formData.append("drawing", file);
 
         const uploadRes = await axios.post(
-          "http://172.30.1.71:5000/api/drawings/upload",
+          "http://10.62.90.68:5000/api/drawings/upload",
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
@@ -113,7 +113,7 @@ export default function CanvasTemplate2({
         const drawingId = uploadData.drawing_id;
 
         const colorRes = await fetch(
-          "http://172.30.1.71:5000/api/color-analyze",
+          "http://10.62.90.68:5000/api/color-analyze",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

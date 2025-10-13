@@ -1,4 +1,3 @@
-// src/pages/Complete/Complete.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,17 +7,19 @@ import { useVoice } from "../../contexts/VoiceContext.jsx";
 import { AUDIO } from "../../tts/AudioManifest.js";
 import "./Complete.css";
 
+const API_BASE = "http://10.62.90.68:5000";
+
 export default function Complete() {
   const { userData, setUserData } = useUserContext();
   const { voice, play, isPlaying } = useVoice();
   const navigate = useNavigate();
 
   const [canClick, setCanClick] = useState(false);
-  const hasPlayedRef = useRef(false); // 재생 여부 추적
+  const hasPlayedRef = useRef(false);
 
-  //  페이지 로드 시 자동 재생 (단 1회)
+  // ✅ 페이지 입장 시 음성 자동 재생
   useEffect(() => {
-    if (hasPlayedRef.current) return; // 이미 재생됐다면 종료
+    if (hasPlayedRef.current) return;
     hasPlayedRef.current = true;
 
     if (!voice) {
@@ -44,16 +45,33 @@ export default function Complete() {
     });
   }, [voice, play]);
 
+  // ✅ 검사 시작 버튼 클릭
   const handleSubmit = async () => {
     if (!canClick || isPlaying) return;
 
     try {
-      const sessionRes = await axios.post("/api/sessions/start", {
+      console.log(
+        "📤 요청 보냄:",
+        `http://10.62.90.68:5000/api/sessions/start`
+      );
+      console.log("📦 전송 데이터:", {
         name: userData.name,
         birth: userData.birth,
         gender: userData.gender,
         password: userData.password,
       });
+
+      const sessionRes = await axios.post(
+        `http://10.62.90.68:5000/api/sessions/start`,
+        {
+          name: userData.name,
+          birth: userData.birth,
+          gender: userData.gender,
+          password: userData.password,
+        }
+      );
+
+      console.log("✅ 서버 응답:", sessionRes.data);
 
       const sid = sessionRes.data?.session_id;
       if (sid) {
@@ -63,7 +81,10 @@ export default function Complete() {
 
       navigate("/test/house/intro");
     } catch (err) {
-      console.error("요청 실패:", err);
+      console.error("🚨 요청 실패:", err);
+      if (err.response) {
+        console.error("서버 응답:", err.response.data);
+      }
       alert("처리에 실패했어요 😢 다시 시도해 주세요.");
     }
   };
@@ -79,7 +100,7 @@ export default function Complete() {
 
       <div>
         <Button
-          className={`btn-nextblue`}
+          className="btn-nextblue"
           onClick={handleSubmit}
           disabled={!canClick || isPlaying}
         >

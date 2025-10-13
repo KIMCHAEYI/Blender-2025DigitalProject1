@@ -10,7 +10,7 @@ export const uniqByLabelMeaning = (arr = []) =>
 export const toAbsUrl = (path) => {
   if (!path) return "";
   if (/^(https?:)?\/\//i.test(path) || /^data:|^blob:/i.test(path)) return path;
-  const API_BASE = "http://172.30.1.71:5000";
+  const API_BASE = "http://10.62.90.68:5000";
   const rel = path.startsWith("/") ? path : `/${path}`;
   return `${API_BASE}${encodeURI(rel)}`;
 };
