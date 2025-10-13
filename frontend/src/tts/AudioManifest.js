@@ -33,8 +33,8 @@ export const AUDIO = {
   },
 
   "step1.draw_person_female": {
-    mongi: "/audio/mongi/여자 사람을 그려주세요!.mp3",
-    gree: "/audio/gree/여자 사람을 그려주세요!.mp3",
+    mongi: "/audio/mongi/여자 사람을 그려주세요.mp3",
+    gree: "/audio/gree/여자 사람을 그려주세요..mp3",
   },
  
   "step1.hint_tool": {

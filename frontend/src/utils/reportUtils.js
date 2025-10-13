@@ -5,13 +5,13 @@ import axios from "axios";
 const resolveApiBase = () => {
   let raw = (import.meta?.env?.VITE_API_BASE ?? "").trim();
   if (!raw || raw === "undefined" || raw === "null")
-    return "http://172.20.14.232:5000";
+    return "http://172.30.1.71:5000";
   if (!/^https?:\/\//i.test(raw)) raw = `http://${raw}`;
   try {
     const u = new URL(raw);
     return `${u.protocol}//${u.host}`;
   } catch {
-    return "http://172.20.14.232:5000";
+    return "http://172.30.1.71:5000";
   }
 };
 const API_BASE = resolveApiBase();
