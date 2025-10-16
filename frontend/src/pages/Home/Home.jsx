@@ -1,5 +1,3 @@
-frontend - src - components - home - home.jsx;
-
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import "./Home.css";
