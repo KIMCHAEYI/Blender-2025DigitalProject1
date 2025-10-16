@@ -1,5 +1,3 @@
-frontend - src - components - pages - characterselect.jsx;
-
 // src/pages/CharacterSelect/CharacterSelect.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";

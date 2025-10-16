@@ -7,13 +7,11 @@ import { downloadPdf } from "../../utils/pdfUtils.js";
 
 import "./ResultPage.css";
 
-/** 라벨+의미 기준 중복 제거 */
 const uniqByLabelMeaning = (arr = []) =>
   Array.from(
     new Map(arr.map((o) => [`${o.label}__${o.meaning ?? ""}`, o])).values()
   );
 
-/** 타이틀/아이콘 */
 const TITLE = {
   house: "집",
   tree: "나무",
@@ -29,7 +27,6 @@ const ICON = {
   person_female: "👧",
 };
 
-/** subtype 매핑 */
 const mapSubtype = (s) => {
   if (!s) return null;
   const t = String(s).toLowerCase();
@@ -57,7 +54,6 @@ const normalizeDrawings = (raw = []) => {
   for (const item of list) {
     const filePath = item.path || "";
 
-    // ✅ 2단계 또는 보충 그림 제외
     if (
       filePath.includes("step2") ||
       filePath.includes("add") ||
@@ -69,7 +65,7 @@ const normalizeDrawings = (raw = []) => {
     }
 
     const key = item.type || item._key || "unknown";
-    if (out[key]) continue; // ✅ 이미 1단계가 있으면 덮어쓰지 않음
+    if (out[key]) continue;
 
     const res = item.result || {};
     out[key] = {
@@ -99,7 +95,7 @@ const sortTypes = (types) => {
     person: 5,
   };
   return [...types]
-    .filter((t) => t in order) // ✅ 'person' 등 불필요한 key 제거
+    .filter((t) => t in order)
     .sort((a, b) => (order[a] || 99) - (order[b] || 99));
 };
 
@@ -186,7 +182,7 @@ export default function ResultPage() {
     <div className="result-mobile">
       {/* 상단 요약 */}
       <header className="summary-bar">
-        <h1>종합 결과</h1>
+        <h1>AI 마음 리포트</h1>
         <p style={{ marginTop: "4px", fontSize: "14px", color: "#444" }}>
           총 소요시간: {formatDuration(totalDuration)}
         </p>
