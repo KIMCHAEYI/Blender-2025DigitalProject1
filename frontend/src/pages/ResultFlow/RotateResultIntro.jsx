@@ -5,7 +5,7 @@ import { useVoice } from "../../contexts/VoiceContext.jsx";
 import { AUDIO } from "../../tts/AudioManifest.js";
 import "./Result.css";
 
-const API_BASE = "http://172.20.6.207:5000";
+const API_BASE = "http://172.20.5.67:5000";
 console.log("✅ API_BASE:", API_BASE);
 
 export default function RotateResultIntro() {

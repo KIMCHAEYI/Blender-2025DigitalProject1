@@ -51,7 +51,7 @@ export default function QuestionModal({ isOpen, onClose, question }) {
         <button
           className="modal-button confirm"
           onClick={onClose}
-          disabled={!audioEnded} // ✅ 오디오 끝나야 활성화
+          //  disabled={!audioEnded} // ✅ 오디오 끝나야 활성화
         >
           알겠어요!
         </button>

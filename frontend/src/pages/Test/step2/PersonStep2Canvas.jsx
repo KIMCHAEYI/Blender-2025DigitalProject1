@@ -33,7 +33,7 @@ export default function PersonStep2Canvas() {
       try {
         // ① Step2 질문 불러오기 (백엔드가 남/녀 중 선택된 대상 기반으로 질문 반환)
         const qRes = await fetch(
-          `http://172.20.6.207:5000/api/step2/question?session_id=${sessionId}&type=${drawingType}`
+          `http://172.20.5.67:5000/api/step2/question?session_id=${sessionId}&type=${drawingType}`
         );
         if (!qRes.ok) throw new Error("질문 요청 실패");
         const questionData = await qRes.json();
@@ -41,7 +41,7 @@ export default function PersonStep2Canvas() {
 
         // ② 이전 그림(선택된 남/녀 중 하나) 불러오기
         const dRes = await fetch(
-          `http://172.20.6.207:5000/api/drawings/${sessionId}/${drawingType}`
+          `http://172.20.5.67:5000/api/drawings/${sessionId}/${drawingType}`
         );
         if (!dRes.ok) throw new Error("이전 그림 요청 실패");
         const dData = await dRes.json();

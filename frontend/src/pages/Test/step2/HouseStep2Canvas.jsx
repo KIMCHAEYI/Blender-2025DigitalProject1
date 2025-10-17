@@ -34,7 +34,7 @@ export default function HouseStep2Canvas() {
       try {
         // ① Step2 질문 불러오기
         const questionRes = await fetch(
-          `http://172.20.6.207:5000/api/step2/question?session_id=${sessionId}&type=${drawingType}`
+          `http://172.20.5.67:5000/api/step2/question?session_id=${sessionId}&type=${drawingType}`
         );
         if (!questionRes.ok) throw new Error("질문 요청 실패");
         const questionData = await questionRes.json();
@@ -42,7 +42,7 @@ export default function HouseStep2Canvas() {
 
         // ② 이전 그림(1단계 결과) 불러오기
         const drawingRes = await fetch(
-          `http://172.20.6.207:5000/api/drawings/${sessionId}/${drawingType}`
+          `http://172.20.5.67:5000/api/drawings/${sessionId}/${drawingType}`
         );
         if (!drawingRes.ok) throw new Error("이전 그림 요청 실패");
         const drawingData = await drawingRes.json();

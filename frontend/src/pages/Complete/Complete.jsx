@@ -7,7 +7,7 @@ import { useVoice } from "../../contexts/VoiceContext.jsx";
 import { AUDIO } from "../../tts/AudioManifest.js";
 import "./Complete.css";
 
-const API_BASE = "http://172.20.6.207:5000";
+const API_BASE = "http://172.20.5.67:5000";
 
 export default function Complete() {
   const { userData, setUserData } = useUserContext();
@@ -52,7 +52,7 @@ export default function Complete() {
     try {
       console.log(
         "📤 요청 보냄:",
-        `http://172.20.6.207:5000/api/sessions/start`
+        `http://172.20.5.67:5000/api/sessions/start`
       );
       console.log("📦 전송 데이터:", {
         name: userData.name,
@@ -62,7 +62,7 @@ export default function Complete() {
       });
 
       const sessionRes = await axios.post(
-        `http://172.20.6.207:5000/api/sessions/start`,
+        `http://172.20.5.67:5000/api/sessions/start`,
         {
           name: userData.name,
           birth: userData.birth,
